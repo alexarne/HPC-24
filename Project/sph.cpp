@@ -5,7 +5,7 @@
 
 const double PI = 3.14159265358979323846;
 
-const int N = 200;     // Number of particles
+const int N = 60;     // Number of particles
 const double t = 0.0;      // current time of the simulation
 const double tEnd = 4.0;     // time at which simulation ends
 const double dt = 0.005;   // timestep
@@ -197,6 +197,10 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
 
     Grad grad = compute_gradW(dx, dy, dz, N_, N_);
 
+    delete[] dx;
+    delete[] dy;
+    delete[] dz;
+
      // Add Pressure contribution to accelerations
     double *ax = new double[N];
     double *ay = new double[N];
@@ -219,9 +223,6 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
 
     delete[] rho;
     delete[] P;
-    delete[] dx;
-    delete[] dy;
-    delete[] dz;
     delete[] ax;
     delete[] ay;
     delete[] az;
@@ -257,7 +258,12 @@ int main() {
 
     double pos[N * 3];
     double vel[N * 3] = {0.0}; // Initialize velocities to zero
+    double rr[100*3] = {0.0};
 
+    for (int i = 0; i < 100; i++){
+        rr[i * 3] = i/ 100.0;
+    }
+    
     // Initialize positions with random numbers within a range
     std::random_device rd;
     std::mt19937 gen(42);            
@@ -270,6 +276,11 @@ int main() {
     // Open CSV file for writing
     std::ofstream outFile("particle_positions.csv");
     if (!outFile.is_open()) {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+        return 1;
+    }
+    std::ofstream outFile2("density.csv");
+    if (!outFile2.is_open()) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
@@ -296,17 +307,24 @@ int main() {
             pos[i * 3 + 2] += vel[i * 3 + 2] * dt;
         }
 
-
-
         // Write positions to CSV file
         for (int i = 0; i < N; ++i) {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 
+        double *rho = getDensity(rr,pos,100,N);
+
+        for (int i = 0; i < 100; ++i) {
+            outFile2 << rho[i]<< ",";
+        }
+        outFile2 << std::endl;
+
         delete[] acc;
+        delete[] rho;
     }
 
     outFile.close();
+    outFile2.close();
 
     return 0;
 }
