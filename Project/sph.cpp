@@ -5,14 +5,14 @@
 
 const double PI = 3.14159265358979323846;
 
-const int N = 5;     // Number of particles
+const int N = 40;     // Number of particles
 const double t = 0.0;      // current time of the simulation
-const double tEnd = 5.0;     // time at which simulation ends
+const double tEnd = 4.0;     // time at which simulation ends
 const double dt = 0.005;   // timestep
-const double M   = 3.0;      // star mass
+const double M   = 12.0;      // star mass
 const double R   = 0.75;   // star radius
-const double h  = 0.5;    // smoothing length
-const double k  = 2.1;    // equation of state constant
+const double h  = 0.1;    // smoothing length
+const double k  = 0.1;    // equation of state constant
 const double n  = 1;      // polytropic index
 const double nu = 1;      // damping
 

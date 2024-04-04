@@ -18,7 +18,7 @@ N = len(ts[ts==0])
 for frame in range(int(len(ts)/N)):
     plt.sca(ax1)
     plt.cla()
-    plt.scatter(pos[3*frame-3:frame*3,1],pos[3*frame-3:frame*3,2], cmap=plt.cm.autumn, s=10, alpha=0.5)
+    plt.scatter(pos[N*frame-N:frame*N,1],pos[N*frame-N:frame*N,2], cmap=plt.cm.autumn, s=10, alpha=0.5)
     ax1.set(xlim=(-1.4, 1.4), ylim=(-1.2, 1.2))
     ax1.set_aspect('equal', 'box')
     ax1.set_xticks([-1,0,1])
@@ -26,4 +26,4 @@ for frame in range(int(len(ts)/N)):
     ax1.set_facecolor('black')
     ax1.set_facecolor((.1,.1,.1))
 
-    plt.pause(0.01)
+    plt.pause(0.1)
