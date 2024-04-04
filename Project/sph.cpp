@@ -5,7 +5,7 @@
 
 const double PI = 3.14159265358979323846;
 
-const int N = 40;     // Number of particles
+const int N = 200;     // Number of particles
 const double t = 0.0;      // current time of the simulation
 const double tEnd = 4.0;     // time at which simulation ends
 const double dt = 0.005;   // timestep
@@ -15,20 +15,20 @@ const double h  = 0.1;    // smoothing length
 const double k  = 0.1;    // equation of state constant
 const double n  = 1;      // polytropic index
 const double nu = 1;      // damping
+const double lmbda = 2.0 * k * (1.0 + n) * pow(M_PI, -3.0 / (2.0 * n)) * 
+        pow((M * tgamma(5.0 / 2.0 + n) / (R * R * R * tgamma(1.0 + n))), 1.0 / n) / (R * R);
 
 const double m = M/N;
-
-using namespace std;
 
 void print_array(double *A, int rows, int cols){
     for (int i = 0; i < rows; ++i) 
     {
-        cout << "[ ";
+        std::cout << "[ ";
         for (int j = 0; j < cols; ++j)
         {
-            cout << A[i * cols + j] << " ";
+            std::cout << A[i * cols + j] << " ";
         }
-        cout << "]" << endl;
+        std::cout << "]" << std::endl;
     }
 }
 
@@ -150,6 +150,11 @@ double *getDensity(double *r, double *pos, int M_, int N_){
         }
     }
 
+    delete[] dx;
+    delete[] dy;
+    delete[] dz;
+    delete[] W;
+
     return rho;
 }
 
@@ -212,7 +217,16 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
         }
     }
 
-    // pack together the acceleration components
+    delete[] rho;
+    delete[] P;
+    delete[] dx;
+    delete[] dy;
+    delete[] dz;
+    delete[] ax;
+    delete[] ay;
+    delete[] az;
+
+
     double *a = new double[N * 3];
     for (int i = 0; i < N; ++i) {
         a[i * 3] = ax[i];
@@ -239,8 +253,6 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
 
 int main() {
 
-    double lmbda = 2.0 * k * (1.0 + n) * pow(M_PI, -3.0 / (2.0 * n)) * 
-        pow((M * tgamma(5.0 / 2.0 + n) / (R * R * R * tgamma(1.0 + n))), 1.0 / n) / (R * R);
     // Initialize positions and velocities
 
     double pos[N * 3];
@@ -283,6 +295,8 @@ int main() {
             pos[i * 3 + 1] += vel[i * 3 + 1] * dt;
             pos[i * 3 + 2] += vel[i * 3 + 2] * dt;
         }
+
+
 
         // Write positions to CSV file
         for (int i = 0; i < N; ++i) {
