@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <memory>
 #include <random>
 
 const double PI = 3.14159265358979323846;
@@ -9,13 +10,13 @@ const int N = 60;     // Number of particles
 const double t = 0.0;      // current time of the simulation
 const double tEnd = 4.0;     // time at which simulation ends
 const double dt = 0.005;   // timestep
-const double M   = 12.0;      // star mass
+const double M   = 12;      // star mass
 const double R   = 0.75;   // star radius
 const double h  = 0.1;    // smoothing length
 const double k  = 0.1;    // equation of state constant
 const double n  = 1;      // polytropic index
 const double nu = 1;      // damping
-const double lmbda = 2.0 * k * (1.0 + n) * pow(M_PI, -3.0 / (2.0 * n)) * 
+const double lmbda = 2.0 * k * (1.0 + n) * pow(PI, -3.0 / (2.0 * n)) * 
         pow((M * tgamma(5.0 / 2.0 + n) / (R * R * R * tgamma(1.0 + n))), 1.0 / n) / (R * R);
 
 const double m = M/N;
@@ -32,17 +33,17 @@ void print_array(double *A, int rows, int cols){
     }
 }
 
-double *compute_W(double *x, double *y, double *z, int M_, int N_) {
+std::unique_ptr<double[]> compute_W(double *x, double *y, double *z, int M_, int N_) {
     /*
-	Gradient of the Gausssian Smoothing kernel (3D)
+	Gradient of the Gaussian Smoothing kernel (3D)
 	x     is a vector/matrix of x positions
 	y     is a vector/matrix of y positions
 	z     is a vector/matrix of z positions
 	h     is the smoothing length
 	wx, wy, wz     is the evaluated gradient
 	*/
-    double *W = new double[M_*N_];
-    for (int i = 0; i < (M_*N_); i++) 
+    std::unique_ptr<double[]> W= std::make_unique<double[]>(M_ * N_);
+    for (int i = 0; i < (M_ * N_); i++) 
     {
         double r = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
         W[i] = (1.0 / (h * sqrt(PI))) * (1.0 / (h * sqrt(PI))) * (1.0 / (h * sqrt(PI))) * exp(-r * r / (h * h));
@@ -51,14 +52,14 @@ double *compute_W(double *x, double *y, double *z, int M_, int N_) {
 }
 
 struct Grad {
-    double *wx;
-    double *wy;
-    double *wz;
+    std::unique_ptr<double[]> wx;
+    std::unique_ptr<double[]> wy;
+    std::unique_ptr<double[]> wz;
 };
 
 Grad compute_gradW(double *x, double *y, double *z, int M_, int N_){
     /*
-	Gradient of the Gausssian Smoothing kernel (3D)
+	Gradient of the Gaussian Smoothing kernel (3D)
 	x     is a vector/matrix of x positions
 	y     is a vector/matrix of y positions
 	z     is a vector/matrix of z positions
@@ -67,46 +68,50 @@ Grad compute_gradW(double *x, double *y, double *z, int M_, int N_){
 	*/
 
     //Allocate memory 
-    double *wx = new double[M_*N_];
-    double *wy = new double[M_*N_];
-    double *wz = new double[M_*N_];
+
+    std::unique_ptr<double[]> wx = std::make_unique<double[]>(M_ * N_);
+    std::unique_ptr<double[]> wy = std::make_unique<double[]>(M_ * N_);
+    std::unique_ptr<double[]> wz = std::make_unique<double[]>(M_ * N_);
+
 
     //Compute
-    double n[M_*N_];
-    double r[M_*N_];
-    for (int i = 0; i<(M_*N_); i++){
+    double n[M_ * N_];
+    double r[M_ * N_];
+    for (int i = 0; i < (M_ * N_); i++){
         r[i] = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
-        n[i] = -2 * exp(-r[i]*r[i] / (h*h)) / pow(h, 5) / pow(PI, 1.5);
+        n[i] = -2 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5) / pow(PI, 1.5);
         wx[i] = n[i] * x[i];          // wx
         wy[i] = n[i] * y[i];         // wy
         wz[i] = n[i] * z[i];        // wz
     }
 
-    Grad gradW = {wx, wy, wz};
+    Grad gradW = {std::move(wx), std::move(wy), std::move(wz)};
 
     return gradW;
     
 }
 
 struct PairwiseSeparations {
-    double *dx;
-    double *dy;
-    double *dz;
+    std::unique_ptr<double[]> dx;
+    std::unique_ptr<double[]> dy;
+    std::unique_ptr<double[]> dz;
 };
 
 
 PairwiseSeparations getPairwiseSeparations(double *ri, double *rj, int M_, int N_) {
     /*
-	Get pairwise desprations between 2 sets of coordinates
+	Get pairwise separations between 2 sets of coordinates
 	ri    is an M x 3 matrix of positions
 	rj    is an N x 3 matrix of positions
 	dx, dy, dz   are M x N matrices of separations
 	*/
     // Allocate memory
     
-    double *dx = new double[M_*N_];
-    double *dy = new double[M_*N_];
-    double *dz = new double[M_*N_];
+    // Allocate memory
+    std::unique_ptr<double[]> dx = std::make_unique<double[]>(M_ * N_);
+    std::unique_ptr<double[]> dy = std::make_unique<double[]>(M_ * N_);
+    std::unique_ptr<double[]> dz = std::make_unique<double[]>(M_ * N_);
+
     
     // Compute pairwise separations: dx = rix - rjx, dy = riy - rjy, dz = riz - rjz
     
@@ -118,14 +123,14 @@ PairwiseSeparations getPairwiseSeparations(double *ri, double *rj, int M_, int N
         }
     }
 
-    PairwiseSeparations result = {dx, dy, dz};
+    PairwiseSeparations result = {std::move(dx), std::move(dy), std::move(dz)};
     return result;
 }
 
 
-double *getDensity(double *r, double *pos, int M_, int N_){
+std::unique_ptr<double[]> getDensity(double *r, double *pos, int M_, int N_){
     /*
-	Get Density at sampling loctions from SPH particle distribution
+	Get Density at sampling locations from SPH particle distribution
 	r     is an M x 3 matrix of sampling locations
 	pos   is an N x 3 matrix of SPH particle positions
 	m     is the particle mass
@@ -134,33 +139,28 @@ double *getDensity(double *r, double *pos, int M_, int N_){
 	*/
     
     PairwiseSeparations result = getPairwiseSeparations(r, pos, M_, N_);
-    double *dx = result.dx;
-    double *dy = result.dy;
-    double *dz = result.dz;
+    double *dx = result.dx.get();
+    double *dy = result.dy.get();
+    double *dz = result.dz.get();
     
-    double *W = compute_W(dx,dy,dz, M_, N_);
+    std::unique_ptr<double[]> W = compute_W(dx, dy, dz, M_, N_);
 
-    //double *rho = new double[N];
-    double *rho = new double[M_];
+    std::unique_ptr<double[]> rho = std::make_unique<double[]>(M_);
 
     for (int i = 0; i < M_; ++i) {
         rho[i] = 0.0;
         for (int j = 0; j < N; ++j) {
-            rho[i] += m * W[j+i*N_];
+            rho[i] += m * W[j + i * N_];
         }
     }
-
-    delete[] dx;
-    delete[] dy;
-    delete[] dz;
-    delete[] W;
 
     return rho;
 }
 
-double *getPressure(double *rho){
+std::unique_ptr<double[]> getPressure(double *rho){
 
-    double* P = new double[N];
+    std::unique_ptr<double[]> P = std::make_unique<double[]>(N);
+;
 
     for (int i = 0; i < N; ++i) {
         P[i] = k * pow(rho[i], 1 + 1 / n);
@@ -170,7 +170,7 @@ double *getPressure(double *rho){
 }
 
 
-double *getAcc(double *pos, double *vel, double lmbda, int N_){
+std::unique_ptr<double[]> getAcc(double *pos, double *vel, double lmbda, int N_){
     /*
 	Calculate the acceleration on each SPH particle
 	pos   is an N x 3 matrix of positions
@@ -186,25 +186,22 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
 
     //Calculate densities
     
-    double *rho = getDensity(pos, pos, N_, N_);
+    std::unique_ptr<double[]> rho = getDensity(pos, pos, N_, N_);
 
-    double *P = getPressure(rho);
+    std::unique_ptr<double[]> P = getPressure(rho.get());
 
     PairwiseSeparations result = getPairwiseSeparations(pos, pos, N_, N_);
-    double *dx = result.dx;
-    double *dy = result.dy;
-    double *dz = result.dz;
+    double *dx = result.dx.get();
+    double *dy = result.dy.get();
+    double *dz = result.dz.get();
 
     Grad grad = compute_gradW(dx, dy, dz, N_, N_);
 
-    delete[] dx;
-    delete[] dy;
-    delete[] dz;
-
      // Add Pressure contribution to accelerations
-    double *ax = new double[N];
-    double *ay = new double[N];
-    double *az = new double[N];
+    std::unique_ptr<double[]> ax = std::make_unique<double[]>(N);
+    std::unique_ptr<double[]> ay = std::make_unique<double[]>(N);
+    std::unique_ptr<double[]> az = std::make_unique<double[]>(N);
+
 
     for (int i = 0; i < N_; ++i) 
     {
@@ -221,14 +218,7 @@ double *getAcc(double *pos, double *vel, double lmbda, int N_){
         }
     }
 
-    delete[] rho;
-    delete[] P;
-    delete[] ax;
-    delete[] ay;
-    delete[] az;
-
-
-    double *a = new double[N * 3];
+    std::unique_ptr<double[]> a = std::make_unique<double[]>(N * 3);
     for (int i = 0; i < N; ++i) {
         a[i * 3] = ax[i];
         a[i * 3 + 1] = ay[i];
@@ -291,7 +281,7 @@ int main() {
     // Time evolution loop
     for (double time = t; time <= tEnd; time += dt) {
         // Compute accelerations
-        double *acc = getAcc(pos, vel, lmbda, N);
+        std::unique_ptr<double[]> acc = getAcc(pos, vel, lmbda, N);
 
         // Update velocities
         for (int i = 0; i < N; ++i) {
@@ -312,15 +302,12 @@ int main() {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 
-        double *rho = getDensity(rr,pos,100,N);
+        std::unique_ptr<double[]> rho = getDensity(rr, pos, 100, N);
 
         for (int i = 0; i < 100; ++i) {
-            outFile2 << rho[i]<< ",";
+            outFile2 << rho[i] << ",";
         }
         outFile2 << std::endl;
-
-        delete[] acc;
-        delete[] rho;
     }
 
     outFile.close();
@@ -328,4 +315,3 @@ int main() {
 
     return 0;
 }
-
