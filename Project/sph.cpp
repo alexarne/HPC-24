@@ -6,10 +6,10 @@
 
 const double PI = 3.14159265358979323846;
 
-const int N = 400;     // Number of particles
+const int N = 60;     // Number of particles
 const double t = 0.0;      // current time of the simulation
-const double tEnd = 10.0;     // time at which simulation ends
-const double dt = 0.04;   // timestep
+const double tEnd = 4.0;     // time at which simulation ends
+const double dt = 0.005;   // timestep
 const double M   = 12;      // star mass
 const double R   = 0.75;   // star radius
 const double h  = 0.1;    // smoothing length
