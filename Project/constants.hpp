@@ -1,11 +1,11 @@
 // Discritization Constants
 constexpr double h = 0.1;
-constexpr double dt= 0.005;
-constexpr size_t particles = 60;
+constexpr double dt= 0.04;
+constexpr size_t particles = 200;
 
 // Simulation Data
 constexpr double t_end = 4;
-constexpr double skip_frames = 10;
+constexpr double skip_frames = 0;
 
 // Physiological Constants
 constexpr double M = 12;
