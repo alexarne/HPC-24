@@ -27,7 +27,7 @@ void compute_W(const double *x, const double *y, const double *z, int M_, int N_
 	h     is the smoothing length
 	wx, wy, wz     is the evaluated gradient
 	*/
-    #pragma omp parallel for
+
     for (int i = 0; i < (M_ * N_); i++) {
         double r = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
         W[i] = (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * exp(-r * r / (h * h));
@@ -47,7 +47,7 @@ void compute_gradW(const double *x, const double *y, const double *z, int M_, in
     double *n = new double[M_ * N_];
     double *r = new double[M_ * N_];
 
-    #pragma omp parallel for
+
     for (int i = 0; i < (M_ * N_); i++) {
         r[i] = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
         n[i] = -2 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5) / pow(M_PI, 1.5);
@@ -67,7 +67,7 @@ void getPairwiseSeparations(const double *ri, const double *rj, int M_, int N_, 
 	rj    is an N x 3 matrix of positions
 	dx, dy, dz   are M x N matrices of separations
 	*/
-    #pragma omp parallel for
+
     for (int i = 0; i < M_; i++) {
         for (int j = 0; j < N_; j++) {
             dx[i * N_ + j] = ri[i * 3] - rj[j * 3];
@@ -96,7 +96,7 @@ void getDensity(const double *r, const double *pos, int M_, int N_, double *rho)
     double *W = new double[M_ * N_];
     compute_W(dx, dy, dz, M_, N_, W);
 
-    #pragma omp parallel for
+
     for (int i = 0; i < M_; ++i) {
         rho[i] = 0.0;
         for (int j = 0; j < N_; ++j) {
@@ -113,7 +113,6 @@ void getDensity(const double *r, const double *pos, int M_, int N_, double *rho)
 
 void getPressure(const double *rho, double *P){
     
-    #pragma omp parallel for
     for (int i = 0; i < particles; ++i) {
         P[i] = k * pow(rho[i], 1 + 1 / n);
     }
@@ -147,7 +146,6 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
     double *gradWz = new double[N_ * N_];
     compute_gradW(dx, dy, dz, N_, N_, gradWx, gradWy, gradWz);
 
-    #pragma omp parallel for
     for (int i = 0; i < N_; ++i) 
     {
         a[i * 3] = 0.0;
@@ -170,14 +168,12 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
     delete[] gradWy;
     delete[] gradWz;
 
-    #pragma omp parallel for
     for (int i = 0; i < N_; ++i) {
         a[i * 3] -= lmbda * pos[i * 3];
         a[i * 3 + 1] -= lmbda * pos[i * 3 + 1];
         a[i * 3 + 2] -= lmbda * pos[i * 3 + 2];
     }
 
-    #pragma omp parallel for
     for (int i = 0; i < N_; ++i) {
         a[i * 3] -= nu * vel[i * 3];
         a[i * 3 + 1] -= nu * vel[i * 3 + 1];
@@ -193,7 +189,6 @@ int main() {
     double vel[particles * 3] = {0.0}; // Initialize velocities to zero
     double rr[100*3] = {0.0};
 
-    #pragma omp parallel for
     for (int i = 0; i < 100; i++){
         rr[i * 3] = i/ 100.0;
     }
@@ -228,7 +223,6 @@ int main() {
         double acc[particles * 3];
         getAcc(pos, vel, lmbda, particles, acc);
         // Update velocities
-        #pragma omp parallel for
         for (int i = 0; i < particles; ++i) {
             vel[i * 3] += acc[i * 3] * dt;
             vel[i * 3 + 1] += acc[i * 3 + 1] * dt;
@@ -236,7 +230,6 @@ int main() {
         }
 
         // Update positions
-        #pragma omp parallel for
         for (int i = 0; i < particles; ++i) {
             pos[i * 3] += vel[i * 3] * dt;
             pos[i * 3 + 1] += vel[i * 3 + 1] * dt;
