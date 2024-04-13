@@ -13,5 +13,5 @@ int main(){
         int i = omp_get_thread_num();
         printf("Hello World from Thread %d!\n", i);
     }
-
+    return 0;
 }
