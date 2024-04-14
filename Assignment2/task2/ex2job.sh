@@ -10,3 +10,6 @@ do
     done
 done
 python3 plot_results.py
+rm avg.csv
+rm results.txt
+rm ./stream
