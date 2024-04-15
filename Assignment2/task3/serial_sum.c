@@ -7,7 +7,7 @@ Instructions: Implement a serial and a number of OpenMP parallel versions of ser
 You can use the function omp_get_wtime() to get the time for measurement.
 */
 
-const int NRUNS = 100;
+const int NRUNS = 10;
 
 double serial_sum(double *x, size_t size)
 {
@@ -57,7 +57,7 @@ double calc_std(double *x, double mean, size_t size){
 
 int main(){
 
-    size_t size = pow(10,7);
+    size_t size = 1e7;
     double *A = malloc(size * sizeof(double));
 
     generate_random(A, size);
@@ -69,7 +69,7 @@ int main(){
       double start = omp_get_wtime();
       serial_sum(A, size);
       double stop = omp_get_wtime();
-      runtimes[i] = (stop - start)*1e6;
+      runtimes[i] = (stop - start)*1e3;
     }
 
     double arraymean = calc_mean(A, size);
@@ -81,8 +81,8 @@ int main(){
     double mean = calc_mean(runtimes, NRUNS);
     double std = calc_std(runtimes, mean, NRUNS);
 
-    printf("Mean (time): %f\n", mean);
-    printf("Standard deviation (time): %f\n\n", std);
+    printf("Mean (time): %f ms\n", mean);
+    printf("Standard deviation (time): %f ms\n\n", std);
     free(A);
 
     return 0;

@@ -7,12 +7,13 @@ Instructions: Implement a serial and a number of OpenMP parallel versions of ser
 You can use the function omp_get_wtime() to get the time for measurement.
 */
 
-const int NRUNS = 100;
+const int NRUNS = 10;
 
 double serial_sum(double *x, size_t size)
 {
   double sum_val = 0.0;
-
+  omp_set_num_threads(32);
+  #pragma omp parallel for //reduction(+:sum_val)
   for (size_t i = 0; i < size; i++) {
     sum_val += x[i];
   }
@@ -57,7 +58,7 @@ double calc_std(double *x, double mean, size_t size){
 
 int main(){
 
-    size_t size = pow(10,7);
+    size_t size = 1e7;
     double *A = malloc(size * sizeof(double));
 
     generate_random(A, size);
@@ -69,7 +70,7 @@ int main(){
       double start = omp_get_wtime();
       serial_sum(A, size);
       double stop = omp_get_wtime();
-      runtimes[i] = (stop - start)*1e6;
+      runtimes[i] = (stop - start)*1e3;
     }
 
     double arraymean = calc_mean(A, size);
@@ -81,9 +82,21 @@ int main(){
     double mean = calc_mean(runtimes, NRUNS);
     double std = calc_std(runtimes, mean, NRUNS);
 
-    printf("Mean (time): %f\n", mean);
-    printf("Standard deviation (time): %f\n\n", std);
+    printf("Mean (time): %f ms\n", mean);
+    printf("Standard deviation (time): %f ms\n\n", std);
     free(A);
 
+    /*
+    //The following code section (which should result in the sum 2001000) sometimes 
+    //gives with the wrong result due to race conditions)
+    size_t n = 2000;
+    double *b = malloc(n*sizeof(double));
+    for (size_t i = 0; i < n; ++i){
+      b[i] = i+1;
+    }
+    double sum1 = serial_sum(b, n);
+    printf("1 + 2 + 3 + 4 + ... + 2000 = %f\n", sum1);
+    free(b);
+    */
     return 0;
 }
