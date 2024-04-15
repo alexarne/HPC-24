@@ -14,7 +14,7 @@ for i in range(data.shape[0]):
     mean_list[i] = mean
     std_list[i] = std
 plt.plot(cases, mean_list, color = "black")
-plt.errorbar(cases, mean_list, yerr = std_list, fmt = "o")
+plt.errorbar(cases, mean_list, yerr = std_list, fmt = ".")
 plt.title("Bandwidth (MB/s)")
 plt.xlabel("# threads")
 plt.savefig("plot.png")
