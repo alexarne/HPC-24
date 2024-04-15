@@ -76,8 +76,6 @@ int main(){
     double *pmean = &mean;
     double std = calc_std(runtimes, pmean, NRUNS);
 
-    print_array(runtimes,1, NRUNS);
-
     printf("Mean: %f\n", mean);
     printf("Standard deviation: %f\n", std);
     free(A);
