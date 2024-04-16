@@ -3,7 +3,7 @@ for n in 1 32 64 128;
 do  
     echo Running case: $n threads.
     export OMP_NUM_THREADS=$n
-    cc -O2 -o stream stream.c -fopenmp
+    cc -O2 -o stream stream.c -openmp
     #clang -O2 -o stream stream.c -fopenmp
     for i in $(seq 1 5);
     do
