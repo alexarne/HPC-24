@@ -7,7 +7,7 @@
 # Number of nodes
 #SBATCH -p shared
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=128
+#SBATCH --cpus-per-task=64
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
@@ -19,7 +19,7 @@ do
     cc -O2 -o stream stream.c -openmp
     for i in $(seq 1 5);
     do
-        srun -n $n ./stream > results.txt
-        srun -n $n python3 record.py
+        srun -n $64 ./stream > results.txt
+        srun -n $64 python3 record.py
     done
 done
