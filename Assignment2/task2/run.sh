@@ -12,7 +12,6 @@
 
 for n in 1 32 64 128;
 do
-    echo Running case: $n threads.
     export OMP_NUM_THREADS=$n
     OMP_PLACES=cores
     cc -O2 -o stream stream.c -openmp

@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
+
 data = np.genfromtxt('avg.csv', delimiter=',')
 cases = [1,32,64,128]
 data = np.reshape(data, (-1,5,4))
