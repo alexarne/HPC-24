@@ -19,7 +19,7 @@ do
     cc -O2 -o stream stream.c -openmp
     for i in $(seq 1 5);
     do
-        srun -n $64 ./stream > results.txt
-        srun -n $64 python3 record.py
+        srun -n 64 ./stream > results.txt
+        srun -n 64 python3 record.py
     done
 done
