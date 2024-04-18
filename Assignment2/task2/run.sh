@@ -21,3 +21,6 @@ do
     done
 done
 
+export OMP_NUM_THREADS=128
+OMP_PLACES=cores
+
