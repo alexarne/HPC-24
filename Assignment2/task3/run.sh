@@ -6,8 +6,8 @@
 #SBATCH -A edu24.DD2356
 # Number of nodes
 #SBATCH -p shared
-#SBATCH --ntasks-per-node=32
-#SBATCH --cpus-per-task=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=64
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
@@ -17,6 +17,9 @@
 #srun -n 1 ./serial_sum > serial_sum_output
 #rm serial_sum
 
-cc -o omp_sum omp_sum.c -openmp #Do not use any optimization here, messes with the timing.
-srun -n 32 ./omp_sum > omp_sum_output.txt
-rm omp_sum
+export OMP_NUM_THREADS=32
+OMP_PLACES=cores
+
+cc sum.c -openmp #Do not use any optimization here, messes with the timing.
+srun -n 1 ./a.out > sum_output.txt
+rm a.out
