@@ -10,12 +10,12 @@ Each kernel will be executed 10 times.
  The *best* time for each kernel (excluding the first iteration)
  will be used to compute the reported bandwidth.
 -------------------------------------------------------------
-Number of Threads requested = 64
-Number of Threads counted = 64
+Number of Threads requested = 128
+Number of Threads counted = 128
 -------------------------------------------------------------
 Your clock granularity/precision appears to be 1 microseconds.
-Each test below will take on the order of 1420 microseconds.
-   (= 1420 clock ticks)
+Each test below will take on the order of 2171 microseconds.
+   (= 2171 clock ticks)
 Increase the size of the arrays if this shows that
 you are not getting at least 20 clock ticks per test.
 -------------------------------------------------------------
@@ -24,10 +24,10 @@ For best results, please be sure you know the
 precision of your system timer.
 -------------------------------------------------------------
 Function    Best Rate MB/s  Avg time     Min time     Max time
-Copy:           36907.5     0.004515     0.004335     0.004691
-Scale:          65709.3     0.002515     0.002435     0.002665
-Add:            70715.3     0.003460     0.003394     0.003558
-Triad:          74648.3     0.003237     0.003215     0.003264
+Copy:           28179.2     0.005958     0.005678     0.006734
+Scale:          66941.5     0.002888     0.002390     0.003445
+Add:            74931.7     0.003806     0.003203     0.005052
+Triad:          79206.3     0.003885     0.003030     0.004512
 -------------------------------------------------------------
 Solution Validates: avg error less than 1.000000e-13 on all three arrays
 -------------------------------------------------------------
