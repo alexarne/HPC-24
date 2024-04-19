@@ -73,6 +73,28 @@ double omp_local_sum(double *x, size_t size) {
   return sum_val;
 }
 
+double opt_local_sum(double *x, size_t size) {
+  int MAX_THREADS = 0;
+  #pragma omp parallel reduction(+ : MAX_THREADS)
+  MAX_THREADS += 1;
+  typedef struct { double val; char pad[128]; } tvals;
+  tvals local_sum[MAX_THREADS];
+  memset(local_sum, 0, MAX_THREADS*sizeof(tvals));
+
+  #pragma omp parallel for
+  for (size_t i = 0; i < size; ++i) {
+    int id = omp_get_thread_num();
+    local_sum[id].val += x[i];
+  }
+
+  double sum_val = 0;
+  for (size_t i = 0; i < MAX_THREADS; ++i) {
+    sum_val += local_sum[i].val;
+  }
+  
+  return sum_val;
+}
+
 
 void print_array(double *A, int rows, int cols){
     printf("[\n");
@@ -198,6 +220,23 @@ int main(){
       mean = calc_mean(runtimes, NRUNS);
       std = calc_std(runtimes, mean, NRUNS);
       printf("OMP LOCAL (threads = %d):\n", threads2[i]);
+      printf("Mean (time): %f ms\n", mean);
+      printf("Standard deviation (time): %f ms\n\n", std);
+    }
+    
+    for (int i = 0; i < 4; ++i) {
+      double runtimes[NRUNS];
+      omp_set_num_threads(threads2[i]);
+      for (int j = 0; j < NRUNS; ++j) {
+	double start = omp_get_wtime();
+	opt_local_sum(A, size);
+	double stop = omp_get_wtime();
+	runtimes[j] = (stop - start)*1e3; 
+      }
+      
+      mean = calc_mean(runtimes, NRUNS);
+      std = calc_std(runtimes, mean, NRUNS);
+      printf("OPT LOCAL (threads = %d):\n", threads2[i]);
       printf("Mean (time): %f ms\n", mean);
       printf("Standard deviation (time): %f ms\n\n", std);
     }
