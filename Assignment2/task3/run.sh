@@ -5,9 +5,9 @@
 #SBATCH -t 0:05:00
 #SBATCH -A edu24.DD2356
 # Number of nodes
-#SBATCH -p shared
+#SBATCH -p main
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=128
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
