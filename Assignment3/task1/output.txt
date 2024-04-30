@@ -1,4 +1,4 @@
 Hello World from rank 0 from 4 processes!
 Hello World from rank 3 from 4 processes!
-Hello World from rank 2 from 4 processes!
 Hello World from rank 1 from 4 processes!
+Hello World from rank 2 from 4 processes!

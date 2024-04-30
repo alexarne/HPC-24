@@ -14,3 +14,7 @@ cc -O2 -o ex1 ex1.c
 srun -n 4 ./ex1 > output.txt
 
 rm ex1
+if [ ! -s "error_file.e" ]; then
+    rm "error_file.e"
+fi
+rm slurm-*.out
