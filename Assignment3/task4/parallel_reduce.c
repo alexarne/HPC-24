@@ -7,9 +7,10 @@
 #include <mpi.h>
 
 #define SEED     921
+#define NUM_ITER 1000000000
 
 int main(int argc, char* argv[]) {
-    int local_count = 0, flip = 1000000000;
+    int local_count = 0, flip;
     double x, y, z, pi;
     int rank, num_ranks, i, iter, provided;
     
@@ -23,7 +24,7 @@ int main(int argc, char* argv[]) {
 
     srand(SEED * rank);
 
-    flip = flip / num_ranks;
+    flip = NUM_ITER / num_ranks;
 
     for (int iter = 0; iter < flip; iter++) {
         x = (double)random() / (double)RAND_MAX;

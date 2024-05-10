@@ -7,10 +7,11 @@
 #include <mpi.h>
 
 #define SEED     921
+#define NUM_ITER 1000000000
 
 int main(int argc, char* argv[])
 {
-    int local_count = 0, flip = 1000000000;
+    int local_count = 0, flip;
     double x, y, z, pi;
     int rank, num_ranks, i, iter, provided;
     
@@ -24,7 +25,7 @@ int main(int argc, char* argv[])
 
     srand(SEED*rank); // Important: Multiply SEED by "rank" when you introduce MPI! A dependency on the rank ensures different seeds for the different processes.
 
-    flip = flip/num_ranks;
+    flip = NUM_ITER/num_ranks;
     // Calculate PI following a Monte Carlo method
     for (int iter = 0; iter < flip; iter++)
     {
