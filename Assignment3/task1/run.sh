@@ -10,7 +10,7 @@
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
-cc -O2 -o ex1 ex1.c
+cc -o ex1 ex1.c
 srun -n 4 ./ex1 > output.txt
 
 rm ex1
