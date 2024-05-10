@@ -1,2 +1,2 @@
-pi: 3.141536
-Execution time: 0.677957
+pi: 3.141597
+Execution time: 2.493144

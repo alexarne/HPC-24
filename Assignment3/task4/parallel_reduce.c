@@ -9,7 +9,7 @@
 #define SEED     921
 
 int main(int argc, char* argv[]) {
-    int local_count = 0, flip = 1 << 28;
+    int local_count = 0, flip = 1000000000;
     double x, y, z, pi;
     int rank, num_ranks, i, iter, provided;
     
