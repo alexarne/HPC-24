@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-cases = [8,16,32,64,128, 256]
+cases = [8,16,32,64,128,256]
 parallel_times = []
 parallel_reduce_times = []
 pi_parallel = []

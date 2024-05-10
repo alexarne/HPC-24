@@ -13,12 +13,14 @@
 
 cc -O2 -o parallel_reduce parallel_reduce.c
 cc -O2 -o parallel parallel.c
+cc -O2 -o serial serial.c
 
 for n in 8 16 32 64 128 256;
 do
     srun -n $n ./parallel_reduce > output/parallel_reduce_${n}.txt
     srun -n $n ./parallel > output/parallel_${n}.txt
 done
+srun -n 1 ./serial > output/serial.txt
 
 
 #Clean-up:
