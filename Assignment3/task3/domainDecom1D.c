@@ -38,20 +38,10 @@ int main(int argc, char *argv[]){
     int next = (rank + 1) % size;
 
     #ifdef BLOCKING
-      // share ghost point left of even rank
-      if(rank % 2 == 0) MPI_Send(&f[1], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
-      else              MPI_Recv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
-
-      if(rank % 2 == 0) MPI_Recv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
-      else              MPI_Send(&f[nxn_loc - 2], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
-
-      // share ghost point right of even rank
-      if(rank % 2 == 0) MPI_Send(&f[nxn_loc - 2], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
-      else              MPI_Recv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
-
-      if(rank % 2 == 0) MPI_Recv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
-      else              MPI_Send(&f[1], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
-
+      MPI_Send(&f[1], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
+      MPI_Recv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
+      MPI_Send(&f[nxn_loc - 2], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
+      MPI_Recv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
     #else
       MPI_Request requests[4];
       MPI_Status  status[4];
@@ -89,9 +79,3 @@ int main(int argc, char *argv[]){
 
     MPI_Finalize();
 }
-
-
-
-
-
-
