@@ -36,12 +36,13 @@ int main(int argc, char* argv[]) {
   double a[block_size * block_size];
   double b[block_size * block_size];
   double c[block_size * block_size];
-
+  for (int i = 0; i < block_size*block_size; ++i) c[i] = 0;
+  double** C_true;
+  
   if (rank == 0) {
     double A[n][n];
     double B[n][n];
-    double C[n][n];
-
+    
     // Initialize and distribute all elements
     MPI_Request requests[2 * (p * p - 1)];
     for (int i = 0; i < p; ++i) {
@@ -58,8 +59,8 @@ int main(int argc, char* argv[]) {
         }
         if (i != 0 || j != 0) {
           int receiver = i * p + j;
-          MPI_Isend(A_buffer, block_size * block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &requests[2 * (receiver - 1)]);
-          MPI_Isend(B_buffer, block_size * block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &requests[2 * (receiver - 1) + 1]);
+          MPI_Isend(A_buffer, block_size * block_size, MPI_DOUBLE, receiver, 10, MPI_COMM_WORLD, &requests[2 * (receiver - 1)]);
+          MPI_Isend(B_buffer, block_size * block_size, MPI_DOUBLE, receiver, 20, MPI_COMM_WORLD, &requests[2 * (receiver - 1) + 1]);
         } else {
           for (int x = 0; x < block_size * block_size; ++x) {
               a[x] = A_buffer[x];
@@ -86,20 +87,71 @@ int main(int argc, char* argv[]) {
     }
 
     // Verification
-    double C_true[n][n];
-    int correct = 1;
+    C_true = (double**) malloc(n*sizeof(double*));
+    for (int i = 0; i < n; ++i) C_true[i] = (double*) malloc(n*sizeof(double)); 
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
         C_true[i][j] = 0;
         for (int k = 0; k < n; ++k) {
           C_true[i][j] += A[i][k] * B[k][j];
         }
-        if (C[i][j] != C_true[i][j]) {
-          correct = 0;
-        }
       }
     }
+  } else {
+    MPI_Status stat;
+    MPI_Request r1, r2;
+    MPI_Recv(a, block_size*block_size, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD, &stat);
+    MPI_Recv(b, block_size*block_size, MPI_DOUBLE, 0, 20, MPI_COMM_WORLD, &stat);
+  }
+
+  // Do the algorithm p iterations (sqrt of num_processes)
+  for (int i = 0; i < p; ++i) {
+    int col_rank, row_rank;
+    MPI_Comm_rank(comm_cols, &col_rank);
+    MPI_Comm_rank(comm_cols, &row_rank);
     
+    // Broadcast the diagonal+i for rows
+    double a_broadcast[block_size*block_size];
+    int root = (col_rank+i)%p;
+    if (row_rank == root) {
+      printf("iter %i row broadcasting from process %i\n", i, rank);
+      MPI_Bcast(a, block_size*block_size, MPI_DOUBLE, root, comm_rows);
+      for (int j = 0; j < block_size*block_size; ++j) a_broadcast[j] = a[j];
+    } else {
+      MPI_Bcast(a_broadcast, block_size*block_size, MPI_DOUBLE, root, comm_rows);
+    }
+
+    // Do matmul and save in c
+    for (int y = 0; y < block_size; ++y) {
+      for (int x = 0; x < block_size; ++x) {
+	for (int k = 0; k < block_size; ++k) {
+	  c[y*block_size + x] += a_broadcast[y*block_size + k] * b[k*block_size + x];
+	}
+      }
+    }
+    printf("process %i calculated c: ", rank);
+    for (int j = 0; j < block_size*block_size; ++j) printf("%f ", c[j]);
+    printf("\n");
+    
+    // Roll b upwards
+    //printf("process %i is col rank %i\n", rank, col_rank);
+    MPI_Request req;
+    MPI_Isend(b, block_size*block_size, MPI_DOUBLE, (col_rank-1+p)%p, 20, comm_cols, &req);
+    MPI_Status stat;
+    MPI_Recv(b, block_size*block_size, MPI_DOUBLE, (col_rank+1)%p, 20, comm_cols, &stat);
+  
+    
+  }
+  printf("process %i received a: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
+  printf("\n");
+  printf("process %i received b: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
+  printf("\n");
+
+  if (rank == 0) {
+    double C[n][n];
+    int correct = 0;
     if (correct != 1) {
       printf("incorrect result\nexpected:\n");
       for (int i = 0; i < n; ++i) {
@@ -115,22 +167,14 @@ int main(int argc, char* argv[]) {
         }
         printf("\n");
       }
-    }
     } else {
-      MPI_Status stat;
-      MPI_Request r1, r2;
-      MPI_Recv(a, block_size*block_size, MPI_INT, 0, 10, MPI_COMM_WORLD, &stat);
-      MPI_Recv(b, block_size*block_size, MPI_INT, 0, 20, MPI_COMM_WORLD, &stat);
-      printf("process %i received a: ", rank);
-      for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
-      printf("\n");
-      printf("process %i received b: ", rank);
-      for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
-      printf("\n");
-      
+      printf("Calculation is correct!\n");
     }
+    for (int i = 0; i < n; ++i) free(C_true[i]);
+    free(C_true);
+  }
 
-    /**
+  /**
     int test = 0, root = 0;
     if (rank % 3 == 0) {
       test = rank * 100 + 100;

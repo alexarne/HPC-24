@@ -7,11 +7,11 @@
 #SBATCH -p shared
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH --nodes=4
+#SBATCH --nodes=9
 #SBATCH -e error_file.e
 
 cc -O2 -o fox fox.c
-srun -n 4 ./fox > output.txt
+srun -n 9 ./fox > output.txt
 
 #Clean-up:
 if [ ! -s "error_file.e" ]; then
