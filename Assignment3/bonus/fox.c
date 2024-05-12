@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     MPI_Comm comm_cart;
     int p = sqrt(num_ranks);
     int dims[2] = { p, p };
-    int block_size = 1;
+    int block_size = 2;
     int n = p * block_size;
     int periods[2] = { 1, 1 };
     MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
@@ -57,11 +57,10 @@ int main(int argc, char* argv[])
 	      B_buffer[y*block_size+x] = B[i*block_size+y][j*block_size+x];
 	    }
 	  }
-	  if (i != 0 && j != 0) {
-	    int receiver = i*n + j;
-	    MPI_Isend(A_buffer, block_size*block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &requests[2*(receiver-1)]);
-	    MPI_Isend(B_buffer, block_size*block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &requests[2*(receiver-1)+1]);
-	    printf("request placed in pos %i and %i\n", 2*(receiver-1), 2*(receiver-1)+1);
+	  if (i != 0 || j != 0) {
+	    int recv = i*p + j;
+	    MPI_Isend(A_buffer, block_size*block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &reqs[2*(recv-1)]);
+	    MPI_Isend(B_buffer, block_size*block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &reqs[2*(recv-1)+1]);
 	  } else {
 	    for (int x = 0; x < block_size*block_size; ++x) {
 	      a[x] = A_buffer[x];
@@ -120,10 +119,8 @@ int main(int argc, char* argv[])
     } else {
       MPI_Status stat;
       MPI_Request r1, r2;
-      MPI_Irecv(a, block_size*block_size, MPI_INT, 0, 10, MPI_COMM_WORLD, &r1);
-      MPI_Irecv(b, block_size*block_size, MPI_INT, 0, 20, MPI_COMM_WORLD, &r2);
-      MPI_Wait(&r1, &stat);
-      MPI_Wait(&r2, &stat);
+      MPI_Recv(a, block_size*block_size, MPI_INT, 0, 10, MPI_COMM_WORLD, &stat);
+      MPI_Recv(b, block_size*block_size, MPI_INT, 0, 20, MPI_COMM_WORLD, &stat);
       printf("process %i received a: ", rank);
       for (int i = 0; i < block_size*block_size; ++i) printf("%i ", a[i]);
       printf("\n");
@@ -133,13 +130,14 @@ int main(int argc, char* argv[])
       
     }
 
-    
+    /**
     int test = 0, root = 0;
     if (rank % 3 == 0) {
       test = rank * 100 + 100;
     }
     MPI_Bcast(&test, 1, MPI_INT, root, comm_rows);
     printf("process %i reporting test as %i\n", rank, test);
+    */
     
     MPI_Finalize();
     return 0;
