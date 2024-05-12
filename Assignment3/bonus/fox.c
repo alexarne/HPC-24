@@ -6,9 +6,8 @@
 #include <time.h>
 #include <mpi.h>
 
-int main(int argc, char* argv[])
-{
-  int provided;   
+int main(int argc, char* argv[]) {
+  int provided;
   MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
 
   double start_time = MPI_Wtime();
@@ -34,60 +33,60 @@ int main(int argc, char* argv[])
   MPI_Cart_sub(comm_cart, dims_keep_cols, &comm_cols);
 
   // Local variables for this process's block/tile
-  int a[block_size*block_size];
-  int b[block_size*block_size];
-  int c[block_size*block_size];
-  
+  double a[block_size * block_size];
+  double b[block_size * block_size];
+  double c[block_size * block_size];
+
   if (rank == 0) {
-    int A[n][n];
-    int B[n][n];
-    int C[n][n];
+    double A[n][n];
+    double B[n][n];
+    double C[n][n];
 
     // Initialize and distribute all elements
-    MPI_Request requests[2*(p*p-1)];
+    MPI_Request requests[2 * (p * p - 1)];
     for (int i = 0; i < p; ++i) {
       for (int j = 0; j < p; ++j) {
-        int A_buffer[block_size*block_size];
-        int B_buffer[block_size*block_size];
+        double A_buffer[block_size * block_size];
+        double B_buffer[block_size * block_size];
         for (int y = 0; y < block_size; ++y) {
           for (int x = 0; x < block_size; ++x) {
-            A[i*block_size+y][j*block_size+x] = rand();
-            B[i*block_size+y][j*block_size+x] = rand();
-            A_buffer[y*block_size+x] = A[i*block_size+y][j*block_size+x];
-            B_buffer[y*block_size+x] = B[i*block_size+y][j*block_size+x];
+              A[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
+              B[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
+              A_buffer[y * block_size + x] = A[i * block_size + y][j * block_size + x];
+              B_buffer[y * block_size + x] = B[i * block_size + y][j * block_size + x];
           }
         }
         if (i != 0 || j != 0) {
-          int recv = i*p + j;
-          MPI_Isend(A_buffer, block_size*block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &requests[2*(recv-1)]);
-          MPI_Isend(B_buffer, block_size*block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &requests[2*(recv-1)+1]);
+          int receiver = i * p + j;
+          MPI_Isend(A_buffer, block_size * block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &requests[2 * (receiver - 1)]);
+          MPI_Isend(B_buffer, block_size * block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &requests[2 * (receiver - 1) + 1]);
         } else {
-          for (int x = 0; x < block_size*block_size; ++x) {
-            a[x] = A_buffer[x];
-            b[x] = B_buffer[x];
+          for (int x = 0; x < block_size * block_size; ++x) {
+              a[x] = A_buffer[x];
+              b[x] = B_buffer[x];
           }
         }
       }
     }
-    MPI_Waitall(2*(p*p-1), requests, MPI_STATUSES_IGNORE);
+    MPI_Waitall(2 * (p * p - 1), requests, MPI_STATUSES_IGNORE);
 
     printf("A:\n");
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
-        printf("%i ", A[i][j]);
+        printf("%f ", A[i][j]);
       }
-	    printf("\n");
+      printf("\n");
     }
     printf("B:\n");
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
-        printf("%i ", B[i][j]);
+        printf("%f ", B[i][j]);
       }
-	    printf("\n");
+      printf("\n");
     }
-      
+
     // Verification
-    int C_true[n][n];
+    double C_true[n][n];
     int correct = 1;
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
@@ -105,14 +104,14 @@ int main(int argc, char* argv[])
       printf("incorrect result\nexpected:\n");
       for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-          printf("%i ", C_true[i][j]);
+          printf("%f ", C_true[i][j]);
         }
         printf("\n");
       }
       printf("\nreceived:\n");
       for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-          printf("%i ", C[i][j]);
+          printf("%f ", C[i][j]);
         }
         printf("\n");
       }
@@ -123,10 +122,10 @@ int main(int argc, char* argv[])
       MPI_Recv(a, block_size*block_size, MPI_INT, 0, 10, MPI_COMM_WORLD, &stat);
       MPI_Recv(b, block_size*block_size, MPI_INT, 0, 20, MPI_COMM_WORLD, &stat);
       printf("process %i received a: ", rank);
-      for (int i = 0; i < block_size*block_size; ++i) printf("%i ", a[i]);
+      for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
       printf("\n");
       printf("process %i received b: ", rank);
-      for (int i = 0; i < block_size*block_size; ++i) printf("%i ", b[i]);
+      for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
       printf("\n");
       
     }
