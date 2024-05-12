@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 int main(int argc, char *argv[]){
     int rank, size, i, provided;
     
@@ -33,18 +35,18 @@ int main(int argc, char *argv[]){
     // communicate ghost cells
     // ...
     // ...  
-
+    
+    MPI_Status  status[4];
     int prev = (rank - 1 + size) % size;
     int next = (rank + 1) % size;
 
     #ifdef BLOCKING
       MPI_Send(&f[1], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
-      MPI_Recv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
       MPI_Send(&f[nxn_loc - 2], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD);
-      MPI_Recv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD);
+      MPI_Recv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD, &status[0]);
+      MPI_Recv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD, &status[1]);
     #else
       MPI_Request requests[4];
-      MPI_Status  status[4];
 
       MPI_Isend(&f[1], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD, &requests[0]);
       MPI_Irecv(&f[0], 1, MPI_DOUBLE, prev, 0, MPI_COMM_WORLD, &requests[1]);
@@ -52,8 +54,6 @@ int main(int argc, char *argv[]){
       MPI_Irecv(&f[nxn_loc - 1], 1, MPI_DOUBLE, next, 0, MPI_COMM_WORLD,  &requests[3]);
       MPI_Waitall(4, requests, status);
     #endif
-
-
 
     // here we finish the calculations
 
@@ -64,18 +64,13 @@ int main(int argc, char *argv[]){
 
     double max_err = 0.0;
     for(i=1; i < (nxn_loc - 1); i++)
-      max_err = max(max_err, abs(cos(L_loc*rank + (i-1) * dx) - dfdx[i]));
+      max_err = MAX(max_err, abs(cos(L_loc*rank + (i-1) * dx) - dfdx[i]));
     
-    printf("rank %d max error: %f\n", rank, max_err);
-
-    // Print f values
-    if (rank==0){ // print only rank 0 for convenience
-        printf("My rank %d of %d\n", rank, size );
-        printf("Here are my values for f including ghost cells\n");
-        for (i=0; i<nxn_loc; i++)
-	       printf("%f\n", f[i]);
-        printf("\n");
-    }   
+    #ifdef BLOCKING 
+      printf("rank %d max error: %f (BLOCKING)\n", rank, max_err);
+    #else 
+      printf("rank %d max error: %f\n", rank, max_err);
+    #endif
 
     MPI_Finalize();
 }
