@@ -5,9 +5,9 @@
 #SBATCH -A edu24.DD2356
 # Number of nodes
 #SBATCH -p main
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=9
 #SBATCH --cpus-per-task=1
-#SBATCH --nodes=9
+#SBATCH --nodes=1
 #SBATCH -e error_file.e
 
 cc -O2 -o fox fox.c
