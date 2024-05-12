@@ -8,114 +8,115 @@
 
 int main(int argc, char* argv[])
 {
-    int provided;   
-    MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
+  int provided;   
+  MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
 
-    double start_time = MPI_Wtime();
-    srand(start_time);
-    int num_ranks, rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  double start_time = MPI_Wtime();
+  srand(start_time);
+  int num_ranks, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    // Set up communication via rows and columns
-    MPI_Comm comm_cart;
-    int p = sqrt(num_ranks);
-    int dims[2] = { p, p };
-    int block_size = 2;
-    int n = p * block_size;
-    int periods[2] = { 1, 1 };
-    MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
+  // Set up communication via rows and columns
+  MPI_Comm comm_cart;
+  int p = sqrt(num_ranks);
+  int dims[2] = { p, p };
+  int block_size = 2;
+  int n = p * block_size;
+  int periods[2] = { 1, 1 };
+  MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
 
-    MPI_Comm comm_rows;
-    int dims_keep_rows[2] = { 0, 1 };
-    MPI_Cart_sub(comm_cart, dims_keep_rows, &comm_rows);
-    MPI_Comm comm_cols;
-    int dims_keep_cols[2] = { 1, 0 };
-    MPI_Cart_sub(comm_cart, dims_keep_cols, &comm_cols);
+  MPI_Comm comm_rows;
+  int dims_keep_rows[2] = { 0, 1 };
+  MPI_Cart_sub(comm_cart, dims_keep_rows, &comm_rows);
+  MPI_Comm comm_cols;
+  int dims_keep_cols[2] = { 1, 0 };
+  MPI_Cart_sub(comm_cart, dims_keep_cols, &comm_cols);
 
-    // Local variables for this process's block/tile
-    int a[block_size*block_size];
-    int b[block_size*block_size];
-    int c[block_size*block_size];
-    
-    if (rank == 0) {
-      int A[n][n];
-      int B[n][n];
-      int C[n][n];
+  // Local variables for this process's block/tile
+  int a[block_size*block_size];
+  int b[block_size*block_size];
+  int c[block_size*block_size];
+  
+  if (rank == 0) {
+    int A[n][n];
+    int B[n][n];
+    int C[n][n];
 
-      // Initialize and distribute all elements
-      MPI_Request requests[2*(p*p-1)];
-      for (int i = 0; i < p; ++i) {
-	for (int j = 0; j < p; ++j) {
-	  int A_buffer[block_size*block_size];
-	  int B_buffer[block_size*block_size];
-	  for (int y = 0; y < block_size; ++y) {
-	    for (int x = 0; x < block_size; ++x) {
-	      A[i*block_size+y][j*block_size+x] = rand();
-	      B[i*block_size+y][j*block_size+x] = rand();
-	      A_buffer[y*block_size+x] = A[i*block_size+y][j*block_size+x];
-	      B_buffer[y*block_size+x] = B[i*block_size+y][j*block_size+x];
-	    }
-	  }
-	  if (i != 0 || j != 0) {
-	    int recv = i*p + j;
-	    MPI_Isend(A_buffer, block_size*block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &reqs[2*(recv-1)]);
-	    MPI_Isend(B_buffer, block_size*block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &reqs[2*(recv-1)+1]);
-	  } else {
-	    for (int x = 0; x < block_size*block_size; ++x) {
-	      a[x] = A_buffer[x];
-	      b[x] = B_buffer[x];
-	    }
-	  }
-	}
+    // Initialize and distribute all elements
+    MPI_Request requests[2*(p*p-1)];
+    for (int i = 0; i < p; ++i) {
+      for (int j = 0; j < p; ++j) {
+        int A_buffer[block_size*block_size];
+        int B_buffer[block_size*block_size];
+        for (int y = 0; y < block_size; ++y) {
+          for (int x = 0; x < block_size; ++x) {
+            A[i*block_size+y][j*block_size+x] = rand();
+            B[i*block_size+y][j*block_size+x] = rand();
+            A_buffer[y*block_size+x] = A[i*block_size+y][j*block_size+x];
+            B_buffer[y*block_size+x] = B[i*block_size+y][j*block_size+x];
+          }
+        }
+        if (i != 0 || j != 0) {
+          int recv = i*p + j;
+          MPI_Isend(A_buffer, block_size*block_size, MPI_INT, receiver, 10, MPI_COMM_WORLD, &requests[2*(recv-1)]);
+          MPI_Isend(B_buffer, block_size*block_size, MPI_INT, receiver, 20, MPI_COMM_WORLD, &requests[2*(recv-1)+1]);
+        } else {
+          for (int x = 0; x < block_size*block_size; ++x) {
+            a[x] = A_buffer[x];
+            b[x] = B_buffer[x];
+          }
+        }
       }
-      MPI_Waitall(2*(p*p-1), requests, MPI_STATUSES_IGNORE);
+    }
+    MPI_Waitall(2*(p*p-1), requests, MPI_STATUSES_IGNORE);
 
-      printf("A:\n");
-      for (int i = 0; i < n; ++i) {
-	for (int j = 0; j < n; ++j) {
-	  printf("%i ", A[i][j]);
-	}
-	printf("\n");
+    printf("A:\n");
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        printf("%i ", A[i][j]);
       }
-      printf("B:\n");
-      for (int i = 0; i < n; ++i) {
-	for (int j = 0; j < n; ++j) {
-	  printf("%i ", B[i][j]);
-	}
-	printf("\n");
+	    printf("\n");
+    }
+    printf("B:\n");
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        printf("%i ", B[i][j]);
       }
+	    printf("\n");
+    }
       
-      // Verification
-      int C_true[n][n];
-      int correct = 1;
+    // Verification
+    int C_true[n][n];
+    int correct = 1;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        C_true[i][j] = 0;
+        for (int k = 0; k < n; ++k) {
+          C_true[i][j] += A[i][k] * B[k][j];
+        }
+        if (C[i][j] != C_true[i][j]) {
+          correct = 0;
+        }
+      }
+    }
+    
+    if (correct != 1) {
+      printf("incorrect result\nexpected:\n");
       for (int i = 0; i < n; ++i) {
-	for (int j = 0; j < n; ++j) {
-	  C_true[i][j] = 0;
-	  for (int k = 0; k < n; ++k) {
-	    C_true[i][j] += A[i][k] * B[k][j];
-	  }
-	  if (C[i][j] != C_true[i][j]) {
-	    correct = 0;
-	  }
-	}
+        for (int j = 0; j < n; ++j) {
+          printf("%i ", C_true[i][j]);
+        }
+        printf("\n");
       }
-      if (correct != 1) {
-	printf("incorrect result\nexpected:\n");
-	for (int i = 0; i < n; ++i) {
-	  for (int j = 0; j < n; ++j) {
-	    printf("%i ", C_true[i][j]);
-	  }
-	  printf("\n");
-	}
-	printf("\nreceived:\n");
-        for (int i = 0; i < n; ++i) {
-	  for (int j = 0; j < n; ++j) {
-	    printf("%i ", C[i][j]);
-	  }
-	  printf("\n");
-	}
+      printf("\nreceived:\n");
+      for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+          printf("%i ", C[i][j]);
+        }
+        printf("\n");
       }
+    }
     } else {
       MPI_Status stat;
       MPI_Request r1, r2;
