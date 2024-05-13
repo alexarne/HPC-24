@@ -108,13 +108,14 @@ int main(int argc, char* argv[]) {
   for (int i = 0; i < p; ++i) {
     int col_rank, row_rank;
     MPI_Comm_rank(comm_cols, &col_rank);
-    MPI_Comm_rank(comm_cols, &row_rank);
+    MPI_Comm_rank(comm_rows, &row_rank);
     
     // Broadcast the diagonal+i for rows
     double a_broadcast[block_size*block_size];
     int root = (col_rank+i)%p;
     if (row_rank == root) {
       printf("iter %i row broadcasting from process %i\n", i, rank);
+      printf("process %i has row_rank %i and sought root is %i\n", rank, row_rank, root);
       MPI_Bcast(a, block_size*block_size, MPI_DOUBLE, root, comm_rows);
       for (int j = 0; j < block_size*block_size; ++j) a_broadcast[j] = a[j];
     } else {
@@ -149,8 +150,30 @@ int main(int argc, char* argv[]) {
   printf("\n");
 
   if (rank == 0) {
+    // Collect all c:s and combine into final matrix
     double C[n][n];
-    int correct = 0;
+    for (int i = 0; i < block_size; ++i) {
+      for (int j = 0; j < block_size; ++j) {
+	C[i][j] = c[i*block_size+j];
+      }
+    }
+    for (int k = 1; k < p*p; ++k) {
+      MPI_Status stat;
+      MPI_Recv(c, block_size*block_size, MPI_DOUBLE, k, 30, MPI_COMM_WORLD, &stat);
+      for (int i = 0; i < block_size; ++i) {
+	for (int j = 0; j < block_size; ++j) {
+	  C[i+(k/p)*block_size][j+(k%p)*block_size] = c[i*block_size+j];
+	}
+      }
+    }
+    
+    int correct = 1;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+	if (C[i][j] != C_true[i][j]) correct = 0;
+      }
+    }
+    
     if (correct != 1) {
       printf("incorrect result\nexpected:\n");
       for (int i = 0; i < n; ++i) {
@@ -171,6 +194,10 @@ int main(int argc, char* argv[]) {
     }
     for (int i = 0; i < n; ++i) free(C_true[i]);
     free(C_true);
+  } else {
+    // Send all c:s
+    MPI_Request req;
+    MPI_Isend(c, block_size*block_size, MPI_DOUBLE, 0, 30, MPI_COMM_WORLD, &req);
   }
 
   /**

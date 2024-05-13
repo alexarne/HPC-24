@@ -6,23 +6,23 @@
 #include <time.h>
 #include <mpi.h>
 
-#define n 72
-
 int main(int argc, char* argv[]) {
   int provided;
   MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
 
   double start_time = MPI_Wtime();
+  srand(start_time);
   int num_ranks, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  srand(100*rank);
 
   // Set up communication via rows and columns
   MPI_Comm comm_cart;
+
   int p = sqrt(num_ranks);
   int dims[2] = { p, p };
-  int block_size = n/p;
+  int block_size = 2;
+  int n = block_size * p;
   int periods[2] = { 1, 1 };
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
 
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
     }
     MPI_Waitall(2 * (p * p - 1), requests, MPI_STATUSES_IGNORE);
 
-    /*
+    
     printf("A:\n");
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
       printf("\n");
     }
     printf("\n");
-    */
+    
     // Verification
     C_true = (double**) malloc(n*sizeof(double*));
     for (int i = 0; i < n; ++i) C_true[i] = (double*) malloc(n*sizeof(double)); 
@@ -118,8 +118,8 @@ int main(int argc, char* argv[]) {
     double a_broadcast[block_size*block_size];
     int root = (col_rank+i)%p;
     if (row_rank == root) {
-      //printf("iter %i row broadcasting from process %i\n", i, rank);
-      //printf("process %i has row_rank %i and sought root is %i\n", rank, row_rank, root);
+      printf("iter %i row broadcasting from process %i\n", i, rank);
+      printf("process %i has row_rank %i and sought root is %i\n", rank, row_rank, root);
       MPI_Bcast(a, block_size*block_size, MPI_DOUBLE, root, comm_rows);
       for (int j = 0; j < block_size*block_size; ++j) a_broadcast[j] = a[j];
     } 
@@ -135,12 +135,12 @@ int main(int argc, char* argv[]) {
         }
       }
     }
-    //printf("process %i calculated c: ", rank);
-    //for (int j = 0; j < block_size*block_size; ++j) printf("%f ", c[j]);
-    //printf("\n");
+    printf("process %i calculated c: ", rank);
+    for (int j = 0; j < block_size*block_size; ++j) printf("%f ", c[j]);
+    printf("\n");
     
     // Roll b upwards
-    //printf("process %i is col rank %i\n", rank, col_rank);
+    printf("process %i is col rank %i\n", rank, col_rank);
     MPI_Request req;
     MPI_Isend(b, block_size*block_size, MPI_DOUBLE, (col_rank-1+p)%p, 20, comm_cols, &req);
     MPI_Status stat;
@@ -148,12 +148,12 @@ int main(int argc, char* argv[]) {
   
     
   }
-  //printf("process %i received a: ", rank);
-  ///for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
-  //printf("\n");
-  //printf("process %i received b: ", rank);
-  //for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
-  //printf("\n");
+  printf("process %i received a: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
+  printf("\n");
+  printf("process %i received b: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
+  printf("\n");
 
   if (rank == 0) {
     // Collect all c:s and combine into final matrix
@@ -183,7 +183,7 @@ int main(int argc, char* argv[]) {
     
     if (correct != 1) {
       printf("\nincorrect result\nexpected:\n");
-      /*
+      
       for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
           printf("%f ", C_true[i][j]);
@@ -197,8 +197,8 @@ int main(int argc, char* argv[]) {
         }
         printf("\n");
       }
-      */
-      printf("Error (Frobenius norn):");
+      
+      printf("Error (Frobenius norm):");
       double frob = 0;
       for (int i = 0; i < n; ++i){
         for (int j = 0; j < n; ++i){
