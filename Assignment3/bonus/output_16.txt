@@ -1,5 +1,0 @@
-Number of processes spawned: 16
-Block size: 12
-Time elapsed: 0.0039258970 seconds
-Calculation is correct!
-Error (Frobenius norm): 0.0000000000001307
