@@ -13,9 +13,11 @@ int main(int argc, char* argv[]) {
   double start_time;
   srand(MPI_Wtime());
   int num_ranks, rank;
+
   MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+  
   // Set up communication via rows and columns
   MPI_Comm comm_cart;
   int p = sqrt(num_ranks);
@@ -40,6 +42,8 @@ int main(int argc, char* argv[]) {
   double** C_true;
   
   if (rank == 0) {
+    printf("Number of processes spawned: %d\n", num_ranks);
+    printf("Block size: %d\n", block_size);
     double A[n][n];
     double B[n][n];
     
