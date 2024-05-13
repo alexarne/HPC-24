@@ -10,8 +10,8 @@ int main(int argc, char* argv[]) {
   int provided;
   MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
 
-  double start_time = MPI_Wtime();
-  srand(start_time);
+  double start_time;
+  srand(MPI_Wtime());
   int num_ranks, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
   MPI_Comm comm_cart;
   int p = sqrt(num_ranks);
   int dims[2] = { p, p };
-  int block_size = 2;
-  int n = p * block_size;
+  int n = 48;
+  int block_size = n / p;
   int periods[2] = { 1, 1 };
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
 
@@ -43,7 +43,33 @@ int main(int argc, char* argv[]) {
     double A[n][n];
     double B[n][n];
     
-    // Initialize and distribute all elements
+    // Initialize matrices
+    for (int i = 0; i < p; ++i) {
+      for (int j = 0; j < p; ++j) {
+        for (int y = 0; y < block_size; ++y) {
+          for (int x = 0; x < block_size; ++x) {
+              A[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
+              B[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
+          }
+        }
+      }
+    }
+
+    // Verification
+    C_true = (double**) malloc(n*sizeof(double*));
+    for (int i = 0; i < n; ++i) C_true[i] = (double*) malloc(n*sizeof(double)); 
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+        C_true[i][j] = 0;
+        for (int k = 0; k < n; ++k) {
+          C_true[i][j] += A[i][k] * B[k][j];
+        }
+      }
+    }
+
+    start_time = MPI_Wtime();
+    
+    // Distribute elements to processes
     MPI_Request requests[2 * (p * p - 1)];
     for (int i = 0; i < p; ++i) {
       for (int j = 0; j < p; ++j) {
@@ -51,8 +77,6 @@ int main(int argc, char* argv[]) {
         double B_buffer[block_size * block_size];
         for (int y = 0; y < block_size; ++y) {
           for (int x = 0; x < block_size; ++x) {
-              A[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
-              B[i * block_size + y][j * block_size + x] = rand() / (double)(RAND_MAX);
               A_buffer[y * block_size + x] = A[i * block_size + y][j * block_size + x];
               B_buffer[y * block_size + x] = B[i * block_size + y][j * block_size + x];
           }
@@ -70,7 +94,7 @@ int main(int argc, char* argv[]) {
       }
     }
     MPI_Waitall(2 * (p * p - 1), requests, MPI_STATUSES_IGNORE);
-
+    /**
     printf("A:\n");
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
@@ -85,18 +109,7 @@ int main(int argc, char* argv[]) {
       }
       printf("\n");
     }
-
-    // Verification
-    C_true = (double**) malloc(n*sizeof(double*));
-    for (int i = 0; i < n; ++i) C_true[i] = (double*) malloc(n*sizeof(double)); 
-    for (int i = 0; i < n; ++i) {
-      for (int j = 0; j < n; ++j) {
-        C_true[i][j] = 0;
-        for (int k = 0; k < n; ++k) {
-          C_true[i][j] += A[i][k] * B[k][j];
-        }
-      }
-    }
+    */
   } else {
     MPI_Status stat;
     MPI_Request r1, r2;
@@ -114,8 +127,8 @@ int main(int argc, char* argv[]) {
     double a_broadcast[block_size*block_size];
     int root = (col_rank+i)%p;
     if (row_rank == root) {
-      printf("iter %i row broadcasting from process %i\n", i, rank);
-      printf("process %i has row_rank %i and sought root is %i\n", rank, row_rank, root);
+      //printf("iter %i row broadcasting from process %i\n", i, rank);
+      //printf("process %i has row_rank %i and sought root is %i\n", rank, row_rank, root);
       MPI_Bcast(a, block_size*block_size, MPI_DOUBLE, root, comm_rows);
       for (int j = 0; j < block_size*block_size; ++j) a_broadcast[j] = a[j];
     } else {
@@ -130,9 +143,9 @@ int main(int argc, char* argv[]) {
 	}
       }
     }
-    printf("process %i calculated c: ", rank);
-    for (int j = 0; j < block_size*block_size; ++j) printf("%f ", c[j]);
-    printf("\n");
+    //printf("process %i calculated c: ", rank);
+    //for (int j = 0; j < block_size*block_size; ++j) printf("%f ", c[j]);
+    //printf("\n");
     
     // Roll b upwards
     //printf("process %i is col rank %i\n", rank, col_rank);
@@ -142,12 +155,12 @@ int main(int argc, char* argv[]) {
   
     
   }
-  printf("process %i received a: ", rank);
+  /**printf("process %i received a: ", rank);
   for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
   printf("\n");
   printf("process %i received b: ", rank);
   for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
-  printf("\n");
+  printf("\n");*/
 
   if (rank == 0) {
     // Collect all c:s and combine into final matrix
@@ -166,11 +179,14 @@ int main(int argc, char* argv[]) {
 	}
       }
     }
+
+    double elapsed_time = MPI_Wtime() - start_time;
+    printf("Time elapsed: %.10f seconds\n", elapsed_time);
     
     int correct = 1;
     for (int i = 0; i < n; ++i) {
       for (int j = 0; j < n; ++j) {
-	if (C[i][j] != C_true[i][j]) correct = 0;
+	if (fabs(C[i][j] - C_true[i][j]) > 1e-10) correct = 0;
       }
     }
     
@@ -192,12 +208,25 @@ int main(int argc, char* argv[]) {
     } else {
       printf("Calculation is correct!\n");
     }
+    
+
+    printf("Error (Frobenius norm): ");
+    double frob = 0;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < n; ++j) {
+	double delta = C_true[i][j]-C[i][j];
+	frob += delta*delta;
+      }
+    }
+    frob = sqrt(frob);
+    printf("%.16f\n", frob);
+    
     for (int i = 0; i < n; ++i) free(C_true[i]);
     free(C_true);
   } else {
     // Send all c:s
     MPI_Request req;
-    MPI_Isend(c, block_size*block_size, MPI_DOUBLE, 0, 30, MPI_COMM_WORLD, &req);
+    MPI_Send(c, block_size*block_size, MPI_DOUBLE, 0, 30, MPI_COMM_WORLD);
   }
 
   /**
