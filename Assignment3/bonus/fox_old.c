@@ -20,8 +20,13 @@ int main(int argc, char* argv[]) {
   MPI_Comm comm_cart;
   int p = sqrt(num_ranks);
   int dims[2] = { p, p };
-  int n = 48;
+  int n = 144;
   int block_size = n / p;
+  if (rank == 0) {
+    printf("Processes: %i\n", p);
+    printf("Block size: %i\n", block_size);
+    printf("n: %i\n\n", n);
+  }
   int periods[2] = { 1, 1 };
   MPI_Cart_create(MPI_COMM_WORLD, 2, dims, periods, 0, &comm_cart);
 
@@ -83,8 +88,23 @@ int main(int argc, char* argv[]) {
         }
         if (i != 0 || j != 0) {
           int receiver = i * p + j;
-          MPI_Isend(A_buffer, block_size * block_size, MPI_DOUBLE, receiver, 10, MPI_COMM_WORLD, &requests[2 * (receiver - 1)]);
-          MPI_Isend(B_buffer, block_size * block_size, MPI_DOUBLE, receiver, 20, MPI_COMM_WORLD, &requests[2 * (receiver - 1) + 1]);
+          MPI_Send(A_buffer, block_size * block_size, MPI_DOUBLE, receiver, 10, MPI_COMM_WORLD);
+          MPI_Send(B_buffer, block_size * block_size, MPI_DOUBLE, receiver, 20, MPI_COMM_WORLD);
+	  /**
+	  printf("sending A to process %i:\n", receiver);
+	  for (int i = 0; i < n; ++i) {
+	    for (int j = 0; j < n; ++j) {
+	      printf("%f ", A[i][j]);
+	    }
+	    printf("\n");
+	  }
+	  printf("sending B to process %i:\n", receiver);
+	  for (int i = 0; i < n; ++i) {
+	    for (int j = 0; j < n; ++j) {
+	      printf("%f ", B[i][j]);
+	    }
+	    printf("\n");
+	    }*/
         } else {
           for (int x = 0; x < block_size * block_size; ++x) {
               a[x] = A_buffer[x];
@@ -93,7 +113,7 @@ int main(int argc, char* argv[]) {
         }
       }
     }
-    MPI_Waitall(2 * (p * p - 1), requests, MPI_STATUSES_IGNORE);
+    //MPI_Waitall(2 * (p * p - 1), requests, MPI_STATUSES_IGNORE);
     /**
     printf("A:\n");
     for (int i = 0; i < n; ++i) {
@@ -116,7 +136,14 @@ int main(int argc, char* argv[]) {
     MPI_Recv(a, block_size*block_size, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD, &stat);
     MPI_Recv(b, block_size*block_size, MPI_DOUBLE, 0, 20, MPI_COMM_WORLD, &stat);
   }
-
+  /**
+  printf("process %i received a: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
+  printf("\n");
+  printf("process %i received b: ", rank);
+  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
+  printf("\n");
+  */
   // Do the algorithm p iterations (sqrt of num_processes)
   for (int i = 0; i < p; ++i) {
     int col_rank, row_rank;
@@ -155,12 +182,6 @@ int main(int argc, char* argv[]) {
   
     
   }
-  /**printf("process %i received a: ", rank);
-  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", a[i]);
-  printf("\n");
-  printf("process %i received b: ", rank);
-  for (int i = 0; i < block_size*block_size; ++i) printf("%f ", b[i]);
-  printf("\n");*/
 
   if (rank == 0) {
     // Collect all c:s and combine into final matrix
