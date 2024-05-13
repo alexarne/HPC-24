@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
   MPI_Comm comm_cart;
   int p = sqrt(num_ranks);
   int dims[2] = { p, p };
-  int n = 144;
+  int n = 48;
   int block_size = n / p;
   if (rank == 0) {
     printf("Processes: %i\n", p);

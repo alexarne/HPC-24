@@ -5,9 +5,9 @@
 #SBATCH -A edu24.DD2356
 # Number of nodes
 #SBATCH -p shared
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=8
 #SBATCH --cpus-per-task=1
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH -e error_file16.e
 
 cc -O2 -o fox16 fox.c
