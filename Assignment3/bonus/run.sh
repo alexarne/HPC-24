@@ -5,14 +5,14 @@
 #SBATCH -A edu24.DD2356
 # Number of nodes
 #SBATCH -p shared
-#SBATCH --ntasks-per-node=64
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH --nodes=2
+#SBATCH --nodes=9
 #SBATCH -e error_file.e
 
-cc -O2 -o fox fox_dyn.c
+cc -O2 -o fox fox.c
 
-for n in 16;
+for n in 9;
 do
     srun -n $n ./fox > output_$n.txt
 done
