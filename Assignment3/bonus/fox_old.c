@@ -135,9 +135,8 @@ int main(int argc, char* argv[]) {
     
     // Roll b upwards
     //printf("process %i is col rank %i\n", rank, col_rank);
-    MPI_Request req;
-    MPI_Isend(b, block_size*block_size, MPI_DOUBLE, (col_rank-1+p)%p, 20, comm_cols, &req);
     MPI_Status stat;
+    MPI_Send(b, block_size*block_size, MPI_DOUBLE, (col_rank-1+p)%p, 20, comm_cols);
     MPI_Recv(b, block_size*block_size, MPI_DOUBLE, (col_rank+1)%p, 20, comm_cols, &stat);
   
     

@@ -10,7 +10,7 @@
 #SBATCH --nodes=9
 #SBATCH -e error_file.e
 
-cc -O2 -o fox fox.c
+cc -O2 -o fox fox_old.c
 srun -n 9 ./fox > output.txt
 
 #Clean-up:
