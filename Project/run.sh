@@ -9,7 +9,6 @@
 #SBATCH --cpus-per-task=64
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
-#SBATCH --output=output.log
 
 
 CC -O2 -o standard_omp standard_omp.cpp -openmp
@@ -27,4 +26,3 @@ if [ ! -s "error_file.e" ]; then
 fi
 rm standard_omp
 rm slurm-*.out
-rm output.log
