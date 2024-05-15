@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <omp.h>
-
+#include <chrono>
 #include <stdint.h>
 #include <random>
 
@@ -115,6 +115,7 @@ void write_positions(std::ofstream& out_file) {
 }
 
 int main(int argc, char* argv[]) {
+    auto start = std::chrono::high_resolution_clock::now();
     // Open CSV file for writing
     std::ofstream out_file("particle_positions.csv", std::ios::trunc);
     if (!out_file.is_open()) {
@@ -149,5 +150,8 @@ int main(int argc, char* argv[]) {
     }
 
     out_file.close();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
     return 0;
 }
