@@ -2,6 +2,7 @@
 #include <cmath>
 #include <fstream>
 #include <random>
+#include <chrono>
 #include "constants.hpp"
 
 const double t = 0.0;      // current time of the simulation
@@ -182,6 +183,7 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
 }
 
 int main() {
+    auto start = std::chrono::high_resolution_clock::now();
 
     // Initialize positions and velocities
 
@@ -196,13 +198,14 @@ int main() {
     std::random_device rd;
     std::mt19937 gen(42);            
     std::normal_distribution<> dist(0.0, 1.0);
+    srand(0xfacade);
 
     for (int i = 0; i < particles * 3; ++i) {
         pos[i] = dist(gen);
     }
     
     // Open CSV file for writing
-    std::ofstream outFile("particle_positions.csv");
+    std::ofstream outFile("particle_positions_serial.csv");
     if (!outFile.is_open()) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
@@ -215,6 +218,9 @@ int main() {
 
     
     outFile << "Time,X,Y,Z" << std::endl;
+    for (int i = 0; i < particles; ++i) {
+            outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
+        }
 
     // Time evolution loop
     
@@ -255,6 +261,9 @@ int main() {
 
     outFile.close();
     outFile2.close();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
 
     return 0;
 }

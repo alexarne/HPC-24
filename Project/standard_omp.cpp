@@ -83,28 +83,31 @@ void calc_accelleration(const size_t particle_index) {
 double t;
 void step() {
     // first kick
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
 
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        points[i] = points[i] + velocities[i] * dt;
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            points[i] = points[i] + velocities[i] * dt;
+        
+        // update mprhogi2 values for acceleration
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            calc_pirogi2(i);
 
-    // update mprhogi2 values for acceleration
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        calc_pirogi2(i);
-
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        calc_accelleration(i);
-
-    // second kick
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
-
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            calc_accelleration(i);
+        
+        // second kick
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
+        
+    }
     t += dt;
 }
 
@@ -136,18 +139,23 @@ int main(int argc, char* argv[]) {
     write_positions(out_file);
 
     // update mprhogi2 values for acceleration
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        calc_pirogi2(i);
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            calc_pirogi2(i);
+        
 
-    #pragma omp parallel for
-    for(int i = 0; i < particles; i++)
-        calc_accelleration(i);
-    
-    while(t < t_end) {
+        #pragma omp for
+        for(int i = 0; i < particles; i++)
+            calc_accelleration(i);
+    }
+
+    while(t < t_end){
         step();
         write_positions(out_file);
     }
+    
 
     out_file.close();
     auto end = std::chrono::high_resolution_clock::now();
