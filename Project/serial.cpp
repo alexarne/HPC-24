@@ -5,6 +5,9 @@
 #include <chrono>
 #include "constants.hpp"
 
+const double PI = 3.14159265358979323846;
+
+const int N = 500;     // Number of particles
 const double t = 0.0;      // current time of the simulation
 const double lmbda = 2.0 * k * (1.0 + n) * pow(M_PI, -3.0 / (2.0 * n)) * 
         pow((M * tgamma(5.0 / 2.0 + n) / (R * R * R * tgamma(1.0 + n))), 1.0 / n) / (R * R);
@@ -223,6 +226,7 @@ int main() {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 
+    int frames = 0;
     // Time evolution loop
     
     for (double time = t+dt; time <= t_end; time += dt) {
@@ -244,19 +248,18 @@ int main() {
         }
 
         // Write positions to CSV file
-        
-        for (int i = 0; i < particles; ++i) {
+        if(frames++ % 10 == 0)
+        for (int i = 0; i < N; ++i) {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 
         double rho[100];
         getDensity(rr, pos, 100, particles, rho);
 
-        
-        for (int i = 0; i < 100; ++i) {
+        /*for (int i = 0; i < 100; ++i) {
             outFile2 << rho[i] << ",";
         }
-        outFile2 << std::endl;
+        outFile2 << std::endl;*/
     }
     
 

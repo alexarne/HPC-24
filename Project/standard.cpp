@@ -11,6 +11,11 @@
 
 #include "constants.hpp"
 
+constexpr double ih1 = 1.0 / h;
+constexpr double ih2 = 1.0 / (h * h);
+constexpr double ih3 = 1.0 / (h * h * h);
+constexpr double ih5 = 1.0 / (h * h * h * h * h);
+
 // pow is not constexpr but it should be evaluated during optimization
 const double lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
 
@@ -20,7 +25,7 @@ struct vec3 {
 
     vec3 operator+ (const vec3& b) const {
         return {x + b.x, y + b.y, z + b.z};
-    }
+    } 
 
     vec3 operator- (const vec3& b) const {
         return {x - b.x, y - b.y, z - b.z};
@@ -30,7 +35,6 @@ struct vec3 {
         return {s * x, s * y, s * z};
     }
 };
-
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
 double pirogi2[particles];
@@ -42,15 +46,15 @@ vec3 accelerations[particles];
 
 // Kernel function and gradient
 double W(const vec3 &p) {
-    const double scalar =  1.0 / (h * h * h) / std::pow(std::sqrt(M_PI), 3);
-    return scalar * std::exp(-p.r2() / (h * h));
+    const double scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
+    return scalar * std::exp(-p.r2() * ih2);
 }
 
 vec3 gradW(const vec3 &p) {
-    const double scalar = -2.0 * std::exp(-p.r2() / (h * h)) / std::pow(M_PI, 1.5) / std::pow(h, 5);
-    return p * scalar;
+    const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
+    const double s2 =  s1 * std::exp(-p.r2() * ih2);
+    return p * s2;
 }
-
 
 
 void calc_pirogi2(const size_t particle_index) {
@@ -80,6 +84,7 @@ void calc_accelleration(const size_t particle_index) {
 
 
 double t;
+size_t frame = 0;
 void step() {
     // first kick
     for(int i = 0; i < particles; i++)
@@ -101,6 +106,7 @@ void step() {
         velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
 
     t += dt;
+    frame++;
 }
 
 
@@ -126,7 +132,7 @@ int main(int argc, char* argv[]) {
     srand(0xfacade);
 
     for(int i = 0; i < particles; i++)
-        points[i] = {dist(gen), dist(gen), dist(gen)};
+        points[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};
 
     write_positions(out_file);
 
@@ -139,7 +145,8 @@ int main(int argc, char* argv[]) {
     
     while(t < t_end-dt) {
         step();
-        write_positions(out_file);
+        if(frame % skip_frames == 0)
+            write_positions(out_file);
     }
 
     out_file.close();
