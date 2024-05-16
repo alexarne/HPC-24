@@ -1,7 +1,7 @@
 // Discritization Constants
-constexpr float h = 0.1;
-constexpr float dt= 0.005;
-constexpr size_t particles = 1000;
+constexpr double h = 0.1;
+constexpr double dt= 0.04;
+constexpr size_t particles = 2000;
 
 // Simulation Data
 constexpr float t_end = 4;

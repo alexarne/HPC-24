@@ -1,0 +1,84 @@
+
+Mean (array): 0.500034
+Standard deviation (array): 0.288651
+
+SERIAL:
+Mean (time): 32.797654 ms
+Standard deviation (time): 0.176341 ms
+
+OMP:
+Mean (time): 1.586910 ms
+Standard deviation (time): 1.579232 ms
+
+CRITICAL OMP:
+Mean (time): 739.857170 ms
+Standard deviation (time): 5.482892 ms
+
+CRITICAL OMP (threads = 1):
+Mean (time): 108.467592 ms
+Standard deviation (time): 0.193647 ms
+
+CRITICAL OMP (threads = 2):
+Mean (time): 219.479370 ms
+Standard deviation (time): 5.726918 ms
+
+CRITICAL OMP (threads = 4):
+Mean (time): 321.027704 ms
+Standard deviation (time): 1.895902 ms
+
+CRITICAL OMP (threads = 8):
+Mean (time): 470.142810 ms
+Standard deviation (time): 2.550838 ms
+
+CRITICAL OMP (threads = 16):
+Mean (time): 604.823104 ms
+Standard deviation (time): 2.712999 ms
+
+CRITICAL OMP (threads = 20):
+Mean (time): 647.047896 ms
+Standard deviation (time): 4.348977 ms
+
+CRITICAL OMP (threads = 24):
+Mean (time): 698.838463 ms
+Standard deviation (time): 5.344266 ms
+
+CRITICAL OMP (threads = 28):
+Mean (time): 734.852947 ms
+Standard deviation (time): 3.714355 ms
+
+CRITICAL OMP (threads = 32):
+Mean (time): 729.690950 ms
+Standard deviation (time): 7.288236 ms
+
+OMP LOCAL (threads = 1):
+Mean (time): 44.167912 ms
+Standard deviation (time): 0.073203 ms
+
+OMP LOCAL (threads = 32):
+Mean (time): 19.767517 ms
+Standard deviation (time): 0.131419 ms
+
+OMP LOCAL (threads = 64):
+Mean (time): 9.887048 ms
+Standard deviation (time): 0.479839 ms
+
+OMP LOCAL (threads = 128):
+Mean (time): 4.381498 ms
+Standard deviation (time): 0.852358 ms
+
+OPT LOCAL (threads = 1):
+Mean (time): 45.129994 ms
+Standard deviation (time): 0.081480 ms
+
+OPT LOCAL (threads = 32):
+Mean (time): 3.061285 ms
+Standard deviation (time): 1.085399 ms
+
+OPT LOCAL (threads = 64):
+Mean (time): 1.652885 ms
+Standard deviation (time): 0.824404 ms
+
+OPT LOCAL (threads = 128):
+Mean (time): 0.693359 ms
+Standard deviation (time): 0.144020 ms
+
