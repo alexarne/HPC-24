@@ -10,7 +10,7 @@ rlin = np.linspace(0,1,100)
 rr[:,0] =rlin
 
 pos = np.genfromtxt(f"particle_positions.csv", delimiter=',', skip_header=True)
-rhos = np.genfromtxt(f"density.csv", delimiter=','); rhos = rhos[:,:-1]
+#rhos = np.genfromtxt(f"density.csv", delimiter=','); rhos = rhos[:,:-1]
 
 #Determine N:
 ts = pos[:,0]
@@ -27,10 +27,10 @@ for frame in range(int(len(ts)/N)):
     ax1.set_facecolor('black')
     ax1.set_facecolor((.1,.1,.1))
 
-    plt.sca(ax2)
+    """plt.sca(ax2)
     plt.cla()
     ax2.set(xlim=(0, 1), ylim=(0, 3))
     ax2.set_aspect(0.1)
-    plt.plot(rlin, rhos[frame,:], color='blue')
+    plt.plot(rlin, rhos[frame,:], color='blue')"""
 
     plt.pause(0.01)

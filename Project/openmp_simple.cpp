@@ -8,6 +8,7 @@
 #include <math.h>
 #include <tgmath.h>
 
+#include "vecvec3.hpp"
 
 #include "constants.hpp"
 
@@ -18,23 +19,6 @@ constexpr float ih5 = 1.f / (h * h * h * h * h);
 
 // pow is not constexpr but it should be evaluated during optimization
 const float lambda = 2.f * k * (1 + n) * std::pow(M_PI, -3.f/(2*n)) * std::pow(M * std::tgamma(5.f/2.f + n) / (R * R * R * std::tgamma(1 + n)), 1.f/n) / (R * R);
-
-struct vec3 {
-    float x, y, z;
-    float r2() const { return x*x + y*y + z*z; }
-
-    vec3 operator+ (const vec3& b) const {
-        return {x + b.x, y + b.y, z + b.z};
-    } 
-
-    vec3 operator- (const vec3& b) const {
-        return {x - b.x, y - b.y, z - b.z};
-    }
-
-    vec3 operator* (const float s) const {
-        return {s * x, s * y, s * z};
-    }
-};
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
 float pirogi2[particles];
@@ -87,21 +71,26 @@ float t;
 size_t frame = 0;
 void step() {
     // first kick
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
 
+    
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         points[i] = points[i] + velocities[i] * dt;
 
     // update mprhogi2 values for acceleration
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         calc_pirogi2(i);
 
-
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         calc_accelleration(i);
 
     // second kick
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         velocities[i] = velocities[i] + accelerations[i] * (dt / 2);
 
@@ -136,9 +125,11 @@ int main(int argc, char* argv[]) {
     write_positions(out_file);
 
     // update mprhogi2 values for acceleration
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         calc_pirogi2(i);
 
+    #pragma omp parallel for
     for(int i = 0; i < particles; i++)
         calc_accelleration(i);
     
