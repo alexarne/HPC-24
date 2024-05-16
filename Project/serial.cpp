@@ -225,7 +225,7 @@ int main() {
 
     // Time evolution loop
     
-    for (double time = t; time <= t_end; time += dt) {
+    for (double time = t+dt; time <= t_end; time += dt) {
         // Compute accelerations
         double acc[particles * 3];
         getAcc(pos, vel, lmbda, particles, acc);

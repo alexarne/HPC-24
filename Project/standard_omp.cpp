@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
             calc_accelleration(i);
     }
 
-    while(t < t_end){
+    while(t < t_end-dt){
         step();
         write_positions(out_file);
     }
