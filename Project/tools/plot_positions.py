@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-# Create figure and GridSpec layout
+
 fig = plt.figure(figsize=(20, 10), dpi=80)
-grid = plt.GridSpec(3, 2, wspace=0.2, hspace=0.3)  # Adjusted wspace for better spacing
+grid = plt.GridSpec(3, 2, wspace=0.2, hspace=0.3) 
 
 # Assign subplots to respective grid positions
 ax1 = plt.subplot(grid[0:2, 0])  # ax1 spans the first two rows, first column
