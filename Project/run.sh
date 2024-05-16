@@ -13,13 +13,15 @@
 
 CC -O2 -o standard_omp standard_omp.cpp -openmp
 CC -O2 -o serial serial.cpp
+CC -O2 -o standard standard.cpp
 
-srun -n 1 ./serial > output_serial.txt
+srun -n 1 ./serial > ./output/output_serial.txt
+srun -n 1 ./standard > ./output/output_standard.txt
 for n in 1 4 16 64 128;
 do
     export OMP_NUM_THREADS=$n
     OMP_PLACES=cores
-    srun -n 1 ./standard_omp > output_$n.txt
+    srun -n 1 ./standard_omp > ./output/output_omp_$n.txt
 done
 
 #Clean-up:
@@ -27,5 +29,6 @@ if [ ! -s "error_file.e" ]; then
     rm "error_file.e"
 fi
 rm standard_omp
+rm standard
 rm serial
 rm slurm-*.out

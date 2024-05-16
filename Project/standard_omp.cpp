@@ -119,7 +119,7 @@ void write_positions(std::ofstream& out_file) {
 int main(int argc, char* argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
     // Open CSV file for writing
-    std::ofstream out_file("output/particle_positions.csv", std::ios::trunc);
+    std::ofstream out_file("output/particle_positions_omp.csv", std::ios::trunc);
     if (!out_file.is_open()) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
