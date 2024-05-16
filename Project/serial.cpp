@@ -205,12 +205,12 @@ int main() {
     }
     
     // Open CSV file for writing
-    std::ofstream outFile("particle_positions_serial.csv");
+    std::ofstream outFile("output/particle_positions_serial.csv");
     if (!outFile.is_open()) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
-    std::ofstream outFile2("density.csv");
+    std::ofstream outFile2("output/density_serial.csv");
     if (!outFile2.is_open()) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
@@ -218,6 +218,7 @@ int main() {
 
     
     outFile << "Time,X,Y,Z" << std::endl;
+    int time = 0;
     for (int i = 0; i < particles; ++i) {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
