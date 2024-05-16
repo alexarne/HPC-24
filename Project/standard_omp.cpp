@@ -11,13 +11,13 @@
 #include "constants.hpp"
 
 
-constexpr float ih1 = 1.f / h;
-constexpr float ih2 = 1.f / (h * h);
-constexpr float ih3 = 1.f / (h * h * h);
-constexpr float ih5 = 1.f / (h * h * h * h * h);
+constexpr float ih1 = 1.0 / h;
+constexpr float ih2 = 1.0 / (h * h);
+constexpr float ih3 = 1.0 / (h * h * h);
+constexpr float ih5 = 1.0 / (h * h * h * h * h);
 
 // pow is not constexpr but it should be evaluated during optimization
-const float lambda = 2.f * k * (1 + n) * std::pow(M_PI, -3.f/(2*n)) * std::pow(M * std::tgamma(5.f/2.f + n) / (R * R * R * std::tgamma(1 + n)), 1.f/n) / (R * R);
+const float lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
 
 struct vec3 {
     float x, y, z;
@@ -52,7 +52,7 @@ float W(const vec3 &p) {
 }
 
 vec3 gradW(const vec3 &p) {
-    const float s1 = -2.f * std::pow(M_PI, -1.5f) * std::pow(h, -5.f);
+    const float s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
     const float s2 =  s1 * std::exp(-p.r2() * ih2);
     return p * s2;
 }
@@ -67,7 +67,7 @@ void calc_pirogi2(const size_t particle_index) {
 
     // P = (k \rho^{1 + n^{-1}})
     // \frac{P}{\rho^2} = m k \rho ^{-1 + n^{-1}}
-    pirogi2[particle_index] = k * std::pow(rho, -1.f + 1.f/n);
+    pirogi2[particle_index] = k * std::pow(rho, -1.0 + 1.0/n);
 }
 
 void calc_accelleration(const size_t particle_index) {
@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
 
     std::random_device rd;
     std::mt19937 gen(42);            
-    std::normal_distribution<> dist(0.f, 1.f);
+    std::normal_distribution<> dist(0.0, 1.0);
 
     srand(0xfacade);
     for(int i = 0; i < particles; i++)

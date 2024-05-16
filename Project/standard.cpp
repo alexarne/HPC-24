@@ -11,17 +11,17 @@
 
 #include "constants.hpp"
 
-constexpr float ih1 = 1.f / h;
-constexpr float ih2 = 1.f / (h * h);
-constexpr float ih3 = 1.f / (h * h * h);
-constexpr float ih5 = 1.f / (h * h * h * h * h);
+constexpr double ih1 = 1.0 / h;
+constexpr double ih2 = 1.0 / (h * h);
+constexpr double ih3 = 1.0 / (h * h * h);
+constexpr double ih5 = 1.0 / (h * h * h * h * h);
 
 // pow is not constexpr but it should be evaluated during optimization
-const float lambda = 2.f * k * (1 + n) * std::pow(M_PI, -3.f/(2*n)) * std::pow(M * std::tgamma(5.f/2.f + n) / (R * R * R * std::tgamma(1 + n)), 1.f/n) / (R * R);
+const double lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
 
 struct vec3 {
-    float x, y, z;
-    float r2() const { return x*x + y*y + z*z; }
+    double x, y, z;
+    double r2() const { return x*x + y*y + z*z; }
 
     vec3 operator+ (const vec3& b) const {
         return {x + b.x, y + b.y, z + b.z};
@@ -31,13 +31,13 @@ struct vec3 {
         return {x - b.x, y - b.y, z - b.z};
     }
 
-    vec3 operator* (const float s) const {
+    vec3 operator* (const double s) const {
         return {s * x, s * y, s * z};
     }
 };
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
-float pirogi2[particles];
+double pirogi2[particles];
 
 vec3 points[particles];
 vec3 velocities[particles];
@@ -45,20 +45,20 @@ vec3 accelerations[particles];
 
 
 // Kernel function and gradient
-float W(const vec3 &p) {
-    const float scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
+double W(const vec3 &p) {
+    const double scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
     return scalar * std::exp(-p.r2() * ih2);
 }
 
 vec3 gradW(const vec3 &p) {
-    const float s1 = -2.f * std::pow(M_PI, -1.5f) * std::pow(h, -5.f);
-    const float s2 =  s1 * std::exp(-p.r2() * ih2);
+    const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
+    const double s2 =  s1 * std::exp(-p.r2() * ih2);
     return p * s2;
 }
 
 
 void calc_pirogi2(const size_t particle_index) {
-    float rho = 0;
+    double rho = 0;
     auto pos = points[particle_index];
 
     for(int i = 0; i < particles; i++)
@@ -66,7 +66,7 @@ void calc_pirogi2(const size_t particle_index) {
 
     // P = (k \rho^{1 + n^{-1}})
     // \frac{P}{\rho^2} = m k \rho ^{-1 + n^{-1}}
-    pirogi2[particle_index] = k * std::pow(rho, -1.f + 1.f/n);
+    pirogi2[particle_index] = k * std::pow(rho, -1.0 + 1.0/n);
 }
 
 void calc_accelleration(const size_t particle_index) {
@@ -75,7 +75,7 @@ void calc_accelleration(const size_t particle_index) {
     const vec3 pos = points[particle_index];
     for(int i = 0; i < particles; i++) 
         if(i != particle_index) {
-            const float scalar = pirogi2[particle_index] + pirogi2[i];
+            const double scalar = pirogi2[particle_index] + pirogi2[i];
             sum = sum + (gradW(pos - points[i]) * scalar);
         }
 
@@ -83,7 +83,7 @@ void calc_accelleration(const size_t particle_index) {
 }
 
 
-float t;
+double t;
 size_t frame = 0;
 void step() {
     // first kick
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
     srand(0xfacade);
 
     for(int i = 0; i < particles; i++)
-        points[i] = {(float)dist(gen), (float)dist(gen), (float)dist(gen)};
+        points[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};
 
     write_positions(out_file);
 
