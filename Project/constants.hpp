@@ -5,7 +5,7 @@ constexpr size_t particles = 2000;
 
 // Simulation Data
 constexpr double t_end = 4;
-constexpr size_t skip_frames = 0;
+constexpr size_t skip_frames = 1;
 
 // Physiological Constants
 constexpr double M = 12;
