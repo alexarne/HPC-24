@@ -1,7 +1,7 @@
 // Discritization Constants
 constexpr double h = 0.1;
 constexpr double dt= 0.04;
-constexpr size_t particles = 1;
+constexpr size_t particles = 2000;
 
 // Simulation Data
 constexpr double t_end = 4;

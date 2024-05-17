@@ -157,7 +157,7 @@ def getAcc( pos, vel, m, h, k, n, lmbda, nu ):
 
 def main():
 	# Simulation parameters
-	N = 1    # Number of particles
+	N = 2000    # Number of particles
 	t = 0      # current time of the simulation
 	tEnd = 4     # time at which simulation ends
 	dt = 0.04   # timestep
@@ -180,7 +180,6 @@ def main():
 
 	# calculate initial gravitational accelerations
 	acc = getAcc( pos, vel, m, h, k, n, lmbda, nu )
-
 	# number of timesteps
 	Nt = int(np.ceil(tEnd/dt))
 	
@@ -200,7 +199,7 @@ def main():
 		
 		# drift
 		pos += vel * dt
-		
+
 		# update accelerations
 		acc = getAcc( pos, vel, m, h, k, n, lmbda, nu )
 		

@@ -10,6 +10,7 @@ const double lmbda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M
 
 
 void print_array(const double *A, int rows, int cols){
+    std::cout << std::fixed << std::setprecision(9);
     for (int i = 0; i < rows; ++i){
         std::cout << "[ ";
         for (int j = 0; j < cols; ++j){
@@ -50,7 +51,7 @@ void compute_gradW(const double *x, const double *y, const double *z, int M_, in
 
     for (int i = 0; i < (M_ * N_); i++) {
         r[i] = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
-        n[i] = -2 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5) / pow(M_PI, 1.5);
+        n[i] = -2.0 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5.0) / pow(M_PI, 1.5);
         wx[i] = n[i] * x[i];
         wy[i] = n[i] * y[i];
         wz[i] = n[i] * z[i];
@@ -114,7 +115,7 @@ void getDensity(const double *r, const double *pos, int M_, int N_, double *rho)
 void getPressure(const double *rho, double *P){
     
     for (int i = 0; i < particles; ++i) {
-        P[i] = k * pow(rho[i], 1 + 1 / n);
+        P[i] = k * pow(rho[i], 1.0 + 1.0 / n);
     }
 }
 
@@ -215,7 +216,7 @@ int main() {
         return 1;
     }
 
-    
+    outFile << std::fixed << std::setprecision(15);
     outFile << "Time,X,Y,Z" << std::endl;
     double time = 0;
     for (int i = 0; i < particles; ++i) {
@@ -227,12 +228,10 @@ int main() {
     //Initial acc:
     double acc[particles * 3];
     getAcc(pos, vel, lmbda, particles, acc); 
-    // Time evolution loop
-    
-    for (double time = t+dt; time <= t_end; time += dt) {
-        // Compute accelerations
-        
 
+    // Time evolution loop
+    for (double time = t+dt; time <= t_end+dt; time += dt) {
+        
         // First kick
         for (int i = 0; i < particles; ++i) {
             vel[i * 3] += acc[i * 3] * dt/2;
@@ -247,9 +246,9 @@ int main() {
             pos[i * 3 + 2] += vel[i * 3 + 2] * dt;
         }
 
-        double acc[particles * 3];
+        // Compute accelerations
         getAcc(pos, vel, lmbda, particles, acc);
-
+    
         //second kick
         for (int i = 0; i < particles; ++i) {
             vel[i * 3] += acc[i * 3] * dt/2;
@@ -262,6 +261,7 @@ int main() {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 
+        
         double rho[100];
         getDensity(rr, pos, 100, particles, rho);
 
@@ -269,8 +269,8 @@ int main() {
             outFile2 << rho[i] << ",";
         }
         outFile2 << std::endl;
+        
     }
-    
 
     outFile.close();
     outFile2.close();

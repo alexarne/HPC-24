@@ -123,6 +123,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
+    out_file << std::fixed << std::setprecision(15);
     
     out_file << "Time,X,Y,Z" << "\n";
 
@@ -143,7 +144,7 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < particles; i++)
         calc_accelleration(i);
     
-    while(t < t_end-dt) {
+    while(t < t_end) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
