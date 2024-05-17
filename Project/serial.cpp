@@ -223,13 +223,17 @@ int main() {
         }
 
     int frames = 0;
+
+    //Initial acc:
+    double acc[particles * 3];
+    getAcc(pos, vel, lmbda, particles, acc); 
     // Time evolution loop
     
     for (double time = t+dt; time <= t_end; time += dt) {
         // Compute accelerations
-        double acc[particles * 3];
-        getAcc(pos, vel, lmbda, particles, acc);
-        // Update velocities
+        
+
+        // First kick
         for (int i = 0; i < particles; ++i) {
             vel[i * 3] += acc[i * 3] * dt/2;
             vel[i * 3 + 1] += acc[i * 3 + 1] * dt/2;
@@ -241,6 +245,16 @@ int main() {
             pos[i * 3] += vel[i * 3] * dt;
             pos[i * 3 + 1] += vel[i * 3 + 1] * dt;
             pos[i * 3 + 2] += vel[i * 3 + 2] * dt;
+        }
+
+        double acc[particles * 3];
+        getAcc(pos, vel, lmbda, particles, acc);
+
+        //second kick
+        for (int i = 0; i < particles; ++i) {
+            vel[i * 3] += acc[i * 3] * dt/2;
+            vel[i * 3 + 1] += acc[i * 3 + 1] * dt/2;
+            vel[i * 3 + 2] += acc[i * 3 + 2] * dt/2;
         }
 
         // Write positions to CSV file

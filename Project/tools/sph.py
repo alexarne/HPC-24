@@ -157,9 +157,9 @@ def getAcc( pos, vel, m, h, k, n, lmbda, nu ):
 
 def main():
 	# Simulation parameters
-	N = 2000    # Number of particles
+	N = 1    # Number of particles
 	t = 0      # current time of the simulation
-	tEnd = 10     # time at which simulation ends
+	tEnd = 4     # time at which simulation ends
 	dt = 0.04   # timestep
 	M = 12      # star mass
 	R = 0.75   # star radius
