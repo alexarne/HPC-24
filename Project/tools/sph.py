@@ -187,7 +187,6 @@ def main():
 	rr = np.zeros((100,3))
 	rlin = np.linspace(0,1,100)
 	rr[:,0] =rlin
-	rho_analytic = lmbda/(4*k) * (R**2 - rlin**2)
 
 	filename = "output/particle_positions_python.csv"
 	with open(filename, 'w') as file:

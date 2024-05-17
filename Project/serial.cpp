@@ -231,9 +231,9 @@ int main() {
         getAcc(pos, vel, lmbda, particles, acc);
         // Update velocities
         for (int i = 0; i < particles; ++i) {
-            vel[i * 3] += acc[i * 3] * dt;
-            vel[i * 3 + 1] += acc[i * 3 + 1] * dt;
-            vel[i * 3 + 2] += acc[i * 3 + 2] * dt;
+            vel[i * 3] += acc[i * 3] * dt/2;
+            vel[i * 3 + 1] += acc[i * 3 + 1] * dt/2;
+            vel[i * 3 + 2] += acc[i * 3 + 2] * dt/2;
         }
 
         // Update positions
