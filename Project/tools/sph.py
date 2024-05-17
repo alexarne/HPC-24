@@ -167,7 +167,6 @@ def main():
 	k = 0.1    # equation of state constant
 	n = 1      # polytropic index
 	nu = 1      # damping
-	plotRealTime = True # switch on for plotting as the simulation goes along
 
 
 	lmbda = 2*k*(1+n)*np.pi**(-3/(2*n)) * (M*gamma(5/2+n)/R**3/gamma(1+n))**(1/n) / R**2  # ~ 2.01
