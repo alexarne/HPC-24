@@ -7,10 +7,9 @@
 
 const double PI = 3.14159265358979323846;
 
-const int N = 500;     // Number of particles
 const double t = 0.0;      // current time of the simulation
-const double lmbda = 2.0 * k * (1.0 + n) * pow(M_PI, -3.0 / (2.0 * n)) * 
-        pow((M * tgamma(5.0 / 2.0 + n) / (R * R * R * tgamma(1.0 + n))), 1.0 / n) / (R * R);
+const double lmbda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
+
 
 void print_array(const double *A, int rows, int cols){
     for (int i = 0; i < rows; ++i){
@@ -249,7 +248,7 @@ int main() {
 
         // Write positions to CSV file
         if(frames++ % 10 == 0)
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < particles; ++i) {
             outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
         }
 

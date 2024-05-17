@@ -2,10 +2,14 @@ import matplotlib.pyplot as plt
 from scipy.special import gamma
 import numpy as np
 """
+This is a modified version of this program:
+
 Create Your Own Smoothed-Particle-Hydrodynamics Simulation (With Python)
 Philip Mocz (2020) Princeton Univeristy, @PMocz
 
 Simulate the structure of a star with SPH
+
+- The plots are removed, to instead write to csv. Also the initial sample is loaded from a csv
 """
 
 def W( x, y, z, h ):
