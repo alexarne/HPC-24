@@ -9,7 +9,7 @@ grid = plt.GridSpec(3, 2, wspace=0.2, hspace=0.3)
 ax1 = plt.subplot(grid[0:2, 0])  # ax1 spans the first two rows, first column
 ax2 = plt.subplot(grid[2, 0])    # ax2 is in the third row, first column
 ax3 = plt.subplot(grid[0:2, 1])  # ax3 spans the first two rows, second column
-
+ax4 = plt.subplot(grid[2,1])
 # Initialize data
 rr = np.zeros((100, 3))
 rlin = np.linspace(0, 1, 100)
@@ -19,7 +19,7 @@ rr[:, 0] = rlin
 pos = np.genfromtxt(f"../output/particle_positions_serial.csv", delimiter=',', skip_header=True)
 pos_standard = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
 rhos = np.genfromtxt(f"../output/density_serial.csv", delimiter=',')
-
+rhos_standard = np.genfromtxt(f"../output/density_standard.csv", delimiter=',')
 # Determine N
 ts = pos[:, 0]
 N = len(ts[ts == ts[0]])
@@ -56,6 +56,13 @@ for frame in range(int(len(ts) / N)):
     ax2.set(xlim=(0, 1), ylim=(0, 3))
     ax2.set_aspect(0.1)
     plt.plot(rlin, rhos[frame, :], color='blue')
+
+    # Update ax4
+    plt.sca(ax4)
+    plt.cla()
+    ax2.set(xlim=(0, 1), ylim=(0, 3))
+    ax2.set_aspect(0.1)
+    plt.plot(rlin, rhos_standard[frame, :], color='blue')
 
     # Pause to create animation effect
     plt.pause(0.01)
