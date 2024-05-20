@@ -159,7 +159,7 @@ def main():
 	# Simulation parameters
 	N = 2000    # Number of particles
 	t = 0      # current time of the simulation
-	tEnd = 4     # time at which simulation ends
+	tEnd = 2     # time at which simulation ends
 	dt = 0.04   # timestep
 	M = 12      # star mass
 	R = 0.75   # star radius
@@ -192,7 +192,7 @@ def main():
 		time_vec = t*np.ones((pos.shape[0],1))
 		data = np.hstack((time_vec, pos))
 		np.savetxt(file, data, delimiter=',', header='Time,X,Y,Z', comments='')
-
+	
 	for i in range(Nt):
 		# (1/2) kick
 		vel += acc * dt/2
@@ -213,6 +213,9 @@ def main():
 		data = np.hstack((time_vec, pos))
 		with open(filename, 'a') as file:
 			np.savetxt(file, data, delimiter=',')
+		file.close()
+
+		
 		
 	return 0
 	

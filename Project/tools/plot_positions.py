@@ -19,7 +19,6 @@ rr[:, 0] = rlin
 pos = np.genfromtxt(f"../output/particle_positions_serial.csv", delimiter=',', skip_header=True)
 pos_standard = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
 rhos = np.genfromtxt(f"../output/density_serial.csv", delimiter=',')
-rhos = rhos[:, :-1]
 
 # Determine N
 ts = pos[:, 0]
