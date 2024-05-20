@@ -39,7 +39,6 @@ struct vec3 {
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
 double pirogi2[particles];
-
 double rhos[100];
 
 vec3 points[particles];
@@ -64,7 +63,7 @@ void calc_rho(const size_t index) {
     auto pos = rr[index];
 
     for(int i = 0; i < particles; i++)
-        rho += W(pos - points[i]);
+        rho += m* W(pos - points[i]);
     
     rhos[index] = rho;
 }
@@ -162,7 +161,6 @@ int main(int argc, char* argv[]) {
         rr[i].x = i/ 100.0;
     }
 
-
     write_positions(out_file);
 
     // update mprhogi2 values for acceleration
@@ -176,12 +174,14 @@ int main(int argc, char* argv[]) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
+
         for (int i = 0; i < 100; i++)
             calc_rho(i);
         write_density(out_file_rho);
     }
 
     out_file.close();
+    out_file_rho.close();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
