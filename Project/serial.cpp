@@ -2,6 +2,7 @@
 #include <cmath>
 #include <fstream>
 #include <random>
+#include <iomanip> 
 #include <chrono>
 #include "constants.hpp"
 
@@ -265,10 +266,10 @@ int main() {
         double rho[100];
         getDensity(rr, pos, 100, particles, rho);
 
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 99; ++i) {
             outFile2 << rho[i] << ",";
         }
-        outFile2 << std::endl;
+        outFile2 << rho[99] << std::endl;
         
     }
 

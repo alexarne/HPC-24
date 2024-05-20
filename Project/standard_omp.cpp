@@ -39,10 +39,12 @@ struct vec3 {
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
 float pirogi2[particles];
+double rhos[100];
 
 vec3 points[particles];
 vec3 velocities[particles];
 vec3 accelerations[particles];
+vec3 rr[100];
 
 
 // Kernel function and gradient
@@ -57,6 +59,15 @@ vec3 gradW(const vec3 &p) {
     return p * s2;
 }
 
+void calc_rho(const size_t index) {
+    double rho = 0;
+    auto pos = rr[index];
+
+    for(int i = 0; i < particles; i++)
+        rho += m* W(pos - points[i]);
+    
+    rhos[index] = rho;
+}
 
 void calc_pirogi2(const size_t particle_index) {
     float rho = 0;
@@ -124,6 +135,12 @@ void write_positions(std::ofstream& out_file) {
         out_file << t << "," << points[i].x << "," << points[i].y << "," << points[i].z << "\n";
 }
 
+void write_density(std::ofstream& out_file) {
+    for (int i = 0; i < 99; i++)
+        out_file << rhos[i] << ",";
+    out_file << rhos[99]<< "\n";
+}  
+
 int main(int argc, char* argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
     // Open CSV file for writing
@@ -135,6 +152,12 @@ int main(int argc, char* argv[]) {
     
     out_file << "Time,X,Y,Z" << "\n";
 
+    std::ofstream out_file_rho("output/density_standard_omp.csv", std::ios::trunc);
+    if (!out_file_rho.is_open()) {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+        return 1;
+    }
+
     std::random_device rd;
     std::mt19937 gen(42);            
     std::normal_distribution<> dist(0.0, 1.0);
@@ -144,6 +167,10 @@ int main(int argc, char* argv[]) {
         points[i] = {(float)dist(gen), (float)dist(gen), (float)dist(gen)};
 
     write_positions(out_file);
+
+    for (int i = 0; i < 100; i++){
+        rr[i].x = i/ 100.0;
+    }
 
     // update mprhogi2 values for acceleration
     #pragma omp parallel
@@ -161,6 +188,9 @@ int main(int argc, char* argv[]) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
+        for (int i = 0; i < 100; i++)
+            calc_rho(i);
+        write_density(out_file_rho);
     }
 
     out_file.close();
