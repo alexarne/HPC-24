@@ -9,7 +9,7 @@ grid = plt.GridSpec(3, 2, wspace=0.2, hspace=0.3)
 ax1 = plt.subplot(grid[0:2, 0])  # ax1 spans the first two rows, first column
 ax2 = plt.subplot(grid[2, 0])    # ax2 is in the third row, first column
 ax3 = plt.subplot(grid[0:2, 1])  # ax3 spans the first two rows, second column
-ax4 = plt.subplot(grid[2,0])
+ax4 = plt.subplot(grid[2,1])
 # Initialize data
 rr = np.zeros((100, 3))
 rlin = np.linspace(0, 1, 100)
