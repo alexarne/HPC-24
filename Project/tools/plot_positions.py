@@ -60,8 +60,8 @@ for frame in range(int(len(ts) / N)):
     # Update ax4
     plt.sca(ax4)
     plt.cla()
-    ax2.set(xlim=(0, 1), ylim=(0, 3))
-    ax2.set_aspect(0.1)
+    ax4.set(xlim=(0, 1), ylim=(0, 3))
+    ax4.set_aspect(0.1)
     plt.plot(rlin, rhos_standard[frame, :], color='blue')
 
     # Pause to create animation effect
