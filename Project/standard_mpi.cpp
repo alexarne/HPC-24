@@ -124,9 +124,10 @@ void init_tree_sizes() {
     
     if(children.size() == 0) return;
 
-    std::vector<int> partition_points(children.size());
+    const int num_partitions = children.size() + 1;
+    std::vector<int> partition_points(num_partitions);
     for(int i = 1; i <= partition_points.size(); i++)
-        partition_points[i - 1] = self_node.left() + (i * self_node.count()) / children.size();
+        partition_points[i - 1] = self_node.left() + (i * self_node.count()) / num_partitions;
 
     for(int i = 0; i < children.size(); i++) {
         children[i].left() = partition_points[i];
