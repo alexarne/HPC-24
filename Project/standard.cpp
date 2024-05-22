@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
-    out_file << std::fixed << std::setprecision(15);
+    out_file << std::scientific<< std::setprecision(15);
     
     out_file << "Time,X,Y,Z" << "\n";
 
@@ -170,7 +170,9 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < particles; i++)
         calc_accelleration(i);
     
-    while(t < t_end) {
+    int iter = 0;
+    int num_iters = round(t_end/dt);
+    while(iter < num_iters) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
@@ -178,6 +180,7 @@ int main(int argc, char* argv[]) {
         for (int i = 0; i < 100; i++)
             calc_rho(i);
         write_density(out_file_rho);
+        iter++;
     }
 
     out_file.close();

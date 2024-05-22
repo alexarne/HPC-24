@@ -2,6 +2,7 @@
 #include <fstream>
 #include <chrono>
 #include <stdint.h>
+#include <iomanip> 
 #include <random>
 
 #define _USE_MATH_DEFINES
@@ -149,7 +150,8 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
-    
+
+    out_file << std::scientific<< std::setprecision(15);
     out_file << "Time,X,Y,Z" << "\n";
 
     std::ofstream out_file_rho("output/density_standard_omp.csv", std::ios::trunc);
@@ -183,14 +185,18 @@ int main(int argc, char* argv[]) {
         for(int i = 0; i < particles; i++)
             calc_accelleration(i);
     }
-    
-    while(t < t_end-dt) {
+
+    int iter = 0;
+    int num_iters = round(t_end/dt);
+    while(iter < num_iters) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
         for (int i = 0; i < 100; i++)
             calc_rho(i);
         write_density(out_file_rho);
+
+        iter++;
     }
 
     out_file.close();
