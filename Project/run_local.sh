@@ -1,17 +1,14 @@
 
 
-g++ -O2 -o serial serial.cpp
-g++ -O2 -o standard standard.cpp
-g++ -O2 -o standard_omp standard_omp.cpp -fopenmp
-
-
-export OMP_NUM_THREADS=4
-OMP_PLACES=cores
+g++ -O2 -pg serial.cpp -o serial
+g++ -O2 -pg standard.cpp -o standard 
 
 ./serial
+gprof serial gmon.out > analysis_serial.txt
+
 ./standard
-./standard_omp
+gprof standard gmon.out > analysis_standard.txt
 
 rm serial
 rm standard
-rm standard_omp
+rm gmon.out
