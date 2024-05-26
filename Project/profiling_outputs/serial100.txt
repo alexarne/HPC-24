@@ -1,0 +1,16 @@
+# started on Sun May 26 12:15:45 2024
+
+
+ Performance counter stats for './serial' (10 runs):
+
+     1,296,197,749      instructions                     #    1.29  insn per cycle              ( +-  0.26% )  (37.17%)
+     1,002,302,148      cycles                                                                  ( +-  2.05% )  (49.75%)
+        12,601,989      L1-dcache-load-misses            #    3.40% of all L1-dcache accesses   ( +-  1.41% )  (62.30%)
+       370,471,518      L1-dcache-loads                                                         ( +-  0.08% )  (62.40%)
+           723,025      LLC-loads                                                               ( +-  3.41% )  (62.75%)
+            15,639      LLC-load-misses                  #    2.16% of all LL-cache accesses    ( +-  8.62% )  (50.25%)
+         3,182,682      LLC-stores                                                              ( +-  0.59% )  (25.04%)
+           180,999      LLC-store-misses                                                        ( +- 13.30% )  (24.68%)
+
+           0.28543 +- 0.00742 seconds time elapsed  ( +-  2.60% )
+

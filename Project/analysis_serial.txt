@@ -3,17 +3,17 @@ Flat profile:
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
  time   seconds   seconds    calls  ms/call  ms/call  name    
- 45.14     12.36    12.36      101   122.38   122.38  compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*)
- 36.45     22.34     9.98      302    33.05    33.05  getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*)
- 11.43     25.47     3.13      201    15.57    15.57  compute_W(double const*, double const*, double const*, int, int, double*)
-  3.87     26.53     1.06      101    10.50   217.87  getAcc(double const*, double const*, double, int, double*)
-  2.45     27.20     0.67      201     3.33    51.95  getDensity(double const*, double const*, int, int, double*)
-  0.66     27.38     0.18                             _init
-  0.00     27.38     0.00     7606     0.00     0.00  double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
-  0.00     27.38     0.00      100     0.00     0.00  write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&)
-  0.00     27.38     0.00       25     0.00     0.00  std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
-  0.00     27.38     0.00        2     0.00     0.00  frame_dummy
-  0.00     27.38     0.00        1     0.00     0.00  std::random_device::random_device()
+ 44.46     23.28    23.28      201   115.82   115.82  compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*)
+ 38.58     43.48    20.20      602    33.55    33.55  getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*)
+ 10.52     48.99     5.51      401    13.74    13.74  compute_W(double const*, double const*, double const*, int, int, double*)
+  3.63     50.89     1.90      201     9.45   208.84  getAcc(double const*, double const*, double, int, double*)
+  2.08     51.98     1.09      401     2.72    50.01  getDensity(double const*, double const*, int, int, double*)
+  0.73     52.36     0.38                             _init
+  0.00     52.36     0.00     7606     0.00     0.00  double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
+  0.00     52.36     0.00      200     0.00     0.00  write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&)
+  0.00     52.36     0.00       25     0.00     0.00  std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
+  0.00     52.36     0.00        2     0.00     0.00  frame_dummy
+  0.00     52.36     0.00        1     0.00     0.00  std::random_device::random_device()
 
  %         the percentage of the total running time of the
 time       program used by this function.
@@ -51,42 +51,42 @@ notice and this notice are preserved.
 		     Call graph (explanation follows)
 
 
-granularity: each sample hit covers 4 byte(s) for 0.04% of 27.38 seconds
+granularity: each sample hit covers 4 byte(s) for 0.02% of 52.36 seconds
 
 index % time    self  children    called     name
                                                  <spontaneous>
-[1]     99.3    0.00   27.20                 main [1]
-                1.06   20.94     101/101         getAcc(double const*, double const*, double, int, double*) [2]
-                0.33    4.86     100/201         getDensity(double const*, double const*, int, int, double*) [4]
+[1]     99.3    0.00   51.98                 main [1]
+                1.90   40.08     201/201         getAcc(double const*, double const*, double, int, double*) [2]
+                0.54    9.46     200/401         getDensity(double const*, double const*, int, int, double*) [5]
                 0.00    0.00    7606/7606        double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [14]
-                0.00    0.00     100/100         write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&) [15]
+                0.00    0.00     200/200         write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&) [15]
                 0.00    0.00       2/2           frame_dummy [8]
                 0.00    0.00       1/1           std::random_device::random_device() [17]
 -----------------------------------------------
-                1.06   20.94     101/101         main [1]
-[2]     80.4    1.06   20.94     101         getAcc(double const*, double const*, double, int, double*) [2]
-               12.36    0.00     101/101         compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*) [3]
-                0.34    4.91     101/201         getDensity(double const*, double const*, int, int, double*) [4]
-                3.34    0.00     101/302         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [5]
+                1.90   40.08     201/201         main [1]
+[2]     80.2    1.90   40.08     201         getAcc(double const*, double const*, double, int, double*) [2]
+               23.28    0.00     201/201         compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*) [3]
+                0.55    9.51     201/401         getDensity(double const*, double const*, int, int, double*) [5]
+                6.74    0.00     201/602         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [4]
 -----------------------------------------------
-               12.36    0.00     101/101         getAcc(double const*, double const*, double, int, double*) [2]
-[3]     45.1   12.36    0.00     101         compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*) [3]
+               23.28    0.00     201/201         getAcc(double const*, double const*, double, int, double*) [2]
+[3]     44.5   23.28    0.00     201         compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*) [3]
 -----------------------------------------------
-                0.33    4.86     100/201         main [1]
-                0.34    4.91     101/201         getAcc(double const*, double const*, double, int, double*) [2]
-[4]     38.1    0.67    9.77     201         getDensity(double const*, double const*, int, int, double*) [4]
-                6.64    0.00     201/302         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [5]
-                3.13    0.00     201/201         compute_W(double const*, double const*, double const*, int, int, double*) [6]
+                6.74    0.00     201/602         getAcc(double const*, double const*, double, int, double*) [2]
+               13.46    0.00     401/602         getDensity(double const*, double const*, int, int, double*) [5]
+[4]     38.6   20.20    0.00     602         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [4]
 -----------------------------------------------
-                3.34    0.00     101/302         getAcc(double const*, double const*, double, int, double*) [2]
-                6.64    0.00     201/302         getDensity(double const*, double const*, int, int, double*) [4]
-[5]     36.4    9.98    0.00     302         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [5]
+                0.54    9.46     200/401         main [1]
+                0.55    9.51     201/401         getAcc(double const*, double const*, double, int, double*) [2]
+[5]     38.3    1.09   18.97     401         getDensity(double const*, double const*, int, int, double*) [5]
+               13.46    0.00     401/602         getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [4]
+                5.51    0.00     401/401         compute_W(double const*, double const*, double const*, int, int, double*) [6]
 -----------------------------------------------
-                3.13    0.00     201/201         getDensity(double const*, double const*, int, int, double*) [4]
-[6]     11.4    3.13    0.00     201         compute_W(double const*, double const*, double const*, int, int, double*) [6]
+                5.51    0.00     401/401         getDensity(double const*, double const*, int, int, double*) [5]
+[6]     10.5    5.51    0.00     401         compute_W(double const*, double const*, double const*, int, int, double*) [6]
 -----------------------------------------------
                                                  <spontaneous>
-[7]      0.7    0.18    0.00                 _init [7]
+[7]      0.7    0.38    0.00                 _init [7]
 -----------------------------------------------
                 0.00    0.00       2/2           main [1]
 [8]      0.0    0.00    0.00       2         frame_dummy [8]
@@ -95,8 +95,8 @@ index % time    self  children    called     name
 [14]     0.0    0.00    0.00    7606         double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [14]
                 0.00    0.00      25/25          std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [16]
 -----------------------------------------------
-                0.00    0.00     100/100         main [1]
-[15]     0.0    0.00    0.00     100         write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&) [15]
+                0.00    0.00     200/200         main [1]
+[15]     0.0    0.00    0.00     200         write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&) [15]
 -----------------------------------------------
                 0.00    0.00      25/25          double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) [14]
 [16]     0.0    0.00    0.00      25         std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand() [16]
@@ -195,7 +195,7 @@ notice and this notice are preserved.
 
 Index by function name
 
-   [4] getDensity(double const*, double const*, int, int, double*) [2] getAcc(double const*, double const*, double, int, double*) [14] double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
+   [5] getDensity(double const*, double const*, int, int, double*) [2] getAcc(double const*, double const*, double, int, double*) [14] double std::generate_canonical<double, 53ul, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul> >(std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&)
    [3] compute_gradW(double const*, double const*, double const*, int, int, double*, double*, double*) [6] compute_W(double const*, double const*, double const*, int, int, double*) [7] _init
-   [5] getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [17] std::random_device::random_device() [8] frame_dummy
+   [4] getPairwiseSeparations(double const*, double const*, int, int, double*, double*, double*) [17] std::random_device::random_device() [8] frame_dummy
   [15] write(double*, double*, double, std::basic_ofstream<char, std::char_traits<char> >&, std::basic_ofstream<char, std::char_traits<char> >&) [16] std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>::_M_gen_rand()
