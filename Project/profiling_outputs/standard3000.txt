@@ -1,0 +1,16 @@
+# started on Sun May 26 14:35:39 2024
+
+
+ Performance counter stats for './standard' (10 runs):
+
+   204,565,580,916      instructions                     #    2.27  insn per cycle              ( +-  0.02% )  (37.49%)
+    90,147,195,487      cycles                                                                  ( +-  0.24% )  (49.99%)
+       929,968,694      L1-dcache-load-misses            #    1.57% of all L1-dcache accesses   ( +-  0.05% )  (62.49%)
+    59,328,499,196      L1-dcache-loads                                                         ( +-  0.01% )  (62.50%)
+         4,593,924      LLC-loads                                                               ( +-  8.82% )  (62.50%)
+           330,783      LLC-load-misses                  #    7.20% of all LL-cache accesses    ( +-  4.64% )  (50.01%)
+         2,142,782      LLC-stores                                                              ( +-  1.93% )  (25.00%)
+         1,015,722      LLC-store-misses                                                        ( +-  1.57% )  (24.99%)
+
+           25.2867 +- 0.0709 seconds time elapsed  ( +-  0.28% )
+
