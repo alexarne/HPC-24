@@ -1,16 +1,16 @@
-# started on Sun May 26 12:19:33 2024
+# started on Sun May 26 13:45:10 2024
 
 
  Performance counter stats for './serial' (10 runs):
 
-    78,452,621,261      instructions                     #    1.19  insn per cycle              ( +-  0.07% )  (37.50%)
-    65,999,219,395      cycles                                                                  ( +-  0.31% )  (50.00%)
-     1,175,370,805      L1-dcache-load-misses            #    5.05% of all L1-dcache accesses   ( +-  0.37% )  (62.51%)
-    23,258,919,189      L1-dcache-loads                                                         ( +-  0.03% )  (62.50%)
-        36,282,119      LLC-loads                                                               ( +-  0.89% )  (62.49%)
-         3,045,714      LLC-load-misses                  #    8.39% of all LL-cache accesses    ( +-  7.35% )  (50.00%)
-       376,484,327      LLC-stores                                                              ( +-  0.36% )  (25.00%)
-       294,731,999      LLC-store-misses                                                        ( +-  0.36% )  (25.02%)
+    77,593,663,980      instructions                     #    1.11  insn per cycle              ( +-  0.08% )  (37.50%)
+    70,108,166,476      cycles                                                                  ( +-  1.18% )  (50.00%)
+     1,224,423,161      L1-dcache-load-misses            #    5.31% of all L1-dcache accesses   ( +-  1.11% )  (62.49%)
+    23,076,486,829      L1-dcache-loads                                                         ( +-  0.06% )  (62.50%)
+        40,197,383      LLC-loads                                                               ( +-  3.76% )  (62.50%)
+         4,166,467      LLC-load-misses                  #   10.37% of all LL-cache accesses    ( +-  5.43% )  (50.00%)
+       377,714,563      LLC-stores                                                              ( +-  0.41% )  (25.00%)
+       299,705,835      LLC-store-misses                                                        ( +-  0.40% )  (25.00%)
 
-           18.5776 +- 0.0774 seconds time elapsed  ( +-  0.42% )
+            19.959 +- 0.250 seconds time elapsed  ( +-  1.25% )
 
