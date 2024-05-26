@@ -17,7 +17,7 @@ rr[:, 0] = rlin
 
 # Load data from CSV files
 pos = np.genfromtxt(f"../output/particle_positions_serial.csv", delimiter=',', skip_header=True)
-pos_standard = np.genfromtxt(f"../output/particle_positions_python.csv", delimiter=',', skip_header=True)
+pos_standard = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
 rhos = np.genfromtxt(f"../output/density_serial.csv", delimiter=',')
 rhos_standard = np.genfromtxt(f"../output/density_standard.csv", delimiter=',')
 # Determine N
@@ -55,14 +55,14 @@ for frame in range(int(len(ts) / N)):
     plt.cla()
     ax2.set(xlim=(0, 1))#, ylim=(0, 3))
     #ax2.set_aspect(0.1)
-    plt.plot(rlin, rhos[frame, :], color='blue')
+    plt.plot(rlin, rhos[frame-1, :], color='blue')
 
     # Update ax4
     plt.sca(ax4)
     plt.cla()
     ax4.set(xlim=(0, 1))#, ylim=(0, 3))
     #ax4.set_aspect(0.1)
-    plt.plot(rlin, rhos_standard[frame, :], color='blue')
+    plt.plot(rlin, rhos_standard[frame-1, :], color='blue')
 
     # Pause to create animation effect
     plt.pause(0.01)

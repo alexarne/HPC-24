@@ -7,11 +7,9 @@ python_data = pd.read_csv("../output/particle_positions_python.csv")
 standard_data_omp = pd.read_csv("../output/particle_positions_standard_omp.csv")
 
 def count_diff(df1, df2):
-    df1 = df1.round(8); df2 = df2.round(8) #Round to 10'th decimal
+    df1 = df1.round(12); df2 = df2.round(12) #Round to 10'th decimal
     total_elements = len(df1)
     true = ((df1 == df2)*1).sum()
     print(f"\nMismatching entries (%): \n{100*(total_elements-true)/total_elements}\n")
 
-count_diff(standard_data, python_data)
-count_diff(serial_data, standard_data)
-count_diff(standard_data, standard_data_omp)
+count_diff(standard_data, serial_data)
