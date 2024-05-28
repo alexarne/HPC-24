@@ -107,7 +107,7 @@ void calc_accelleration(const size_t particle_index) {
 }
 
 int size, provided;
-mpi_node self_node;
+mpi_node self_node(0);
 
 std::vector<mpi_node> children;
 int parent_rank;
@@ -116,7 +116,7 @@ inline bool is_root() { return parent_rank < 0; }
 inline bool has_parent() { return parent_rank >= 0; }
 
 
-// set up responsible regions (1/3 1/3 1/3)
+// set up responsible regions (1/size and rest evenly split)
 void init_tree_sizes() {
     MPI_Status status;
     if(has_parent())
@@ -124,10 +124,11 @@ void init_tree_sizes() {
     
     if(children.size() == 0) return;
 
-    const int num_partitions = children.size() + 1;
-    std::vector<int> partition_points(num_partitions);
-    for(int i = 1; i <= partition_points.size(); i++)
-        partition_points[i - 1] = self_node.left() + (i * self_node.count()) / num_partitions;
+    std::vector<int> partition_points = {self_node.left() + (int)particles / size};
+    if(children.size() == 2) 
+        partition_points.push_back((partition_points[0] + self_node.right()) / 2);
+
+    partition_points.push_back(self_node.right());
 
     for(int i = 0; i < children.size(); i++) {
         children[i].left() = partition_points[i];
@@ -169,9 +170,7 @@ void mpi_pirogi() {
     for(int i = self_left; i < self_right; i++)
         calc_pirogi2(i);
 
-    if(has_parent())
-        MPI_Send(&pirogi2[self_node.left()], self_right - self_left, MPI_DOUBLE, parent_rank, SHARE_PIROGI, MPI_COMM_WORLD);
-    
+
     MPI_Request requests[2];
     for(int i = 0; i < children.size(); i++) {
         auto& child = children[i];
@@ -180,6 +179,10 @@ void mpi_pirogi() {
 
     MPI_Status statuses[2];
     MPI_Waitall(children.size(), requests, statuses);
+
+
+    if(has_parent())
+        MPI_Send(&pirogi2[self_node.left()], self_node.count(), MPI_DOUBLE, parent_rank, SHARE_PIROGI, MPI_COMM_WORLD);
 
     sync_pirogi();
 }
@@ -193,9 +196,8 @@ void mpi_acceleration() {
     for(int i = self_left; i < self_right; i++)
         calc_accelleration(i);
 
+    
     const int vec_size = sizeof(vec3) / sizeof(double);
-    if(has_parent())
-        MPI_Send(&accelerations[self_node.left()], (self_right - self_left) * vec_size, MPI_DOUBLE, parent_rank, SHARE_ACCELRATION, MPI_COMM_WORLD);
     
     MPI_Request requests[2];
     for(int i = 0; i < children.size(); i++) {
@@ -205,6 +207,9 @@ void mpi_acceleration() {
 
     MPI_Status statuses[2];
     MPI_Waitall(children.size(), requests, statuses);
+
+    if(has_parent())
+        MPI_Send(&accelerations[self_node.left()], self_node.count() * vec_size, MPI_DOUBLE, parent_rank, SHARE_ACCELRATION, MPI_COMM_WORLD);
 
     sync_accleraion();
 }
@@ -258,10 +263,9 @@ int main(int argc, char* argv[]) {
     if(2 * t_id <= size) children.push_back(mpi_node(2 * t_id - 1));
     if(2 * t_id + 1 <= size) children.push_back(mpi_node(2 * t_id));
 
-    parent_rank = (t_id / 2) - 1;
+    parent_rank = t_id / 2 - 1;
     
     init_tree_sizes();
-
 
     
     if(is_root()) {
@@ -274,7 +278,6 @@ int main(int argc, char* argv[]) {
             return 1;
         }
     }
-
 
 
     std::random_device rd;
