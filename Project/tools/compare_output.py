@@ -12,4 +12,17 @@ def count_diff(df1, df2):
     true = ((df1 == df2)*1).sum()
     print(f"\nMismatching entries (%): \n{100*(total_elements-true)/total_elements}\n")
 
+def MAE(df1, df2):
+    diff = df1-df2; diff=diff.to_numpy()[:,1:]
+    print(f'MAE: {np.mean(np.abs(diff))}, Max abs error: {np.max(np.abs(diff))}')
+
+
+
+count_diff(standard_data, python_data)
+MAE(standard_data, python_data)
+count_diff(serial_data, python_data)
+MAE(serial_data, python_data)
 count_diff(standard_data, serial_data)
+MAE(standard_data, serial_data)
+
+

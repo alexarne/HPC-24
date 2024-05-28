@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from scipy.special import gamma
 import numpy as np
+from tqdm import tqdm
 """
 This is a modified version of this program:
 
@@ -157,10 +158,10 @@ def getAcc( pos, vel, m, h, k, n, lmbda, nu ):
 
 def main():
 	# Simulation parameters
-	N = 1000  # Number of particles
+	N = 3000  # Number of particles
 	t = 0      # current time of the simulation
-	tEnd = 4     # time at which simulation ends
-	dt = 0.04   # timestep
+	tEnd = 2     # time at which simulation ends
+	dt = 0.01   # timestep
 	M = 12      # star mass
 	R = 0.75   # star radius
 	h = 0.1    # smoothing length
@@ -193,7 +194,7 @@ def main():
 		data = np.hstack((time_vec, pos))
 		np.savetxt(file, data, delimiter=',', header='Time,X,Y,Z', comments='')
 	
-	for i in range(Nt):
+	for i in tqdm(range(Nt)):
 		# (1/2) kick
 		vel += acc * dt/2
 		
