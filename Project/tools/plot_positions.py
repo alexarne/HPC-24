@@ -17,7 +17,7 @@ rr[:, 0] = rlin
 
 # Load data from CSV files
 pos = np.genfromtxt(f"../output/particle_positions_serial.csv", delimiter=',', skip_header=True)
-pos_standard = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
+pos_standard = np.genfromtxt(f"../output/particle_positions_standard_mpi.csv", delimiter=',', skip_header=True)
 rhos = np.genfromtxt(f"../output/density_serial.csv", delimiter=',')
 rhos_standard = np.genfromtxt(f"../output/density_standard.csv", delimiter=',')
 # Determine N
