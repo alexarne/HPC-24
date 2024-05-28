@@ -2,6 +2,7 @@
 #include <fstream>
 #include <chrono>
 #include <stdint.h>
+#include <iomanip> 
 #include <random>
 
 #define _USE_MATH_DEFINES
@@ -11,17 +12,17 @@
 #include "constants.hpp"
 
 
-constexpr float ih1 = 1.0 / h;
-constexpr float ih2 = 1.0 / (h * h);
-constexpr float ih3 = 1.0 / (h * h * h);
-constexpr float ih5 = 1.0 / (h * h * h * h * h);
+constexpr double ih1 = 1.0 / h;
+constexpr double ih2 = 1.0 / (h * h);
+constexpr double ih3 = 1.0 / (h * h * h);
+constexpr double ih5 = 1.0 / (h * h * h * h * h);
 
 // pow is not constexpr but it should be evaluated during optimization
-const float lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
+const double lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
 
 struct vec3 {
-    float x, y, z;
-    float r2() const { return x*x + y*y + z*z; }
+    double x, y, z;
+    double r2() const { return x*x + y*y + z*z; }
 
     vec3 operator+ (const vec3& b) const {
         return {x + b.x, y + b.y, z + b.z};
@@ -31,14 +32,14 @@ struct vec3 {
         return {x - b.x, y - b.y, z - b.z};
     }
 
-    vec3 operator* (const float s) const {
+    vec3 operator* (const double s) const {
         return {s * x, s * y, s * z};
     }
 };
 
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
-float pirogi2[particles];
+double pirogi2[particles];
 double rhos[100];
 
 vec3 points[particles];
@@ -48,14 +49,14 @@ vec3 rr[100];
 
 
 // Kernel function and gradient
-float W(const vec3 &p) {
-    const float scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
+double W(const vec3 &p) {
+    const double scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
     return scalar * std::exp(-p.r2() * ih2);
 }
 
 vec3 gradW(const vec3 &p) {
-    const float s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
-    const float s2 =  s1 * std::exp(-p.r2() * ih2);
+    const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
+    const double s2 =  s1 * std::exp(-p.r2() * ih2);
     return p * s2;
 }
 
@@ -70,7 +71,7 @@ void calc_rho(const size_t index) {
 }
 
 void calc_pirogi2(const size_t particle_index) {
-    float rho = 0;
+    double rho = 0;
     auto pos = points[particle_index];
 
     for(int i = 0; i < particles; i++)
@@ -87,7 +88,7 @@ void calc_accelleration(const size_t particle_index) {
     const vec3 pos = points[particle_index];
     for(int i = 0; i < particles; i++) 
         if(i != particle_index) {
-            const float scalar = pirogi2[particle_index] + pirogi2[i];
+            const double scalar = pirogi2[particle_index] + pirogi2[i];
             sum = sum + (gradW(pos - points[i]) * scalar);
         }
 
@@ -95,7 +96,7 @@ void calc_accelleration(const size_t particle_index) {
 }
 
 
-float t;
+double t;
 size_t frame = 0;
 void step() {
     // first kick
@@ -149,7 +150,8 @@ int main(int argc, char* argv[]) {
         std::cerr << "Error: Unable to open file for writing." << std::endl;
         return 1;
     }
-    
+
+    out_file << std::scientific<< std::setprecision(15);
     out_file << "Time,X,Y,Z" << "\n";
 
     std::ofstream out_file_rho("output/density_standard_omp.csv", std::ios::trunc);
@@ -164,7 +166,7 @@ int main(int argc, char* argv[]) {
     srand(0xfacade);
     
     for(int i = 0; i < particles; i++)
-        points[i] = {(float)dist(gen), (float)dist(gen), (float)dist(gen)};
+        points[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};
 
     write_positions(out_file);
 
@@ -183,14 +185,18 @@ int main(int argc, char* argv[]) {
         for(int i = 0; i < particles; i++)
             calc_accelleration(i);
     }
-    
-    while(t < t_end-dt) {
+
+    int iter = 0;
+    int num_iters = round(t_end/dt);
+    while(iter < num_iters) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
         for (int i = 0; i < 100; i++)
             calc_rho(i);
         write_density(out_file_rho);
+
+        iter++;
     }
 
     out_file.close();

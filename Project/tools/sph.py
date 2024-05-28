@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from scipy.special import gamma
 import numpy as np
+from tqdm import tqdm
 """
 This is a modified version of this program:
 
@@ -157,10 +158,10 @@ def getAcc( pos, vel, m, h, k, n, lmbda, nu ):
 
 def main():
 	# Simulation parameters
-	N = 2000    # Number of particles
+	N = 3000  # Number of particles
 	t = 0      # current time of the simulation
 	tEnd = 2     # time at which simulation ends
-	dt = 0.04   # timestep
+	dt = 0.01   # timestep
 	M = 12      # star mass
 	R = 0.75   # star radius
 	h = 0.1    # smoothing length
@@ -172,7 +173,7 @@ def main():
 	lmbda = 2*k*(1+n)*np.pi**(-3/(2*n)) * (M*gamma(5/2+n)/R**3/gamma(1+n))**(1/n) / R**2  # ~ 2.01
 	m     = M/N                    # single particle mass
 	
-	loaded_data = np.loadtxt("output/particle_positions_serial.csv", delimiter = ',', skiprows = 1)
+	loaded_data = np.loadtxt("../output/particle_positions_standard.csv", delimiter = ',', skiprows = 1, dtype=np.float64)
 	pos = loaded_data[:N, 1:]
 
 	vel   = np.zeros(pos.shape)
@@ -187,13 +188,13 @@ def main():
 	rlin = np.linspace(0,1,100)
 	rr[:,0] =rlin
 
-	filename = "output/particle_positions_python.csv"
+	filename = "../output/particle_positions_python.csv"
 	with open(filename, 'w') as file:
 		time_vec = t*np.ones((pos.shape[0],1))
 		data = np.hstack((time_vec, pos))
 		np.savetxt(file, data, delimiter=',', header='Time,X,Y,Z', comments='')
 	
-	for i in range(Nt):
+	for i in tqdm(range(Nt)):
 		# (1/2) kick
 		vel += acc * dt/2
 		

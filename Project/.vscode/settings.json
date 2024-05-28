@@ -65,6 +65,22 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "csignal": "cpp",
+        "strstream": "cpp",
+        "*.tcc": "cpp",
+        "cinttypes": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "unordered_set": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "utility": "cpp",
+        "ranges": "cpp",
+        "thread": "cpp",
+        "cfenv": "cpp",
+        "typeindex": "cpp"
     }
 }

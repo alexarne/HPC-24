@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 #include <mpi.h>
+#include <iomanip> 
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -52,6 +53,7 @@ struct mpi_node
     int rank;
     int range[2] = {0, particles};
 
+    mpi_node() : rank(-1) {}
     mpi_node(int rank) : rank(rank) {};
     int count() {return range[1] - range[0];}
     int& left() {return range[0];}
@@ -270,13 +272,15 @@ int main(int argc, char* argv[]) {
     
     if(is_root()) {
         // Open CSV file for writing
-        out_file = std::ofstream("output/particle_positions_standard_omp.csv", std::ios::trunc);
+        out_file = std::ofstream("output/particle_positions_standard_mpi.csv", std::ios::trunc);
         if (!out_file.is_open()) {
             std::cerr << "Error: Unable to open file for writing." << std::endl;
             MPI_Finalize();
             
             return 1;
         }
+        out_file << std::scientific<< std::setprecision(15);
+        out_file << "Time,X,Y,Z" << "\n";
     }
 
 
@@ -288,16 +292,20 @@ int main(int argc, char* argv[]) {
     for(int i = 0; i < particles; i++)
         points[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};
 
-
+    write_data();
     // update mprhogi2 values for acceleration
     mpi_pirogi();
     mpi_acceleration();
-    
-    while(t < t_end-dt) {
+
+    int iter = 0;
+    int num_iters = round(t_end/dt);
+    while(iter < num_iters) {
         step();
         
         if(frame % skip_frames == 0)
             write_data();
+
+        iter++;
     }
 
     MPI_Finalize();

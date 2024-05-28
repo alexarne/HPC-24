@@ -183,6 +183,19 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
     }
 }
 
+void write(double *rho, double *pos, double time, std::ofstream& outFile, std::ofstream& outFile2){
+
+    // Write positions to CSV file
+    for (int i = 0; i < particles; ++i) {
+        outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
+    }
+    for (int i = 0; i < 99; ++i) {
+        outFile2 << rho[i] << ",";
+    }
+    outFile2 << rho[99] << std::endl;
+}
+
+
 int main() {
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -217,7 +230,7 @@ int main() {
         return 1;
     }
 
-    outFile << std::fixed << std::setprecision(15);
+    outFile << std::scientific << std::setprecision(15);
     outFile << "Time,X,Y,Z" << std::endl;
     double time = 0;
     for (int i = 0; i < particles; ++i) {
@@ -231,7 +244,9 @@ int main() {
     getAcc(pos, vel, lmbda, particles, acc); 
 
     // Time evolution loop
-    for (double time = t+dt; time <= t_end+dt; time += dt) {
+    int iter = 0;
+    int num_iters = round(t_end/dt);
+    for (double iter = 1; iter <= num_iters; iter++) {
         
         // First kick
         for (int i = 0; i < particles; ++i) {
@@ -257,19 +272,11 @@ int main() {
             vel[i * 3 + 2] += acc[i * 3 + 2] * dt/2;
         }
 
-        // Write positions to CSV file
-        for (int i = 0; i < particles; ++i) {
-            outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
-        }
-
-        
         double rho[100];
         getDensity(rr, pos, 100, particles, rho);
 
-        for (int i = 0; i < 99; ++i) {
-            outFile2 << rho[i] << ",";
-        }
-        outFile2 << rho[99] << std::endl;
+        time += dt;
+        write(rho, pos, time, outFile, outFile2); //Write postitions and density to csv file
         
     }
 
