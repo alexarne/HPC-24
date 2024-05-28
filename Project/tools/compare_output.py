@@ -25,5 +25,7 @@ count_diff(serial_data, python_data)
 MAE(serial_data, python_data)
 count_diff(standard_data, serial_data)
 MAE(standard_data, serial_data)
+count_diff(standard_data, standard_data_mpi)
+MAE(standard_data, standard_data_mpi)
 
 
