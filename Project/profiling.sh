@@ -14,7 +14,7 @@
 module load perftools-base
 module load perftools-lite
 
-CC -o standard_mpi.x standard_mpi.cpp
+CC -O2 -o standard_mpi.x standard_mpi.cpp
 
 pat_build standard_mpi.x+pat
 
