@@ -4,9 +4,9 @@
 #SBATCH -t 00:05:00
 #SBATCH -A edu24.DD2356
 # Number of nodes
-#SBATCH -p main
+#SBATCH -p shared
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=128
+#SBATCH --cpus-per-task=64
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
@@ -17,7 +17,7 @@ CC -O2 -o standard standard.cpp
 
 srun -n 1 ./serial > ./output/output_serial.txt
 srun -n 1 ./standard > ./output/output_standard.txt
-for n in 1 4 16 64 128;
+for n in 1 4 16 64;
 do
     export OMP_NUM_THREADS=$n
     OMP_PLACES=cores
