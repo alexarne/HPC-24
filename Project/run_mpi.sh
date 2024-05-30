@@ -5,7 +5,7 @@
 #SBATCH -A edu24.DD2356
 # Number of nodes
 #SBATCH -p main
-#SBATCH --ntasks-per-node=8
+#SBATCH --ntasks-per-node=64
 #SBATCH --cpus-per-task=1
 #SBATCH --nodes=2
 #SBATCH -e error_file.e
@@ -24,7 +24,7 @@ pat_build standard_mpi.x+pat
 for i in {1..10};
 do
     for p in 1 2 4 8 16 32 64 128; do
-    srun -n 1 ./standard_mpi.x > craypat_outputs/craypat_${p}_iter$i.txt
+    srun -n $p ./standard_mpi.x > craypat_outputs/craypat_single${p}_iter$i.txt
     done;
 done
 
