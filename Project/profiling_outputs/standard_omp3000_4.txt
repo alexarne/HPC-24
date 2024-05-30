@@ -1,0 +1,16 @@
+# started on Thu May 30 13:30:22 2024
+
+
+ Performance counter stats for './standard_omp' (10 runs):
+
+      215677599290      instructions:u                   #    1.84  insn per cycle           ( +-  0.00% )
+      117590237064      cycles:u                                                             ( +-  0.05% )
+        1606667089      L1-dcache-load-misses:u          #    1.52% of all L1-dcache accesses  ( +-  0.12% )
+      105493890246      L1-dcache-loads:u                                                    ( +-  0.01% )
+   <not supported>      LLC-loads:u                                                 
+   <not supported>      LLC-load-misses:u                                           
+   <not supported>      LLC-stores:u                                                
+   <not supported>      LLC-store-misses:u                                          
+
+           8.76455 +- 0.00506 seconds time elapsed  ( +-  0.06% )
+
