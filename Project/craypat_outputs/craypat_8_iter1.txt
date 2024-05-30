@@ -1,0 +1,331 @@
+
+#################################################################
+#                                                               #
+#            CrayPat-lite Performance Statistics                #
+#                                                               #
+#################################################################
+
+CrayPat/X:  Version 23.12.0 Revision 67ffc52e7 sles15.4_x86_64  11/13/23 21:04:20
+Experiment:                  lite  lite-samples  
+Number of PEs (MPI ranks):      8
+Numbers of PEs per Node:        2  PEs on each of  4  Nodes
+Numbers of Threads per PE:     16
+Number of Cores per Socket:    64
+Execution start time:  Thu May 30 13:37:47 2024
+System name and speed:  nid001166  2.254 GHz (nominal)
+AMD   Rome                 CPU  Family: 23  Model: 49  Stepping:  0
+Core Performance Boost:  128 PEs have CPB capability
+
+
+Avg Process Time:       2.03 secs              
+High Memory:         3,296.7 MiBytes     412.1 MiBytes per PE
+I/O Read Rate:     23.657565 MiBytes/sec       
+I/O Write Rate:   276.488345 MiBytes/sec       
+
+Notes for table 1:
+
+  This table shows functions that have significant exclusive sample
+    hits, averaged across ranks.
+  For further explanation, use:  pat_report -v -O samp_profile ...
+
+Table 1:  Sample Profile by Function
+
+  Samp% |  Samp |  Imb. |   Imb. | Group
+        |       |  Samp |  Samp% |  Function=[MAX10]
+        |       |       |        |   PE=HIDE
+        |       |       |        |    Thread=HIDE
+       
+ 100.0% | 195.0 |    -- |     -- | Total
+|-----------------------------------------------------------
+|  71.6% | 139.6 |    -- |     -- | MPI
+||----------------------------------------------------------
+||  58.0% | 113.1 |  62.9 |  40.8% | MPI_Recv
+||   9.4% |  18.4 | 123.6 |  99.5% | MPI_Send
+||   2.1% |   4.1 |   2.9 |  46.9% | mpi_pirogi
+||   2.1% |   4.0 |   8.0 |  76.2% | MPI_Waitall
+||==========================================================
+|  16.2% |  31.5 |    -- |     -- | ETC
+||----------------------------------------------------------
+||   8.8% |  17.1 | 119.9 | 100.0% | std::ostream::_M_insert<>
+||   5.1% |   9.9 |   3.1 |  27.5% | spinwait<>
+||==========================================================
+|   6.7% |  13.1 |   4.9 |  31.0% | MATH
+||----------------------------------------------------------
+||   6.7% |  13.1 |   4.9 |  31.0% | exp
+||==========================================================
+|   4.8% |   9.4 |    -- |     -- | USER
+||----------------------------------------------------------
+||   4.7% |   9.1 |   5.9 |  44.8% | calc_accelleration
+|===========================================================
+
+Notes for table 2:
+
+  This table shows functions, and line numbers within functions, that
+    have significant exclusive sample hits, averaged across ranks.
+  For further explanation, use:  pat_report -v -O samp_profile+src ...
+
+Table 2:  Sample Profile by Group, Function, and Line
+
+  Samp% |  Samp |  Imb. |   Imb. | Group
+        |       |  Samp |  Samp% |  Function=[MAX10]
+        |       |       |        |   Source
+        |       |       |        |    Line
+        |       |       |        |     PE=HIDE
+        |       |       |        |      Thread=HIDE
+       
+ 100.0% | 195.0 |    -- |     -- | Total
+|-------------------------------------------------------------------------
+|  71.6% | 139.6 |    -- |     -- | MPI
+||------------------------------------------------------------------------
+||  58.0% | 113.1 |  62.9 |  40.8% | MPI_Recv
+||   9.4% |  18.4 | 123.6 |  99.5% | MPI_Send
+||   2.1% |   4.1 |   2.9 |  46.9% | mpi_pirogi
+3|        |       |       |        |  c++/12/bits/stl_vector.h
+4|        |       |       |        |   line.988
+||   2.1% |   4.0 |   8.0 |  76.2% | MPI_Waitall
+||========================================================================
+|  16.2% |  31.5 |    -- |     -- | ETC
+||------------------------------------------------------------------------
+||   8.8% |  17.1 | 119.9 | 100.0% | std::ostream::_M_insert<>
+||   5.1% |   9.9 |   3.1 |  27.5% | spinwait<>
+||========================================================================
+|   6.7% |  13.1 |   4.9 |  31.0% | MATH
+||------------------------------------------------------------------------
+||   6.7% |  13.1 |   4.9 |  31.0% | exp
+||========================================================================
+|   4.8% |   9.4 |    -- |     -- | USER
+||------------------------------------------------------------------------
+||   4.7% |   9.1 |    -- |     -- | calc_accelleration
+3|        |       |       |        |  Private/HPC-24/Project/standard_mpi.cpp
+||||----------------------------------------------------------------------
+4|||   1.8% |   3.5 |   3.5 |  57.1% | line.39
+4|||   1.4% |   2.8 |   2.2 |  51.4% | line.47
+4|||   1.0% |   1.9 |   4.1 |  78.6% | line.117
+|=========================================================================
+
+Notes for table 3:
+
+  This table shows functions that have the most significant exclusive
+    time, taking for each thread the average time across ranks.
+    The imbalance percentage is relative to the team observed to
+    participate in execution.
+    Use -s th=ALL to see individual thread values.
+  For further explanation, use:  pat_report -v -O profile_th_pe ...
+
+Table 3:  Profile by Function Group and Function with Ranks under Threads
+
+  Samp% |  Samp | Imb. |  Imb. | Team | Group
+        |       | Samp | Samp% | Size |  Function=[MAX10]
+        |       |      |       |      |   Thread=HIDE
+        |       |      |       |      |    PE=HIDE
+       
+ 100.0% | 195.0 |   -- |    -- |   -- | Total
+|----------------------------------------------------------------
+|  71.6% | 139.6 |   -- |    -- |   -- | MPI
+||---------------------------------------------------------------
+||  58.0% | 113.1 |   -- |    -- |    1 | MPI_Recv
+||   9.4% |  18.4 |   -- |    -- |    1 | MPI_Send
+||   2.1% |   4.1 |   -- |    -- |    1 | mpi_pirogi
+||   2.1% |   4.0 |   -- |    -- |    1 | MPI_Waitall
+||===============================================================
+|  16.2% |  31.5 |   -- |    -- |   -- | ETC
+||---------------------------------------------------------------
+||   8.8% |  17.1 |   -- |    -- |    1 | std::ostream::_M_insert<>
+||   5.1% |   9.9 |   -- |    -- |    1 | spinwait<>
+||===============================================================
+|   6.7% |  13.1 |  2.3 | 18.7% |   -- | MATH
+||---------------------------------------------------------------
+||   6.7% |  13.1 |  2.3 | 18.7% |   16 | exp
+||===============================================================
+|   4.8% |   9.4 |   -- |    -- |   -- | USER
+||---------------------------------------------------------------
+||   4.7% |   9.1 |  2.0 | 19.8% |   16 | calc_accelleration
+|================================================================
+
+Observation:  MPI utilization
+
+    The time spent processing MPI communications is relatively high and
+    not evenly balanced over all PEs.  Functions and callsites
+    responsible for consuming the most time can be found in the table
+    generated by pat_report -O callers+src (within the MPI group).
+
+
+Notes for table 4:
+
+  This table shows memory traffic for numa nodes, taking for each numa
+    node the maximum value across nodes. It also shows the balance in
+    memory traffic by showing the top 3 and bottom 3 node values.
+  For further explanation, use:  pat_report -v -O mem_bw ...
+
+Table 4:  Memory Bandwidth by Numanode
+
+  Memory |    Read |   Write |   Thread |  Memory |  Memory | Numanode
+ Traffic |  Memory |  Memory |     Time | Traffic | Traffic |  Node Id
+  GBytes | Traffic | Traffic |          |  GBytes |       / |   PE=HIDE
+         |  GBytes |  GBytes |          |   / Sec | Nominal |    Thread=HIDE
+         |         |         |          |         |    Peak | 
+|---------------------------------------------------------------------------
+|    0.28 |    0.25 |    0.03 | 1.996156 |    0.14 |    0.1% | numanode.0
+||--------------------------------------------------------------------------
+||    0.30 |    0.27 |    0.04 | 1.994670 |    0.15 |    0.1% | nid.0
+||    0.30 |    0.27 |    0.03 | 1.996156 |    0.15 |    0.1% | nid.3
+||    0.26 |    0.24 |    0.02 | 1.995944 |    0.13 |    0.1% | nid.1
+||    0.24 |    0.22 |    0.02 | 1.996048 |    0.12 |    0.1% | nid.2
+||==========================================================================
+|    0.11 |    0.10 |    0.01 | 1.890217 |    0.06 |    0.0% | numanode.1
+||--------------------------------------------------------------------------
+||    0.13 |    0.12 |    0.01 | 1.888881 |    0.07 |    0.0% | nid.1
+||    0.09 |    0.08 |    0.01 | 1.869199 |    0.05 |    0.0% | nid.0
+||    0.09 |    0.08 |    0.01 | 1.890217 |    0.05 |    0.0% | nid.3
+||    0.08 |    0.07 |    0.01 | 1.887886 |    0.04 |    0.0% | nid.2
+||==========================================================================
+|    0.08 |    0.08 |    0.01 | 1.890291 |    0.04 |    0.0% | numanode.2
+||--------------------------------------------------------------------------
+||    0.09 |    0.08 |    0.01 | 1.864419 |    0.05 |    0.0% | nid.0
+||    0.07 |    0.06 |    0.01 | 1.890291 |    0.03 |    0.0% | nid.3
+||    0.06 |    0.06 |    0.01 | 1.887969 |    0.03 |    0.0% | nid.2
+||    0.05 |    0.05 |    0.00 | 1.889335 |    0.03 |    0.0% | nid.1
+||==========================================================================
+|    0.06 |    0.06 |    0.01 | 1.890432 |    0.03 |    0.0% | numanode.3
+||--------------------------------------------------------------------------
+||    0.09 |    0.08 |    0.01 | 1.864291 |    0.05 |    0.0% | nid.0
+||    0.09 |    0.08 |    0.01 | 1.887785 |    0.05 |    0.0% | nid.2
+||    0.05 |    0.05 |    0.00 | 1.890432 |    0.03 |    0.0% | nid.3
+||    0.05 |    0.05 |    0.00 | 1.889649 |    0.03 |    0.0% | nid.1
+||==========================================================================
+|    0.26 |    0.24 |    0.02 | 2.003495 |    0.13 |    0.1% | numanode.4
+||--------------------------------------------------------------------------
+||    0.26 |    0.24 |    0.02 | 2.003495 |    0.13 |    0.1% | nid.0
+||    0.09 |    0.08 |    0.01 | 1.889928 |    0.05 |    0.0% | nid.1
+||    0.06 |    0.05 |    0.00 | 1.891130 |    0.03 |    0.0% | nid.3
+||    0.05 |    0.05 |    0.00 | 1.889246 |    0.03 |    0.0% | nid.2
+||==========================================================================
+|    0.26 |    0.24 |    0.02 | 2.005858 |    0.13 |    0.1% | numanode.5
+||--------------------------------------------------------------------------
+||    0.28 |    0.26 |    0.02 | 2.005518 |    0.14 |    0.1% | nid.2
+||    0.27 |    0.25 |    0.01 | 2.005858 |    0.13 |    0.1% | nid.3
+||    0.11 |    0.10 |    0.01 | 1.908818 |    0.06 |    0.0% | nid.0
+||    0.10 |    0.10 |    0.01 | 1.889275 |    0.05 |    0.0% | nid.1
+||==========================================================================
+|    0.07 |    0.07 |    0.00 | 1.908420 |    0.04 |    0.0% | numanode.6
+||--------------------------------------------------------------------------
+||    0.10 |    0.09 |    0.00 | 1.891308 |    0.05 |    0.0% | nid.3
+||    0.09 |    0.08 |    0.01 | 1.889749 |    0.05 |    0.0% | nid.2
+||    0.07 |    0.07 |    0.00 | 1.908420 |    0.04 |    0.0% | nid.0
+||    0.06 |    0.06 |    0.00 | 1.889653 |    0.03 |    0.0% | nid.1
+||==========================================================================
+|    0.25 |    0.23 |    0.02 | 2.003683 |    0.12 |    0.1% | numanode.7
+||--------------------------------------------------------------------------
+||    0.25 |    0.23 |    0.02 | 2.003683 |    0.13 |    0.1% | nid.1
+||    0.09 |    0.08 |    0.00 | 1.908550 |    0.04 |    0.0% | nid.0
+||    0.06 |    0.06 |    0.01 | 1.889794 |    0.03 |    0.0% | nid.2
+||    0.05 |    0.05 |    0.00 | 1.892041 |    0.03 |    0.0% | nid.3
+|===========================================================================
+
+Notes for table 5:
+
+  This table shows energy and power usage for the nodes with the
+    maximum, mean, and minimum usage, as well as the sum of usage over
+    all nodes.
+    Energy and power for accelerators is also shown, if available.
+  For further explanation, use:  pat_report -v -O program_energy ...
+
+Table 5:  Program Energy and Power Usage from Cray PM
+
+Node Id / PE=HIDE / Thread=HIDE
+
+  
+==========================================================
+  Total
+----------------------------------------------------------
+  PM Energy Node  1,087 W    2,202 J
+  PM Energy Cpu     392 W      794 J
+  PM Energy Memory  463 W      938 J
+  Process Time            2.025187 secs
+==========================================================
+  nid.1
+----------------------------------------------------------
+  PM Energy Node    291 W      588 J
+  PM Energy Cpu     104 W      211 J
+  PM Energy Memory  119 W      241 J
+  Process Time            2.023760 secs
+==========================================================
+  nid.0
+----------------------------------------------------------
+  PM Energy Node    267 W      541 J
+  PM Energy Cpu     107 W      217 J
+  PM Energy Memory  124 W      252 J
+  Process Time            2.024329 secs
+==========================================================
+  nid.2
+----------------------------------------------------------
+  PM Energy Node    266 W      538 J
+  PM Energy Cpu      95 W      192 J
+  PM Energy Memory  110 W      223 J
+  Process Time            2.026145 secs
+==========================================================
+  nid.3
+----------------------------------------------------------
+  PM Energy Node    264 W      535 J
+  PM Energy Cpu      86 W      174 J
+  PM Energy Memory  110 W      222 J
+  Process Time            2.026514 secs
+==========================================================
+
+Notes for table 6:
+
+  This table show the average time and number of bytes read from each
+    input file, taking the average over the number of ranks that read
+    from the file.  It also shows the number of read operations, and
+    average rates.
+  For further explanation, use:  pat_report -v -O read_stats ...
+
+Table 6:  File Input Stats by Filename
+
+
+    No File Name had data that satisfied the selection criteria.
+
+
+Notes for table 7:
+
+  This table show the average time and number of bytes written to each
+    output file, taking the average over the number of ranks that
+    wrote to the file.  It also shows the number of write operations,
+    and average rates.
+  For further explanation, use:  pat_report -v -O write_stats ...
+
+Table 7:  File Output Stats by Filename
+
+      Avg | Avg Write |  Write Rate | Number |     Avg |   Bytes/ | File Name=!x/^/(proc|sys)/
+    Write |   MiBytes | MiBytes/sec |     of |  Writes |     Call |  PE=HIDE
+ Time per |       per |             | Writer |     per |          | 
+   Writer |    Writer |             |  Ranks |  Writer |          | 
+     Rank |      Rank |             |        |    Rank |          | 
+|-----------------------------------------------------------------------------
+| 0.184928 | 51.466447 |  278.304670 |      1 | 6,581.0 | 8,200.35 | output/particle_positions_standard_mpi.csv
+| 0.000156 |  0.001031 |    6.626138 |      8 |    20.1 |    53.71 | _UnknownFile_
+|=============================================================================
+
+Table 8:  Lustre File Information
+
+                                  File Path |    Stripe | Stripe | Stripe | OST list
+                                            |      size | offset |  count | 
+------------------------------------------------------------------------------
+ output/particle_positions_standard_mpi.csv | 1,048,576 |      0 |      1 | 0
+==============================================================================
+
+Program invocation:
+  /cfs/klemming/home/d/dahnlund/Private/HPC-24/Project/./standard_mpi.x
+
+For a complete report with expanded tables and notes, run:
+  pat_report /cfs/klemming/home/d/dahnlund/Private/HPC-24/Project/standard_mpi.x+118260-1519087482s
+
+For help identifying callers of particular functions:
+  pat_report -O callers+src /cfs/klemming/home/d/dahnlund/Private/HPC-24/Project/standard_mpi.x+118260-1519087482s
+To see the entire call tree:
+  pat_report -O calltree+src /cfs/klemming/home/d/dahnlund/Private/HPC-24/Project/standard_mpi.x+118260-1519087482s
+
+For interactive, graphical performance analysis, run:
+  app2 /cfs/klemming/home/d/dahnlund/Private/HPC-24/Project/standard_mpi.x+118260-1519087482s
+
+================  End of CrayPat-lite output  ==========================
