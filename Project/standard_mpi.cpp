@@ -64,10 +64,12 @@ struct mpi_node
 
 // P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
 double pirogi2[particles];
+double rhos[100];
 
 vec3 points[particles];
 vec3 velocities[particles];
 vec3 accelerations[particles];
+vec3 rr[100];
 
 
 // Kernel function and gradient
@@ -80,6 +82,17 @@ vec3 gradW(const vec3 &p) {
     const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
     const double s2 =  s1 * std::exp(-p.r2() * ih2);
     return p * s2;
+}
+
+
+void calc_rho(const size_t index) {
+    double rho = 0;
+    auto pos = rr[index];
+
+    for(int i = 0; i < particles; i++)
+        rho += m* W(pos - points[i]);
+    
+    rhos[index] = rho;
 }
 
 
@@ -247,9 +260,6 @@ void step() {
 
 std::ofstream out_file;
 void write_data() {
-    if(is_root() == false)
-        return;
-
     for (int i = 0; i < particles; i++)
         out_file << t << "," << points[i].x << "," << points[i].y << "," << points[i].z << "\n";
 }
@@ -302,8 +312,15 @@ int main(int argc, char* argv[]) {
     while(iter < num_iters) {
         step();
         
-        if(frame % skip_frames == 0)
-            write_data();
+        if(is_root()) {
+            #pragma omp parallel for
+            for (int i = 0; i < 100; i++)
+                calc_rho(i);
+
+            if(frame % skip_frames == 0)
+                write_data();
+        }
+        
 
         iter++;
     }

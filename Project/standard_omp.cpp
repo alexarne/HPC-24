@@ -192,8 +192,11 @@ int main(int argc, char* argv[]) {
         step();
         if(frame % skip_frames == 0)
             write_positions(out_file);
+
+        #pragma omp parallel for
         for (int i = 0; i < 100; i++)
             calc_rho(i);
+
         write_density(out_file_rho);
 
         iter++;
