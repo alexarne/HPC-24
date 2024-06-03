@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 from scipy.special import gamma
 import numpy as np
 from tqdm import tqdm
@@ -158,9 +157,9 @@ def getAcc( pos, vel, m, h, k, n, lmbda, nu ):
 
 def main():
 	# Simulation parameters
-	N = 3000  # Number of particles
+	N = 1000  # Number of particles
 	t = 0      # current time of the simulation
-	tEnd = 2     # time at which simulation ends
+	tEnd = 1     # time at which simulation ends
 	dt = 0.01   # timestep
 	M = 12      # star mass
 	R = 0.75   # star radius
