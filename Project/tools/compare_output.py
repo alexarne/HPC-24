@@ -24,11 +24,12 @@ def main():
     MAE(serial_data, python_data)
     print("Optimized C++ port vs original Python implementation:")
     MAE(standard_data, python_data)
-    print("Optimized vs direct C++ port")
+    print("Optimized vs direct C++ port:")
     MAE(standard_data, serial_data)
-    print("OpenMP vs optimized serial port")
+    print("OpenMP vs optimized serial port:")
+    MAE(serial_data, standard_data_omp)
+    print("MPI implementation vs optimized serial:")
     MAE(serial_data, standard_data_mpi)
-    print("MPI implementation vs optimized serial")
 
 if __name__ == '__main__':
     main()
