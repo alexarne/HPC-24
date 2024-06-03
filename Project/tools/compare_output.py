@@ -18,14 +18,17 @@ def MAE(df1, df2):
     print(f'MAE: {np.mean(np.abs(diff))}, Max abs error: {np.max(np.abs(diff))}')
 
 
+def main():
+    print("Comparing outputs...")
+    print("Direct C++ port vs original Python implementation:")
+    MAE(serial_data, python_data)
+    print("Optimized C++ port vs original Python implementation:")
+    MAE(standard_data, python_data)
+    print("Optimized vs direct C++ port")
+    MAE(standard_data, serial_data)
+    print("OpenMP vs optimized serial port")
+    MAE(serial_data, standard_data_mpi)
+    print("MPI implementation vs optimized serial")
 
-count_diff(standard_data, python_data)
-MAE(standard_data, python_data)
-count_diff(serial_data, python_data)
-MAE(serial_data, python_data)
-count_diff(standard_data, serial_data)
-MAE(standard_data, serial_data)
-count_diff(standard_data, standard_data_mpi)
-MAE(serial_data, standard_data_mpi)
-
-
+if __name__ == '__main__':
+    main()
