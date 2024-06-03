@@ -12,9 +12,19 @@
 
 CC -O2 -o standard_omp standard_omp.cpp -openmp
 
-for n in 1 2 4 8 16 32 64 128;
+## CRAYPAT
+module load perftools-base
+module load perftools-lite
+
+CC -O2 -o standard_omp.x standard_omp.cpp -openmp
+
+pat_build standard_omp.x+pat
+
+for i in {1..10};
 do
-    export OMP_NUM_THREADS=$n
+    for p in 1 2 4 8 16 32 64 128; do
+    export OMP_NUM_THREADS=$p
     OMP_PLACES=cores
-    perf stat -o profiling_outputs/standard_omp3000_$n.txt -e instructions,cycles,L1-dcache-load-misses,L1-dcache-loads,LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses -r 10 ./standard_omp
+    srun -n 1 ./standard_omp.x > craypat_outputs/craypat_omp${p}_iter$i.txt
+    done;
 done
