@@ -265,8 +265,8 @@ void write_data() {
 }
 
 int main(int argc, char* argv[]) {
-    MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
 
+    MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &self_node.rank);
 
@@ -324,7 +324,7 @@ int main(int argc, char* argv[]) {
 
         iter++;
     }
-
+    
     MPI_Finalize();
     return 0;
 }
