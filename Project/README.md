@@ -1,5 +1,6 @@
 # Project: Smoothed-Particle Hydrodynamics simulation of Toy Star
 
+### Run
 To run the different implementations in C++. Run the ```run.sh```bash sricpt with:
 
 ```sbatch run.sh```
@@ -15,4 +16,12 @@ pip install -r requirements.txt
 cd tools
 python sph.py  #Run python script
 python compare_output.py
+```
+### Profiling
+To get profiling information from Craypat:
+Run the scripts in the profiling directory, e.g.
+```
+cd profiling
+sbatch profiling_MPI_single.sh
+python plot_profiling.py
 ```
