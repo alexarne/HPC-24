@@ -1,7 +1,4 @@
-# Course work DD2356 Methods in High Performance Computing, spring 2024.
-## David Ahnlund, Emil Gestsson, Alex Gunnarsson
-
-# Project:
+# Project: Smoothed-Particle Hydrodynamics simulation of Toy Star
 
 To run the different implementations in C++. Run the ```run.sh```bash sricpt with:
 
