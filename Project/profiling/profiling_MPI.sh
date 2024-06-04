@@ -39,5 +39,6 @@ if [ ! -s "error_file.e" ]; then
     rm "error_file.e"
 fi
 rm -rf standard_mpi.x+*
-rm standard_mpi.x
+rm ../standard_mpi.x
+rm ../standard_mpi.x+orig
 rm slurm-*

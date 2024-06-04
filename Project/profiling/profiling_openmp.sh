@@ -10,15 +10,15 @@
 #SBATCH --nodes=1
 #SBATCH -e error_file.e
 
-CC -O2 -o ../standard_omp ../standard_omp.cpp -openmp
-
 ## CRAYPAT
 module load perftools-base
 module load perftools-lite
 
 CC -O2 -o ../standard_omp.x ../standard_omp.cpp -openmp
 
-pat_build ../standard_omp.x+pat
+cd ..
+pat_build standard_omp.x+pat
+cd profiling
 
 mkdir -p craypat_outputs
 for i in {1..10};
@@ -29,11 +29,14 @@ do
     srun -n 1 ../standard_omp.x > craypat_outputs/craypat_omp${p}_iter$i.txt
     done;
 done
+pat_report
 
 #Clean-up:
 if [ ! -s "error_file.e" ]; then
     rm "error_file.e"
 fi
-rm -rf standard_mpi.x+*
-rm standard_mpi.x
+
+rm -rf standard_omp.x+*
+rm ../standard_omp.x
+rm ../standard_omp.x+orig
 rm slurm-*
