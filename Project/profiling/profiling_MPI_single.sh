@@ -9,6 +9,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --nodes=2
 #SBATCH -e error_file.e
+cd ..
 
 ## CRAYPAT
 module load perftools-base
@@ -17,24 +18,25 @@ module load perftools-lite
 export OMP_NUM_THREADS=1
 OMP_PLACES=cores
 
-CC -O2 -o ../standard_mpi.x ../standard_mpi.cpp -openmp
+CC -O2 -o standard_mpi.x standard_mpi.cpp -openmp
 
-pat_build ../standard_mpi.x+pat
+pat_build standard_mpi.x+pat
 mkdir -p craypat_outputs
-for i in {1..10};
+for i in {1..2};
 do
     for p in 1 2 4 8 16 32 64 128; do
-    srun -n $p ../standard_mpi.x > craypat_outputs/craypat_single${p}_iter$i.txt
+    srun -n $p ./standard_mpi.x > craypat_outputs/craypat_single${p}_iter$i.txt
     done;
 done
 
 pat_report
 
 #Clean-up:
+rm -rf standard_mpi.x+*
+rm standard_mpi.x
+rm standard_mpi.x+orig
+cd profiling
 if [ ! -s "error_file.e" ]; then
     rm "error_file.e"
 fi
-rm -rf standard_mpi.x+*
-rm ../standard_mpi.x
-rm ../standard_mpi.x+orig
 rm slurm-*
