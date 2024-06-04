@@ -16,9 +16,7 @@ module load perftools-lite
 
 CC -O2 -o ../standard_omp.x ../standard_omp.cpp -openmp
 
-cd ..
-pat_build standard_omp.x+pat
-cd profiling
+pat_build ../standard_omp.x+pat
 
 mkdir -p craypat_outputs
 for i in {1..10};
