@@ -27,9 +27,9 @@ def main():
     print("Optimized vs direct C++ port:")
     MAE(standard_data, serial_data)
     print("OpenMP vs optimized serial port:")
-    MAE(serial_data, standard_data_omp)
+    MAE(standard_data, standard_data_omp)
     print("MPI implementation vs optimized serial:")
-    MAE(serial_data, standard_data_mpi)
+    MAE(standard_data, standard_data_mpi)
 
 if __name__ == '__main__':
     main()
