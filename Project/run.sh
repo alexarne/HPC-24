@@ -28,7 +28,7 @@ srun -n 1 ./standard > ./output/output_standard.txt
 export OMP_NUM_THREADS=16
 OMP_PLACES=cores
 srun -n 1 ./standard_omp > ./output/output_omp.txt
-srun -n 4 ./standard_mpi > ./output/output_mpi.txt
+srun -n 4 ./standard_mpi
 
 #Clean-up:
 if [ ! -s "error_file.e" ]; then
