@@ -32,4 +32,4 @@ python plot_profiling.py
 
 ### Documentation
 
-The documentation was generated using Doxygen by running `doxygen doxygen_config` in this directory.
+The documentation was generated using Doxygen by running `doxygen doxygen_config` in this directory, which is also available on https://alexarne.github.io/HPC-24/.
