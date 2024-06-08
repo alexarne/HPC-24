@@ -1,3 +1,7 @@
+##
+# @file plot_positions.py
+# @brief plots the results found in ../output/
+#
 import numpy as np
 from matplotlib import pyplot as plt
 

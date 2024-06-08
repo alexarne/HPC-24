@@ -1,8 +1,13 @@
-#pragma once
+/**
+ * @file vec3.hpp
+ * @author HPC-Group 7
+ * @brief \copybrief vec3
+ * 
+ */
 
 /**
  * @brief minimalistic 3d-vector data structure 
- * 
+ *
  * Contains the needed operations for the project. 
  */
 struct vec3 {

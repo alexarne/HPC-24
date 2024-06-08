@@ -1,7 +1,7 @@
 /**
  * @file optimized_mpi.cpp
  * @author HPC-Group 7
- * @brief OpenMPI implementation using tree nodes 
+ * @brief OpenMPI implementation using a tree topology
  * 
  */
 

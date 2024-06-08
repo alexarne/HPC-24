@@ -1,3 +1,10 @@
+/**
+ * @file constants.hpp
+ * @author HPC-Group 7
+ * @brief Containts simulation parameters and constants to be used in the simulation.
+ * 
+ */
+
 // Discritization Constants
 constexpr double h = 0.1;
 constexpr double dt= 0.01;

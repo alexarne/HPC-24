@@ -1,3 +1,8 @@
+##
+# @file plot_profiling.py
+# @brief plot craypat results
+# Must change label and filename manually
+#
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np

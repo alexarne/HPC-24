@@ -1,3 +1,7 @@
+##
+# @file save_anim.py
+# @brief creates ./animation.gif/ from particle outputs found in ../output/
+#
 import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
