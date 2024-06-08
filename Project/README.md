@@ -3,7 +3,7 @@
 Optimization project for DD2356 Methods in High Performance Computing at KTH Royal Institute of Technology, based on the Python implementation and write-up by Philip Mocz: https://philip-mocz.medium.com/create-your-own-smoothed-particle-hydrodynamics-simulation-with-python-76e1cec505f1
 
 ### Run
-To run the different implementations in C++. Run the ```run.sh```bash sricpt with:
+To run the different implementations in C++. Run the ```run.sh``` bash sricpt with:
 
 ```sbatch run.sh```
 
