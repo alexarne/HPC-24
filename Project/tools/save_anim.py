@@ -1,5 +1,6 @@
 ##
 # @file save_anim.py
+# @author HPC-Group 7
 # @brief creates ./animation.gif/ from particle outputs found in ../output/
 #
 import numpy as np

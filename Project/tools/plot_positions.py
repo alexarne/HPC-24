@@ -1,5 +1,6 @@
 ##
 # @file plot_positions.py
+# @author HPC-Group 7
 # @brief plots the results found in ../output/
 #
 import numpy as np

@@ -1,5 +1,6 @@
 ##
 # @file compare_output.py
+# @author HPC-Group 7
 # @brief prints a comparison of the outputs found in ../outputs/
 #
 import pandas as pd
