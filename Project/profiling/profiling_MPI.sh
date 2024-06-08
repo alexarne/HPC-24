@@ -18,27 +18,27 @@ module load perftools-lite
 export OMP_NUM_THREADS=16
 OMP_PLACES=cores
 
-CC -O2 -o standard_mpi.x standard_mpi.cpp -openmp
+CC -O2 -o optimized_mpi.x optimized_mpi.cpp -openmp
 
-pat_build standard_mpi.x+pat
+pat_build optimized_mpi.x+pat
 
 mkdir -p craypat_outputs
 for i in {1..2};
 do
-    srun -n 1 ./standard_mpi.x > craypat_outputs/craypat_1_iter$i.txt
-    srun -n 2 ./standard_mpi.x > craypat_outputs/craypat_2_iter$i.txt
-    srun -n 4 ./standard_mpi.x > craypat_outputs/craypat_4_iter$i.txt
-    srun -n 8 ./standard_mpi.x > craypat_outputs/craypat_8_iter$i.txt
-    srun -n 12 ./standard_mpi.x > craypat_outputs/craypat_12_iter$i.txt
-    srun -n 16 ./standard_mpi.x > craypat_outputs/craypat_16_iter$i.txt
+    srun -n 1 ./optimized_mpi.x > craypat_outputs/craypat_1_iter$i.txt
+    srun -n 2 ./optimized_mpi.x > craypat_outputs/craypat_2_iter$i.txt
+    srun -n 4 ./optimized_mpi.x > craypat_outputs/craypat_4_iter$i.txt
+    srun -n 8 ./optimized_mpi.x > craypat_outputs/craypat_8_iter$i.txt
+    srun -n 12 ./optimized_mpi.x > craypat_outputs/craypat_12_iter$i.txt
+    srun -n 16 ./optimized_mpi.x > craypat_outputs/craypat_16_iter$i.txt
 done
 
 pat_report
 
 #Clean-up:
-rm -rf standard_mpi.x+*
-rm standard_mpi.x
-rm standard_mpi.x+orig
+rm -rf optimized_mpi.x+*
+rm optimized_mpi.x
+rm optimized_mpi.x+orig
 cd profiling
 if [ ! -s "error_file.e" ]; then
     rm "error_file.e"

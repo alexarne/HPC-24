@@ -17,9 +17,9 @@ rr[:, 0] = rlin
 
 # Load data from CSV files
 pos = np.genfromtxt(f"../output/particle_positions_serial.csv", delimiter=',', skip_header=True)
-pos_standard = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
+pos_optimized = np.genfromtxt(f"../output/particle_positions_optimized.csv", delimiter=',', skip_header=True)
 rhos = np.genfromtxt(f"../output/density_serial.csv", delimiter=',')
-rhos_standard = np.genfromtxt(f"../output/density_standard.csv", delimiter=',')
+rhos_optimized = np.genfromtxt(f"../output/density_optimized.csv", delimiter=',')
 # Determine N
 ts = pos[:, 0]
 N = len(ts[ts == ts[0]])
@@ -41,7 +41,7 @@ for frame in range(int(len(ts) / N)):
     # Update ax3
     plt.sca(ax3)
     plt.cla()
-    plt.scatter(pos_standard[N*frame-N:frame*N, 1], pos_standard[N*frame-N:frame*N, 2], cmap=plt.cm.autumn, s=10, alpha=0.5)
+    plt.scatter(pos_optimized[N*frame-N:frame*N, 1], pos_optimized[N*frame-N:frame*N, 2], cmap=plt.cm.autumn, s=10, alpha=0.5)
     ax3.set(xlim=(-1.4, 1.4), ylim=(-1.2, 1.2))
     ax3.set_aspect('equal', 'box')
     ax3.set_xticks([-1, 0, 1])
@@ -62,7 +62,7 @@ for frame in range(int(len(ts) / N)):
     plt.cla()
     ax4.set(xlim=(0, 1))#, ylim=(0, 3))
     #ax4.set_aspect(0.1)
-    plt.plot(rlin, rhos_standard[frame-1, :], color='blue')
+    plt.plot(rlin, rhos_optimized[frame-1, :], color='blue')
 
     # Pause to create animation effect
     plt.pause(0.01)

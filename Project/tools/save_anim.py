@@ -13,8 +13,8 @@ rlin = np.linspace(0, 1, 100)
 rr[:, 0] = rlin
 
 # Load data from CSV files
-pos = np.genfromtxt(f"../output/particle_positions_standard.csv", delimiter=',', skip_header=True)
-rhos = np.genfromtxt(f"../output/density_standard.csv", delimiter=',')
+pos = np.genfromtxt(f"../output/particle_positions_optimized.csv", delimiter=',', skip_header=True)
+rhos = np.genfromtxt(f"../output/density_optimized.csv", delimiter=',')
 
 # Determine N
 ts = pos[:, 0]

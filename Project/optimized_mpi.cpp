@@ -1,11 +1,11 @@
 /**
- * @file standard_mpi.cpp
+ * @file optimized_mpi.cpp
  * @author HPC-Group 7
  * @brief OpenMPI implementation using tree nodes 
  * 
  */
 
-#include "standard_core.hpp"
+#include "optimized_core.hpp"
 #include <mpi.h>
 
 #define SYNC_ACCELERATION 0x20
@@ -205,7 +205,7 @@ int main(int argc, char* argv[]) {
     
     if(is_root()) {
         // Open CSV file for writing
-        out_file = std::ofstream("output/particle_positions_standard_mpi.csv", std::ios::trunc);
+        out_file = std::ofstream("output/particle_positions_optimized_mpi.csv", std::ios::trunc);
         if (!out_file.is_open()) {
             std::cerr << "Error: Unable to open file for writing." << std::endl;
             MPI_Finalize();

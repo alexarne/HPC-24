@@ -1,5 +1,5 @@
 /**
- * @file standard_core.hpp
+ * @file optimized_core.hpp
  * @author HPC-Group 7
  * @brief Contains core functions used in the optimized implementation of the project.
  * 

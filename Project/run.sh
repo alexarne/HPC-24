@@ -16,26 +16,26 @@
 ##  OpenMP: 16 threads are used
 
 
-CC -O2 -o standard_omp standard_omp.cpp -openmp
-CC -O2 -o standard_mpi standard_mpi.cpp -openmp
+CC -O2 -o optimized_omp optimized_omp.cpp -openmp
+CC -O2 -o optimized_mpi optimized_mpi.cpp -openmp
 CC -O2 -o serial serial.cpp
-CC -O2 -o standard standard.cpp
+CC -O2 -o optimized optimized.cpp
 mkdir -p output
 
 srun -n 1 ./serial > ./output/output_serial.txt
-srun -n 1 ./standard > ./output/output_standard.txt
+srun -n 1 ./optimized > ./output/output_optimized.txt
 
 export OMP_NUM_THREADS=16
 OMP_PLACES=cores
-srun -n 1 ./standard_omp > ./output/output_omp.txt
-srun -n 4 ./standard_mpi
+srun -n 1 ./optimized_omp > ./output/output_omp.txt
+srun -n 4 ./optimized_mpi
 
 #Clean-up:
 if [ ! -s "error_file.e" ]; then
     rm "error_file.e"
 fi
-rm standard_omp
-rm standard
-rm standard_mpi
+rm optimized_omp
+rm optimized
+rm optimized_mpi
 rm serial
 rm slurm-*.out
