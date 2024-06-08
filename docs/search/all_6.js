@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['of_20toy_20star_0',['Project: Smoothed-Particle Hydrodynamics simulation of Toy Star',['../index.html',1,'']]],
-  ['optimized_2ecpp_1',['optimized.cpp',['../optimized_8cpp.html',1,'']]],
-  ['optimized_5fcore_2ehpp_2',['optimized_core.hpp',['../optimized__core_8hpp.html',1,'']]],
-  ['optimized_5fmpi_2ecpp_3',['optimized_mpi.cpp',['../optimized__mpi_8cpp.html',1,'']]],
-  ['optimized_5fomp_2ecpp_4',['optimized_omp.cpp',['../optimized__omp_8cpp.html',1,'']]]
+  ['project_3a_20smoothed_2dparticle_20hydrodynamics_20simulation_20of_20toy_20star_21',['Project: Smoothed-Particle Hydrodynamics simulation of Toy Star',['../index.html',1,'']]],
+  ['pirogi2_22',['pirogi2',['../optimized__core_8hpp.html#a7d4e21311e986cd9327330fd53f3e038',1,'optimized_core.hpp']]],
+  ['plot_5fpositions_2epy_23',['plot_positions.py',['../plot__positions_8py.html',1,'']]],
+  ['plot_5fprofiling_2epy_24',['plot_profiling.py',['../plot__profiling_8py.html',1,'']]],
+  ['points_25',['points',['../optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f',1,'optimized_core.hpp']]]
 ];
