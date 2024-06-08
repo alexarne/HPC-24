@@ -1,18 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <chrono>
-#include <stdint.h>
-#include <random>
-#include <vector>
+/**
+ * @file standard_mpi.cpp
+ * @author HPC-Group 7
+ * @brief OpenMPI implementation using tree nodes 
+ * 
+ */
+
+#include "standard_core.hpp"
 #include <mpi.h>
-#include <iomanip> 
-
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <tgmath.h>
-
-#include "constants.hpp"
-
 
 #define SYNC_ACCELERATION 0x20
 #define SYNC_PIROGI 0x21
@@ -22,32 +16,7 @@
 
 #define SEND_REGIONS 0x24
 
-
-constexpr double ih1 = 1.0 / h;
-constexpr double ih2 = 1.0 / (h * h);
-constexpr double ih3 = 1.0 / (h * h * h);
-constexpr double ih5 = 1.0 / (h * h * h * h * h);
-
-// pow is not constexpr but it should be evaluated during optimization
-const double lambda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
-
-struct vec3 {
-    double x, y, z;
-    double r2() const { return x*x + y*y + z*z; }
-
-    vec3 operator+ (const vec3& b) const {
-        return {x + b.x, y + b.y, z + b.z};
-    } 
-
-    vec3 operator- (const vec3& b) const {
-        return {x - b.x, y - b.y, z - b.z};
-    }
-
-    vec3 operator* (const double s) const {
-        return {s * x, s * y, s * z};
-    }
-};
-
+//! struct containing the responsible range and rank of a node. 
 struct mpi_node
 {
     int rank;
@@ -61,68 +30,8 @@ struct mpi_node
 };
 
 
-
-// P_i / rho_i^2                 https://przepisytradycyjne.pl/idealne-ciasto-na-pierogi
-double pirogi2[particles];
-double rhos[100];
-
-vec3 points[particles];
-vec3 velocities[particles];
-vec3 accelerations[particles];
-vec3 rr[100];
-
-
-// Kernel function and gradient
-double W(const vec3 &p) {
-    const double scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
-    return scalar * std::exp(-p.r2() * ih2);
-}
-
-vec3 gradW(const vec3 &p) {
-    const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
-    const double s2 =  s1 * std::exp(-p.r2() * ih2);
-    return p * s2;
-}
-
-
-void calc_rho(const size_t index) {
-    double rho = 0;
-    auto pos = rr[index];
-
-    for(int i = 0; i < particles; i++)
-        rho += m* W(pos - points[i]);
-    
-    rhos[index] = rho;
-}
-
-
-void calc_pirogi2(const size_t particle_index) {
-    double rho = 0;
-    auto pos = points[particle_index];
-
-    for(int i = 0; i < particles; i++)
-        rho += m * W(pos - points[i]);
-
-    // P = (k \rho^{1 + n^{-1}})
-    // \frac{P}{\rho^2} = m k \rho ^{-1 + n^{-1}}
-    pirogi2[particle_index] = k * std::pow(rho, -1.0 + 1.0/n);
-}
-
-void calc_accelleration(const size_t particle_index) {
-    vec3 sum = {0, 0, 0};
-
-    const vec3 pos = points[particle_index];
-    for(int i = 0; i < particles; i++) 
-        if(i != particle_index) {
-            const double scalar = pirogi2[particle_index] + pirogi2[i];
-            sum = sum + (gradW(pos - points[i]) * scalar);
-        }
-
-    accelerations[particle_index] = (sum * -m) + (pos * -lambda) + (velocities[particle_index] * -nu);
-}
-
 int size, provided;
-mpi_node self_node(0);
+mpi_node self_node(0); //!< node of the current process/
 
 std::vector<mpi_node> children;
 int parent_rank;
@@ -130,8 +39,12 @@ int parent_rank;
 inline bool is_root() { return parent_rank < 0; }
 inline bool has_parent() { return parent_rank >= 0; }
 
-
-// set up responsible regions (1/size and rest evenly split)
+/**
+ * @brief Prepares and assigns the responsible regions for every process
+ * 
+ * Each process is will be assigned to compute particles/size particles,
+ * and the remaining region is split evenly among its children.
+ */
 void init_tree_sizes() {
     MPI_Status status;
     if(has_parent())
@@ -154,7 +67,7 @@ void init_tree_sizes() {
         MPI_Send(child.range, 2, MPI_INT, child.rank, SEND_REGIONS, MPI_COMM_WORLD);
 }
 
-// SEND DATA DOWN THE TREE
+//! Trickle down the P_i / rho_i^2 values to all processes.
 void sync_pirogi() {
     MPI_Status status;
     if(has_parent())
@@ -164,6 +77,7 @@ void sync_pirogi() {
         MPI_Send(pirogi2, particles, MPI_DOUBLE, child.rank, SYNC_PIROGI, MPI_COMM_WORLD);
 }
 
+//! Trickle down the accelecation values to all processes
 void sync_accleraion() {
     const int vec_size = sizeof(vec3) / sizeof(double);
     
@@ -175,7 +89,12 @@ void sync_accleraion() {
         MPI_Send(accelerations, particles * vec_size, MPI_DOUBLE, target.rank, SYNC_ACCELERATION, MPI_COMM_WORLD);
 }
 
-// CALCULATE AND SEND DATA UP THE TREE
+/**
+ * @brief Compute responsible values of pirogi, and distribute the results to all processes.
+ * 
+ * Specifically, results are computed, trickled up to the root node, 
+ * which then sends the results down to all processes using sync_pirogi.
+ */
 void mpi_pirogi() {
     // region computed by current node
     const int self_right = children.size() ? children[0].range[0] : self_node.range[1];
@@ -202,6 +121,12 @@ void mpi_pirogi() {
     sync_pirogi();
 }
 
+/**
+ * @brief Compute responsible acceleration values, and distribute the results to all processes.
+ * 
+ * Specifically, results are computed, trickled up to the root node, 
+ * which then sends the results down to all processes using sync_acceleration.
+ */
 void mpi_acceleration() {
     // region computed by current node
     const int self_right = children.size() ? children[0].range[0] : self_node.range[1];
@@ -265,7 +190,6 @@ void write_data() {
 }
 
 int main(int argc, char* argv[]) {
-
     MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &self_node.rank);
@@ -278,7 +202,6 @@ int main(int argc, char* argv[]) {
     parent_rank = t_id / 2 - 1;
     
     init_tree_sizes();
-
     
     if(is_root()) {
         // Open CSV file for writing
@@ -294,16 +217,10 @@ int main(int argc, char* argv[]) {
     }
 
 
-    std::random_device rd;
-    std::mt19937 gen(42);            
-    std::normal_distribution<> dist(0.0, 1.0);
-    srand(0xfacade);
-    
-    for(int i = 0; i < particles; i++)
-        points[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};
-
+    init_particles();
     write_data();
-    // update mprhogi2 values for acceleration
+
+    // update pirogi2 values for acceleration
     mpi_pirogi();
     mpi_acceleration();
 

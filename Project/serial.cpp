@@ -1,3 +1,11 @@
+/**
+ * @file serial.cpp
+ * @author HPC-Group 7
+ * @brief Direct port of python implementation
+ * 
+ * Source this was based on can be found here:
+ * https://philip-mocz.medium.com/create-your-own-smoothed-particle-hydrodynamics-simulation-with-python-76e1cec505f1
+ */
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -21,31 +29,33 @@ void print_array(const double *A, int rows, int cols){
     }
 }
 
+/**
+ * @brief Gradient of the Gaussian Smoothing kernel (3D)
+ * 
+ *	x     is a vector/matrix of x positions
+ *	y     is a vector/matrix of y positions
+ *	z     is a vector/matrix of z positions
+ *	h     is the smoothing length
+ *	wx, wy, wz     is the evaluated gradient
+ */
 void compute_W(const double *x, const double *y, const double *z, int M_, int N_, double *W) {
-    /*
-	Gradient of the Gaussian Smoothing kernel (3D)
-	x     is a vector/matrix of x positions
-	y     is a vector/matrix of y positions
-	z     is a vector/matrix of z positions
-	h     is the smoothing length
-	wx, wy, wz     is the evaluated gradient
-	*/
     for (int i = 0; i < (M_ * N_); i++) {
         double r = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);
         W[i] = (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * exp(-r * r / (h * h));
     }
 }
 
+
+/**
+ * @brief Gradient of the Gaussian Smoothing kernel (3D)
+ * 	
+ * x     is a vector/matrix of x positions
+ * y     is a vector/matrix of y positions
+ * z     is a vector/matrix of z positions
+ * h     is the smoothing length
+ * wx, wy, wz     is the evaluated gradient
+ */
 void compute_gradW(const double *x, const double *y, const double *z, int M_, int N_, double *wx, double *wy, double *wz){
-    /*
-	Gradient of the Gaussian Smoothing kernel (3D)
-	x     is a vector/matrix of x positions
-	y     is a vector/matrix of y positions
-	z     is a vector/matrix of z positions
-	h     is the smoothing length
-	wx, wy, wz     is the evaluated gradient
-	*/
-    
     double *n = new double[M_ * N_];
     double *r = new double[M_ * N_];
 
@@ -62,14 +72,14 @@ void compute_gradW(const double *x, const double *y, const double *z, int M_, in
     delete[] r;
 }
 
+/**
+ * @brief Get pairwise separations between 2 sets of coordinates
+ * 
+ *	ri    is an M x 3 matrix of positions
+ *	rj    is an N x 3 matrix of positions
+ *	dx, dy, dz   are M x N matrices of separations
+ */
 void getPairwiseSeparations(const double *ri, const double *rj, int M_, int N_, double *dx, double *dy, double *dz) {
-    /*
-	Get pairwise separations between 2 sets of coordinates
-	ri    is an M x 3 matrix of positions
-	rj    is an N x 3 matrix of positions
-	dx, dy, dz   are M x N matrices of separations
-	*/
-
     for (int i = 0; i < M_; i++) {
         for (int j = 0; j < N_; j++) {
             dx[i * N_ + j] = ri[i * 3] - rj[j * 3];
@@ -79,16 +89,15 @@ void getPairwiseSeparations(const double *ri, const double *rj, int M_, int N_, 
     }
 }
 
+/**
+ * @brief Get Density at sampling locations from SPH particle distribution
+ *   r     is an M x 3 matrix of sampling locations
+ *   pos   is an N x 3 matrix of SPH particle positions
+ *   m     is the particle mass
+ *   h     is the smoothing length
+ *   rho   is M x 1 vector of densities
+ */
 void getDensity(const double *r, const double *pos, int M_, int N_, double *rho) {
-    /*
-    Get Density at sampling locations from SPH particle distribution
-    r     is an M x 3 matrix of sampling locations
-    pos   is an N x 3 matrix of SPH particle positions
-    m     is the particle mass
-    h     is the smoothing length
-    rho   is M x 1 vector of densities
-    */
-
     double *dx = new double[M_ * N_];
     double *dy = new double[M_ * N_];
     double *dz = new double[M_ * N_];
@@ -114,24 +123,25 @@ void getDensity(const double *r, const double *pos, int M_, int N_, double *rho)
 
 
 void getPressure(const double *rho, double *P){
-    
     for (int i = 0; i < particles; ++i) {
         P[i] = k * pow(rho[i], 1.0 + 1.0 / n);
     }
 }
 
+/**
+ * @brief Calculate the acceleration on each SPH particle
+ * pos   is an N x 3 matrix of positions
+ * vel   is an N x 3 matrix of velocities
+ * lmbda external force constant
+ * a     is N x 3 matrix of accelerations
+ * nu    viscosity
+ */
 void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *a){
     /*
-	Calculate the acceleration on each SPH particle
-	pos   is an N x 3 matrix of positions
-	vel   is an N x 3 matrix of velocities
 	m     is the particle mass
 	h     is the smoothing length
 	k     equation of state constant
 	n     polytropic index
-	lmbda external force constant
-	nu    viscosity
-	a     is N x 3 matrix of accelerations
 	*/
     double rho[N_], P[N_];
     getDensity(pos, pos, N_, N_, rho);
@@ -184,7 +194,6 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
 }
 
 void write(double *rho, double *pos, double time, std::ofstream& outFile, std::ofstream& outFile2){
-
     // Write positions to CSV file
     for (int i = 0; i < particles; ++i) {
         outFile << time << "," << pos[i * 3] << "," << pos[i * 3 + 1] << "," << pos[i * 3 + 2] << std::endl;
