@@ -27,3 +27,7 @@ cd profiling
 sbatch profiling_MPI_single.sh
 python plot_profiling.py
 ```
+
+### Documentation
+
+The documentation was generated using Doxygen by running `doxygen doxygen_config` in this directory.
