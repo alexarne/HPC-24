@@ -9,6 +9,11 @@
 
 double t;
 size_t frame = 0;
+
+/**
+ * @brief Simulate a time step in the simulation
+ * 
+ */
 void step() {
     // first kick
     #pragma omp parallel
@@ -41,12 +46,21 @@ void step() {
     frame++;
 }
 
-
+/**
+ * @brief Write the current positions to the output file
+ * 
+ * @param out_file The output file
+ */
 void write_positions(std::ofstream& out_file) {
     for (int i = 0; i < particles; i++)
         out_file << t << "," << points[i].x << "," << points[i].y << "," << points[i].z << "\n";
 }
 
+/**
+ * @brief Write the current density samples to the output file
+ * 
+ * @param out_file The output file
+ */
 void write_density(std::ofstream& out_file) {
     for (int i = 0; i < 99; i++)
         out_file << rhos[i] << ",";

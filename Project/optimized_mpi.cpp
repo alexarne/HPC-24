@@ -156,6 +156,11 @@ void mpi_acceleration() {
 
 double t;
 size_t frame = 0;
+
+/**
+ * @brief Simulate a time step in the simulation
+ * 
+ */
 void step() {
     // first kick
     #pragma omp parallel
@@ -184,6 +189,10 @@ void step() {
 }
 
 std::ofstream out_file;
+/**
+ * @brief Write the data (particle positions) to the pre-defined output file
+ * 
+ */
 void write_data() {
     for (int i = 0; i < particles; i++)
         out_file << t << "," << points[i].x << "," << points[i].y << "," << points[i].z << "\n";

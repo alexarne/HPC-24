@@ -52,8 +52,8 @@ vec3 accelerations[particles];      //!< particle accelerations
 /**
  * @brief Kernel function evaluated at p
  * 
- * @param p
- * @return * double 
+ * @param p vec3 of distance from the center of the kernel
+ * @return The calculated kernel function output 
  */
 double W(const vec3 &p) {
     const double scalar =  ih3 * std::pow(std::sqrt(M_PI), -3);
@@ -63,8 +63,8 @@ double W(const vec3 &p) {
 /**
  * @brief Kernel function gradient at p
  * 
- * @param p 
- * @return vec3 
+ * @param p vec3 of distance from the center of the kernel
+ * @return vec3 The calculated gradient of the kernel function at that position 
  */
 vec3 gradW(const vec3 &p) {
     const double s1 = -2.0 * std::pow(M_PI, -1.5f) * std::pow(h, -5.0);
@@ -76,7 +76,7 @@ vec3 gradW(const vec3 &p) {
 /**
  * @brief Computes density of particle at rr[index], result is stored in rhos[index]
  * 
- * @param index 
+ * @param index The index for the density to calculate
  */
 void calc_rho(const size_t index) {
     double rho = 0;
@@ -92,7 +92,7 @@ void calc_rho(const size_t index) {
 /**
  * @brief Computes and stores the \frac{P}{\rho^2} value of a particle. 
  * 
- * @param particle_index 
+ * @param particle_index The index of the particle
  */
 void calc_pirogi2(const size_t particle_index) {
     double rho = 0;
@@ -109,7 +109,7 @@ void calc_pirogi2(const size_t particle_index) {
 /**
  * @brief Computes and stores the acceleration of a particle. 
  * 
- * @param particle_index 
+ * @param particle_index The index of the particle
  */
 void calc_accelleration(const size_t particle_index) {
     vec3 sum = {0, 0, 0};
@@ -124,6 +124,10 @@ void calc_accelleration(const size_t particle_index) {
     accelerations[particle_index] = (sum * -m) + (pos * -lambda) + (velocities[particle_index] * -nu);
 }
 
+/**
+ * @brief Randomly initialize all particles' starting positions.
+ * 
+ */
 void init_particles() {
     std::random_device rd;
     std::mt19937 gen(42);            

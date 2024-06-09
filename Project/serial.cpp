@@ -18,17 +18,6 @@ const double t = 0.0;      // current time of the simulation
 const double lmbda = 2.0 * k * (1 + n) * std::pow(M_PI, -3.0/(2*n)) * std::pow(M * std::tgamma(5.0/2.0 + n) / (R * R * R * std::tgamma(1 + n)), 1.0/n) / (R * R);
 
 
-void print_array(const double *A, int rows, int cols){
-    std::cout << std::fixed << std::setprecision(9);
-    for (int i = 0; i < rows; ++i){
-        std::cout << "[ ";
-        for (int j = 0; j < cols; ++j){
-            std::cout << A[i * cols + j] << " ";
-        }
-        std::cout << "]" << std::endl;
-    }
-}
-
 /**
  * @brief Gradient of the Gaussian Smoothing kernel (3D)
  * 
@@ -121,7 +110,12 @@ void getDensity(const double *r, const double *pos, int M_, int N_, double *rho)
     delete[] W;
 }
 
-
+/**
+ * @brief Calculate the pressure for each particle
+ * 
+ * @param rho The density for each particle
+ * @param P The array for pressure outputs
+ */
 void getPressure(const double *rho, double *P){
     for (int i = 0; i < particles; ++i) {
         P[i] = k * pow(rho[i], 1.0 + 1.0 / n);
@@ -193,6 +187,15 @@ void getAcc(const double *pos, const double *vel, double lmbda, int N_, double *
     }
 }
 
+/**
+ * @brief Write the particle's current positions and the density samples to the respective output files
+ * 
+ * @param rho Array with densitiy samples
+ * @param pos Array with particle positions (flattened N x 3 matrix)
+ * @param time Current time of the simulation
+ * @param outFile The output file to print the particle positions to
+ * @param outFile2 The output file to print the density samples to 
+ */
 void write(double *rho, double *pos, double time, std::ofstream& outFile, std::ofstream& outFile2){
     // Write positions to CSV file
     for (int i = 0; i < particles; ++i) {
