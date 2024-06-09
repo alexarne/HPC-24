@@ -196,95 +196,96 @@ $(function() {
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keywordtype">double</span> t;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="keywordtype">size_t</span> frame = 0;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="keywordtype">void</span> step() {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">// first kick</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">    #pragma omp parallel</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">        #pragma omp for</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] = <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] + <a class="code" href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a>[i] * (dt / 2);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="optimized__mpi_8cpp.html#ac6bf1a12c5c98ddec5b65e07fe74cabe">  164</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="optimized__mpi_8cpp.html#ac6bf1a12c5c98ddec5b65e07fe74cabe">step</a>() {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">// first kick</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">    #pragma omp parallel</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    {</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="preprocessor">        #pragma omp for</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] = <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] + <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] * dt;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a9fa473c36bf1e9c402df187f450f0dd6">mpi_pirogi</a>();</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a305f38748cfb4abb3a64609e3bef0c64">mpi_acceleration</a>();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="comment">// second kick</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">    #pragma omp parallel for</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] = <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] + <a class="code" href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a>[i] * (dt / 2);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] = <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] + <a class="code" href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a>[i] * (dt / 2);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">        #pragma omp for</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] = <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] + <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] * dt;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a9fa473c36bf1e9c402df187f450f0dd6">mpi_pirogi</a>();</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a305f38748cfb4abb3a64609e3bef0c64">mpi_acceleration</a>();</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    t += dt;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    frame++;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;}</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;std::ofstream out_file;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="keywordtype">void</span> write_data() {</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        out_file &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].x &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].y &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].z &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;}</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[]) {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    MPI_Init_thread(&amp;argc, &amp;argv, MPI_THREAD_FUNNELED, &amp;provided);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    MPI_Comm_size(MPI_COMM_WORLD, &amp;size);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    MPI_Comm_rank(MPI_COMM_WORLD, &amp;<a class="code" href="optimized__mpi_8cpp.html#ab0d644984dc01fb7a3cfc84942bac9aa">self_node</a>.rank);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="comment">// setup tree topology</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> t_id = <a class="code" href="optimized__mpi_8cpp.html#ab0d644984dc01fb7a3cfc84942bac9aa">self_node</a>.rank + 1; <span class="comment">// 1 indexed binary tree node id</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordflow">if</span>(2 * t_id &lt;= size) children.push_back(<a class="code" href="structmpi__node.html">mpi_node</a>(2 * t_id - 1));</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">if</span>(2 * t_id + 1 &lt;= size) children.push_back(<a class="code" href="structmpi__node.html">mpi_node</a>(2 * t_id));</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    parent_rank = t_id / 2 - 1;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a39aaf77c33ea40749be4a00ec492619e">init_tree_sizes</a>();</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">if</span>(is_root()) {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="comment">// Open CSV file for writing</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        out_file = std::ofstream(<span class="stringliteral">&quot;output/particle_positions_optimized_mpi.csv&quot;</span>, std::ios::trunc);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keywordflow">if</span> (!out_file.is_open()) {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Unable to open file for writing.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            MPI_Finalize();</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        }</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        out_file &lt;&lt; std::scientific&lt;&lt; std::setprecision(15);</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        out_file &lt;&lt; <span class="stringliteral">&quot;Time,X,Y,Z&quot;</span> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    init_particles();</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    write_data();</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">// update pirogi2 values for acceleration</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a9fa473c36bf1e9c402df187f450f0dd6">mpi_pirogi</a>();</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a305f38748cfb4abb3a64609e3bef0c64">mpi_acceleration</a>();</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">int</span> iter = 0;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordtype">int</span> num_iters = round(t_end/dt);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">while</span>(iter &lt; num_iters) {</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        step();</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">if</span>(is_root()) {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="preprocessor">            #pragma omp parallel for</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 100; i++)</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                <a class="code" href="optimized__core_8hpp.html#af1f19a5777cb515c81bfdcc9772281de">calc_rho</a>(i);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <span class="keywordflow">if</span>(frame % skip_frames == 0)</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                write_data();</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">// second kick</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">    #pragma omp parallel for</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] = <a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[i] + <a class="code" href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a>[i] * (dt / 2);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    t += dt;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    frame++;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;std::ofstream out_file;</div>
+<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="optimized__mpi_8cpp.html#a411b75800f6c6c8b961b192e4ae9d0ae">  196</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="optimized__mpi_8cpp.html#a411b75800f6c6c8b961b192e4ae9d0ae">write_data</a>() {</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        out_file &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].x &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].y &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i].z &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;}</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[]) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    MPI_Init_thread(&amp;argc, &amp;argv, MPI_THREAD_FUNNELED, &amp;provided);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    MPI_Comm_size(MPI_COMM_WORLD, &amp;size);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    MPI_Comm_rank(MPI_COMM_WORLD, &amp;<a class="code" href="optimized__mpi_8cpp.html#ab0d644984dc01fb7a3cfc84942bac9aa">self_node</a>.rank);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="comment">// setup tree topology</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> t_id = <a class="code" href="optimized__mpi_8cpp.html#ab0d644984dc01fb7a3cfc84942bac9aa">self_node</a>.rank + 1; <span class="comment">// 1 indexed binary tree node id</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">if</span>(2 * t_id &lt;= size) children.push_back(<a class="code" href="structmpi__node.html">mpi_node</a>(2 * t_id - 1));</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordflow">if</span>(2 * t_id + 1 &lt;= size) children.push_back(<a class="code" href="structmpi__node.html">mpi_node</a>(2 * t_id));</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    parent_rank = t_id / 2 - 1;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a39aaf77c33ea40749be4a00ec492619e">init_tree_sizes</a>();</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordflow">if</span>(is_root()) {</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="comment">// Open CSV file for writing</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        out_file = std::ofstream(<span class="stringliteral">&quot;output/particle_positions_optimized_mpi.csv&quot;</span>, std::ios::trunc);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">if</span> (!out_file.is_open()) {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Unable to open file for writing.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            MPI_Finalize();</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        out_file &lt;&lt; std::scientific&lt;&lt; std::setprecision(15);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        out_file &lt;&lt; <span class="stringliteral">&quot;Time,X,Y,Z&quot;</span> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <a class="code" href="optimized__core_8hpp.html#a150271ae515d54c6fcf507a4ef8b3b6f">init_particles</a>();</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a411b75800f6c6c8b961b192e4ae9d0ae">write_data</a>();</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// update pirogi2 values for acceleration</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a9fa473c36bf1e9c402df187f450f0dd6">mpi_pirogi</a>();</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <a class="code" href="optimized__mpi_8cpp.html#a305f38748cfb4abb3a64609e3bef0c64">mpi_acceleration</a>();</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordtype">int</span> iter = 0;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordtype">int</span> num_iters = round(t_end/dt);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">while</span>(iter &lt; num_iters) {</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <a class="code" href="optimized__mpi_8cpp.html#ac6bf1a12c5c98ddec5b65e07fe74cabe">step</a>();</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        iter++;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    }</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    MPI_Finalize();</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;}</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">if</span>(is_root()) {</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="preprocessor">            #pragma omp parallel for</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 100; i++)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <a class="code" href="optimized__core_8hpp.html#af1f19a5777cb515c81bfdcc9772281de">calc_rho</a>(i);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keywordflow">if</span>(frame % skip_frames == 0)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                <a class="code" href="optimized__mpi_8cpp.html#a411b75800f6c6c8b961b192e4ae9d0ae">write_data</a>();</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        }</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        iter++;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    MPI_Finalize();</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aoptimized__core_8hpp_html_a7d4e21311e986cd9327330fd53f3e038"><div class="ttname"><a href="optimized__core_8hpp.html#a7d4e21311e986cd9327330fd53f3e038">pirogi2</a></div><div class="ttdeci">double pirogi2[particles]</div><div class="ttdoc">Contains the values of P_i / rho_i^2.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00041">optimized_core.hpp:41</a></div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_ab0d644984dc01fb7a3cfc84942bac9aa"><div class="ttname"><a href="optimized__mpi_8cpp.html#ab0d644984dc01fb7a3cfc84942bac9aa">self_node</a></div><div class="ttdeci">mpi_node self_node(0)</div><div class="ttdoc">node of the current process/</div></div>
@@ -292,14 +293,17 @@ $(function() {
 <div class="ttc" id="aoptimized__core_8hpp_html"><div class="ttname"><a href="optimized__core_8hpp.html">optimized_core.hpp</a></div><div class="ttdoc">Contains core functions used in the optimized implementation of the project.</div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_a39aaf77c33ea40749be4a00ec492619e"><div class="ttname"><a href="optimized__mpi_8cpp.html#a39aaf77c33ea40749be4a00ec492619e">init_tree_sizes</a></div><div class="ttdeci">void init_tree_sizes()</div><div class="ttdoc">Prepares and assigns the responsible regions for every process.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00048">optimized_mpi.cpp:48</a></div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_a6fc92ae0f809a05dea97fec5a016eb54"><div class="ttname"><a href="optimized__mpi_8cpp.html#a6fc92ae0f809a05dea97fec5a016eb54">sync_accleraion</a></div><div class="ttdeci">void sync_accleraion()</div><div class="ttdoc">Trickle down the accelecation values to all processes.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00081">optimized_mpi.cpp:81</a></div></div>
+<div class="ttc" id="aoptimized__mpi_8cpp_html_ac6bf1a12c5c98ddec5b65e07fe74cabe"><div class="ttname"><a href="optimized__mpi_8cpp.html#ac6bf1a12c5c98ddec5b65e07fe74cabe">step</a></div><div class="ttdeci">void step()</div><div class="ttdoc">Simulate a time step in the simulation.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00164">optimized_mpi.cpp:164</a></div></div>
 <div class="ttc" id="astructvec3_html"><div class="ttname"><a href="structvec3.html">vec3</a></div><div class="ttdoc">minimalistic 3d-vector data structure</div><div class="ttdef"><b>Definition:</b> <a href="vec3_8hpp_source.html#l00013">vec3.hpp:13</a></div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_a9fa473c36bf1e9c402df187f450f0dd6"><div class="ttname"><a href="optimized__mpi_8cpp.html#a9fa473c36bf1e9c402df187f450f0dd6">mpi_pirogi</a></div><div class="ttdeci">void mpi_pirogi()</div><div class="ttdoc">Compute responsible values of pirogi, and distribute the results to all processes.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00098">optimized_mpi.cpp:98</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_ac6d47cae7a71aac5f3c14e8d28c39c39"><div class="ttname"><a href="optimized__core_8hpp.html#ac6d47cae7a71aac5f3c14e8d28c39c39">calc_accelleration</a></div><div class="ttdeci">void calc_accelleration(const size_t particle_index)</div><div class="ttdoc">Computes and stores the acceleration of a particle.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00114">optimized_core.hpp:114</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a2d0860bb015344b7a21aaf81dd6f277e"><div class="ttname"><a href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a></div><div class="ttdeci">vec3 velocities[particles]</div><div class="ttdoc">particle velocities</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00048">optimized_core.hpp:48</a></div></div>
+<div class="ttc" id="aoptimized__mpi_8cpp_html_a411b75800f6c6c8b961b192e4ae9d0ae"><div class="ttname"><a href="optimized__mpi_8cpp.html#a411b75800f6c6c8b961b192e4ae9d0ae">write_data</a></div><div class="ttdeci">void write_data()</div><div class="ttdoc">Write the data (particle positions) to the pre-defined output file.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00196">optimized_mpi.cpp:196</a></div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_ab10f29690259ee36e6bcbee30aa56aae"><div class="ttname"><a href="optimized__mpi_8cpp.html#ab10f29690259ee36e6bcbee30aa56aae">sync_pirogi</a></div><div class="ttdeci">void sync_pirogi()</div><div class="ttdoc">Trickle down the P_i / rho_i^2 values to all processes.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00071">optimized_mpi.cpp:71</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a7fd69d9dfca8e8be36dfa9a9151b45fe"><div class="ttname"><a href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a></div><div class="ttdeci">vec3 accelerations[particles]</div><div class="ttdoc">particle accelerations</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00049">optimized_core.hpp:49</a></div></div>
 <div class="ttc" id="astructmpi__node_html"><div class="ttname"><a href="structmpi__node.html">mpi_node</a></div><div class="ttdoc">struct containing the responsible range and rank of a node.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00020">optimized_mpi.cpp:20</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a07ffa805346865e3aa876491a539925f"><div class="ttname"><a href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a></div><div class="ttdeci">vec3 points[particles]</div><div class="ttdoc">particle positions</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00047">optimized_core.hpp:47</a></div></div>
+<div class="ttc" id="aoptimized__core_8hpp_html_a150271ae515d54c6fcf507a4ef8b3b6f"><div class="ttname"><a href="optimized__core_8hpp.html#a150271ae515d54c6fcf507a4ef8b3b6f">init_particles</a></div><div class="ttdeci">void init_particles()</div><div class="ttdoc">Randomly initialize all particles' starting positions.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00131">optimized_core.hpp:131</a></div></div>
 <div class="ttc" id="aoptimized__mpi_8cpp_html_a305f38748cfb4abb3a64609e3bef0c64"><div class="ttname"><a href="optimized__mpi_8cpp.html#a305f38748cfb4abb3a64609e3bef0c64">mpi_acceleration</a></div><div class="ttdeci">void mpi_acceleration()</div><div class="ttdoc">Compute responsible acceleration values, and distribute the results to all processes.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__mpi_8cpp_source.html#l00130">optimized_mpi.cpp:130</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a672e50a437a0de8f5680cb6bf6ac8c16"><div class="ttname"><a href="optimized__core_8hpp.html#a672e50a437a0de8f5680cb6bf6ac8c16">calc_pirogi2</a></div><div class="ttdeci">void calc_pirogi2(const size_t particle_index)</div><div class="ttdoc">Computes and stores the \frac{P}{\rho^2} value of a particle.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00097">optimized_core.hpp:97</a></div></div>
 <!-- start footer part -->

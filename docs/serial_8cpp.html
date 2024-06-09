@@ -83,9 +83,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a91407fedc0bdb2058844859f15378057"><td class="memItemLeft" align="right" valign="top"><a id="a91407fedc0bdb2058844859f15378057"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_array</b> (const double *A, int rows, int cols)</td></tr>
-<tr class="separator:a91407fedc0bdb2058844859f15378057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74cf5fc795715a781d5e65ad4b35121c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="serial_8cpp.html#a74cf5fc795715a781d5e65ad4b35121c">compute_W</a> (const double *x, const double *y, const double *z, int M_, int N_, double *<a class="el" href="optimized__core_8hpp.html#af8c27085e6043562b09a4e9a7b1afc71">W</a>)</td></tr>
 <tr class="memdesc:a74cf5fc795715a781d5e65ad4b35121c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gradient of the Gaussian Smoothing kernel (3D)  <a href="serial_8cpp.html#a74cf5fc795715a781d5e65ad4b35121c">More...</a><br /></td></tr>
 <tr class="separator:a74cf5fc795715a781d5e65ad4b35121c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -99,15 +96,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>print_array</b> (cons
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="serial_8cpp.html#af37a392e701283faf3a640bd76af812a">getDensity</a> (const double *r, const double *pos, int M_, int N_, double *rho)</td></tr>
 <tr class="memdesc:af37a392e701283faf3a640bd76af812a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Density at sampling locations from SPH particle distribution r is an M x 3 matrix of sampling locations pos is an N x 3 matrix of SPH particle positions m is the particle mass h is the smoothing length rho is M x 1 vector of densities. <br /></td></tr>
 <tr class="separator:af37a392e701283faf3a640bd76af812a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b32dc1a720c782d8957cb9820809a47"><td class="memItemLeft" align="right" valign="top"><a id="a2b32dc1a720c782d8957cb9820809a47"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getPressure</b> (const double *rho, double *P)</td></tr>
+<tr class="memitem:a2b32dc1a720c782d8957cb9820809a47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="serial_8cpp.html#a2b32dc1a720c782d8957cb9820809a47">getPressure</a> (const double *rho, double *P)</td></tr>
+<tr class="memdesc:a2b32dc1a720c782d8957cb9820809a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the pressure for each particle.  <a href="serial_8cpp.html#a2b32dc1a720c782d8957cb9820809a47">More...</a><br /></td></tr>
 <tr class="separator:a2b32dc1a720c782d8957cb9820809a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a153ef2daae277a078123420c5fdf55ed"><td class="memItemLeft" align="right" valign="top"><a id="a153ef2daae277a078123420c5fdf55ed"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="serial_8cpp.html#a153ef2daae277a078123420c5fdf55ed">getAcc</a> (const double *pos, const double *vel, double lmbda, int N_, double *a)</td></tr>
 <tr class="memdesc:a153ef2daae277a078123420c5fdf55ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the acceleration on each SPH particle pos is an N x 3 matrix of positions vel is an N x 3 matrix of velocities lmbda external force constant a is N x 3 matrix of accelerations nu viscosity. <br /></td></tr>
 <tr class="separator:a153ef2daae277a078123420c5fdf55ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d66d5af23e2015163c1c5b86e201b29"><td class="memItemLeft" align="right" valign="top"><a id="a4d66d5af23e2015163c1c5b86e201b29"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (double *rho, double *pos, double time, std::ofstream &amp;outFile, std::ofstream &amp;outFile2)</td></tr>
+<tr class="memitem:a4d66d5af23e2015163c1c5b86e201b29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="serial_8cpp.html#a4d66d5af23e2015163c1c5b86e201b29">write</a> (double *rho, double *pos, double time, std::ofstream &amp;outFile, std::ofstream &amp;outFile2)</td></tr>
+<tr class="memdesc:a4d66d5af23e2015163c1c5b86e201b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the particle's current positions and the density samples to the respective output files.  <a href="serial_8cpp.html#a4d66d5af23e2015163c1c5b86e201b29">More...</a><br /></td></tr>
 <tr class="separator:a4d66d5af23e2015163c1c5b86e201b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top"><a id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
@@ -193,23 +190,23 @@ const double&#160;</td><td class="memItemRight" valign="bottom"><b>lmbda</b> = 2
 <p>Gradient of the Gaussian Smoothing kernel (3D) </p>
 <p>x is a vector/matrix of x positions y is a vector/matrix of y positions z is a vector/matrix of z positions h is the smoothing length wx, wy, wz is the evaluated gradient </p>
 
-<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00058">58</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                                                                                                         {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">double</span> *n = <span class="keyword">new</span> <span class="keywordtype">double</span>[M_ * N_];</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> *r = <span class="keyword">new</span> <span class="keywordtype">double</span>[M_ * N_];</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (M_ * N_); i++) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        r[i] = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        n[i] = -2.0 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5.0) / pow(M_PI, 1.5);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        wx[i] = n[i] * x[i];</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        wy[i] = n[i] * y[i];</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        wz[i] = n[i] * z[i];</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">delete</span>[] n;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">delete</span>[] r;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00047">47</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                                                                                                                         {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">double</span> *n = <span class="keyword">new</span> <span class="keywordtype">double</span>[M_ * N_];</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> *r = <span class="keyword">new</span> <span class="keywordtype">double</span>[M_ * N_];</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (M_ * N_); i++) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        r[i] = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        n[i] = -2.0 * exp(-r[i] * r[i] / (h * h)) / pow(h, 5.0) / pow(M_PI, 1.5);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        wx[i] = n[i] * x[i];</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        wy[i] = n[i] * y[i];</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        wz[i] = n[i] * z[i];</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">delete</span>[] n;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">delete</span>[] r;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -266,13 +263,13 @@ const double&#160;</td><td class="memItemRight" valign="bottom"><b>lmbda</b> = 2
 <p>Gradient of the Gaussian Smoothing kernel (3D) </p>
 <p>x is a vector/matrix of x positions y is a vector/matrix of y positions z is a vector/matrix of z positions h is the smoothing length wx, wy, wz is the evaluated gradient </p>
 
-<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00041">41</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                                                                                             {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (M_ * N_); i++) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">double</span> r = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <a class="code" href="optimized__core_8hpp.html#af8c27085e6043562b09a4e9a7b1afc71">W</a>[i] = (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * exp(-r * r / (h * h));</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00030">30</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                                                             {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (M_ * N_); i++) {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordtype">double</span> r = sqrt(x[i] * x[i] + y[i] * y[i] + z[i] * z[i]);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="optimized__core_8hpp.html#af8c27085e6043562b09a4e9a7b1afc71">W</a>[i] = (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * (1.0 / (h * sqrt(M_PI))) * exp(-r * r / (h * h));</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -335,16 +332,130 @@ const double&#160;</td><td class="memItemRight" valign="bottom"><b>lmbda</b> = 2
 <p>Get pairwise separations between 2 sets of coordinates. </p>
 <p>ri is an M x 3 matrix of positions rj is an N x 3 matrix of positions dx, dy, dz are M x N matrices of separations </p>
 
-<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00082">82</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                                                                                                    {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; M_; i++) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; N_; j++) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            dx[i * N_ + j] = ri[i * 3] - rj[j * 3];</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            dy[i * N_ + j] = ri[i * 3 + 1] - rj[j * 3 + 1];</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            dz[i * N_ + j] = ri[i * 3 + 2] - rj[j * 3 + 2];</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00071">71</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                                                                                    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; M_; i++) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; N_; j++) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            dx[i * N_ + j] = ri[i * 3] - rj[j * 3];</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            dy[i * N_ + j] = ri[i * 3 + 1] - rj[j * 3 + 1];</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            dz[i * N_ + j] = ri[i * 3 + 2] - rj[j * 3 + 2];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a2b32dc1a720c782d8957cb9820809a47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b32dc1a720c782d8957cb9820809a47">&#9670;&nbsp;</a></span>getPressure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getPressure </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>rho</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>P</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the pressure for each particle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rho</td><td>The density for each particle </td></tr>
+    <tr><td class="paramname">P</td><td>The array for pressure outputs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00119">119</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                              {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; particles; ++i) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        P[i] = k * pow(rho[i], 1.0 + 1.0 / n);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4d66d5af23e2015163c1c5b86e201b29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d66d5af23e2015163c1c5b86e201b29">&#9670;&nbsp;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void write </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>rho</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ofstream &amp;&#160;</td>
+          <td class="paramname"><em>outFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ofstream &amp;&#160;</td>
+          <td class="paramname"><em>outFile2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Write the particle's current positions and the density samples to the respective output files. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rho</td><td>Array with densitiy samples </td></tr>
+    <tr><td class="paramname">pos</td><td>Array with particle positions (flattened N x 3 matrix) </td></tr>
+    <tr><td class="paramname">time</td><td>Current time of the simulation </td></tr>
+    <tr><td class="paramname">outFile</td><td>The output file to print the particle positions to </td></tr>
+    <tr><td class="paramname">outFile2</td><td>The output file to print the density samples to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="serial_8cpp_source.html#l00199">199</a> of file <a class="el" href="serial_8cpp_source.html">serial.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                                                                                              {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="comment">// Write positions to CSV file</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; particles; ++i) {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        outFile &lt;&lt; time &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pos[i * 3] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pos[i * 3 + 1] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pos[i * 3 + 2] &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 99; ++i) {</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        outFile2 &lt;&lt; rho[i] &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    outFile2 &lt;&lt; rho[99] &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>

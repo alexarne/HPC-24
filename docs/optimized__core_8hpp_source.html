@@ -149,19 +149,19 @@ $(function() {
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a>[particle_index] = (sum * -m) + (pos * -lambda) + (<a class="code" href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a>[particle_index] * -nu);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keywordtype">void</span> init_particles() {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    std::random_device rd;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    std::mt19937 gen(42);            </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    std::normal_distribution&lt;&gt; dist(0.0, 1.0);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    srand(0xfacade);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 100; i++){</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        rr[i].x = i/ 100.0;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="optimized__core_8hpp.html#a150271ae515d54c6fcf507a4ef8b3b6f">  131</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="optimized__core_8hpp.html#a150271ae515d54c6fcf507a4ef8b3b6f">init_particles</a>() {</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    std::random_device rd;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    std::mt19937 gen(42);            </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    std::normal_distribution&lt;&gt; dist(0.0, 1.0);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    srand(0xfacade);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; particles; i++)</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <a class="code" href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a>[i] = {(double)dist(gen), (double)dist(gen), (double)dist(gen)};</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 100; i++){</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        rr[i].x = i/ 100.0;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    }</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aoptimized__core_8hpp_html_a7d4e21311e986cd9327330fd53f3e038"><div class="ttname"><a href="optimized__core_8hpp.html#a7d4e21311e986cd9327330fd53f3e038">pirogi2</a></div><div class="ttdeci">double pirogi2[particles]</div><div class="ttdoc">Contains the values of P_i / rho_i^2.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00041">optimized_core.hpp:41</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_af1f19a5777cb515c81bfdcc9772281de"><div class="ttname"><a href="optimized__core_8hpp.html#af1f19a5777cb515c81bfdcc9772281de">calc_rho</a></div><div class="ttdeci">void calc_rho(const size_t index)</div><div class="ttdoc">Computes density of particle at rr[index], result is stored in rhos[index].</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00081">optimized_core.hpp:81</a></div></div>
@@ -174,6 +174,7 @@ $(function() {
 <div class="ttc" id="aoptimized__core_8hpp_html_a2d0860bb015344b7a21aaf81dd6f277e"><div class="ttname"><a href="optimized__core_8hpp.html#a2d0860bb015344b7a21aaf81dd6f277e">velocities</a></div><div class="ttdeci">vec3 velocities[particles]</div><div class="ttdoc">particle velocities</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00048">optimized_core.hpp:48</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a7fd69d9dfca8e8be36dfa9a9151b45fe"><div class="ttname"><a href="optimized__core_8hpp.html#a7fd69d9dfca8e8be36dfa9a9151b45fe">accelerations</a></div><div class="ttdeci">vec3 accelerations[particles]</div><div class="ttdoc">particle accelerations</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00049">optimized_core.hpp:49</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a07ffa805346865e3aa876491a539925f"><div class="ttname"><a href="optimized__core_8hpp.html#a07ffa805346865e3aa876491a539925f">points</a></div><div class="ttdeci">vec3 points[particles]</div><div class="ttdoc">particle positions</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00047">optimized_core.hpp:47</a></div></div>
+<div class="ttc" id="aoptimized__core_8hpp_html_a150271ae515d54c6fcf507a4ef8b3b6f"><div class="ttname"><a href="optimized__core_8hpp.html#a150271ae515d54c6fcf507a4ef8b3b6f">init_particles</a></div><div class="ttdeci">void init_particles()</div><div class="ttdoc">Randomly initialize all particles' starting positions.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00131">optimized_core.hpp:131</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a672e50a437a0de8f5680cb6bf6ac8c16"><div class="ttname"><a href="optimized__core_8hpp.html#a672e50a437a0de8f5680cb6bf6ac8c16">calc_pirogi2</a></div><div class="ttdeci">void calc_pirogi2(const size_t particle_index)</div><div class="ttdoc">Computes and stores the \frac{P}{\rho^2} value of a particle.</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00097">optimized_core.hpp:97</a></div></div>
 <div class="ttc" id="aoptimized__core_8hpp_html_a802b5e2a70c3dde656e1606f2723ade5"><div class="ttname"><a href="optimized__core_8hpp.html#a802b5e2a70c3dde656e1606f2723ade5">rhos</a></div><div class="ttdeci">double rhos[100]</div><div class="ttdef"><b>Definition:</b> <a href="optimized__core_8hpp_source.html#l00044">optimized_core.hpp:44</a></div></div>
 <!-- start footer part -->
