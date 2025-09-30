@@ -222,7 +222,7 @@ int main() {
     }
     
     std::random_device rd;
-    std::mt19937 gen(42);            
+    std::mt19937 gen(13);            
     std::normal_distribution<> dist(0.0, 1.0);
     srand(0xfacade);
 
